@@ -1,0 +1,12 @@
+.map-card {
+    width: 70%;
+    height: 90%;
+    float: left;
+}
+
+.legend-card {
+  width: 30%;
+  height: 90%;
+  float: left;
+}
+  

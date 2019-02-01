@@ -1,0 +1,9 @@
+<mat-card class="map-card">
+    <mat-card-content>
+        <div id="map" (click)="addPoint($event)"></div>
+    </mat-card-content>
+    <mat-card-actions>
+            <button mat-raised-button color="primary">Salva posizione</button>
+            <button mat-raised-button color="warn" (click)="removeAllMarkers()">Rimuovi tutte le posizioni</button>
+    </mat-card-actions>
+</mat-card>

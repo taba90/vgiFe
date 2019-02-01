@@ -1,0 +1,8 @@
+.registration-form {
+    display: flex;
+    flex-direction: column;
+}
+  
+.registration-form > * {
+    width: 100%;
+}
