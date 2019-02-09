@@ -1,9 +1,10 @@
 import { Component, OnInit} from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
-import { UserService } from 'src/app/services/user.service';
-import { DialogService } from 'src/app/services/dialog.service';
+
 import { User } from 'src/app/model/user';
+import { UserService } from '../user.service';
+import { DialogService } from 'src/app/dialog/dialog.service';
 
 @Component({
   selector: 'app-registration',
@@ -12,7 +13,7 @@ import { User } from 'src/app/model/user';
 })
 export class RegistrationComponent implements OnInit {
 
-  form: FormGroup;
+  regForm: FormGroup;
   username: string;
   password: string;
   email: string;
@@ -22,15 +23,19 @@ export class RegistrationComponent implements OnInit {
     private dialogService: DialogService) { }
 
   ngOnInit() {
-    this.form = this.fb.group(new User('', '', ''));
+    this.regForm = new FormGroup({
+      'username' : new FormControl(null),
+      'password': new FormControl(null),
+      'email' : new FormControl(null),
+    });
   }
 
   submit() {
-    this.dialogService.save(this.ref, this.form);
-    this.ref.afterClosed().subscribe(data =>
-      console.log(data)
+    this.dialogService.save(this.ref, this.regForm);
+    this.ref.afterClosed().subscribe( (user: User) => {
+      this.userService.registerUser(user);
+    }
     );
-    this.userService.registerUser(this.username, this.password, this.email);
   }
 
 }

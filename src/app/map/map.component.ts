@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import Map from 'ol/map';
 import OSM from 'ol/source/osm';
 import TileLayer from 'ol/layer/Tile';
@@ -19,11 +19,18 @@ import {fromLonLat} from 'ol/proj.js';
 import {toLonLat} from 'ol/proj.js';
 import Conditions from 'ol/events/condition';
 import Layer from 'ol/layer/Layer';
+import { MapBrowserPointerEvent } from 'openlayers';
+import { DialogService } from '../dialog/dialog.service';
+import { AddpointComponent } from './addpoint/addpoint.component';
 
-@Injectable({
-  providedIn: 'root'
+
+@Component({
+  selector: 'app-map',
+  templateUrl: './map.component.html',
+  styleUrls: ['./map.component.css'],
 })
-export class MapService {
+export class MapComponent implements OnInit {
+
 private map: Map;
 private osmSource: OSM;
 private beVectSource: VectorSource;
@@ -38,12 +45,10 @@ private feVectorLayer: VectorLayer;
 private selectInteraction: Select;
 
 private selectedFeature: any;
+  constructor(private dialogService: DialogService) { }
 
+  ngOnInit() {
 
-  constructor() { }
-
-
-  initializeMap (): Map {
     const markerStyle = new OlStyle({
       image: new OlIcon(/**  {olx.style.IconOptions} */({
         // anchor: [0.5, 16],
@@ -77,38 +82,19 @@ private selectedFeature: any;
       layers: this.layers,
       view: this.view,
     });
-  /*this.map.on('dblclick', (event: MapBrowserPointerEvent) => {
-
-    });*/
-
-      // const lonlat = tranform(args.coordinate, 'EPSG:3857', 'EPSG:4326');
-      /*const lonlat = Projection.toLonLat(args.coordinates);
+    this.map.on('dblclick', (e: MapBrowserPointerEvent) => {
+      const lonlat = toLonLat(e.coordinate);
       const longitude = parseFloat(lonlat[0]);
       const latitude = parseFloat(lonlat[1]);
+      console.log('first lat: ' + latitude + ' first long: ' + longitude);
       const point: OlPoint = new OlPoint(fromLonLat([longitude, latitude])); // transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857'));
-      const feature = new OlFeature({
-        geometry: point,
+      const feature = new Feature({
+        geometry: point
       });
-      this.vectorSource.addFeature(feature);
-      // this.map.zoomToMaxExtent();
-    });*/
-    /*this.selectInteraction = new Select({
-      layers: [
-        this.feVectorLayer,
-        this.beVectorLayer
-      ]
-    }
-  );
-  this.map.addInteraction(this.selectInteraction);
-  this.selectedFeature = this.selectInteraction.getFeatures();
-    this.selectedFeature.on('pointermove', function(event) {
-      const feature = event.target.item(0);
-      console.log(feature);
-    });*/
-
-    return this.map;
-
-
+      this.vectSource.addFeature(feature);
+      const pixels: [number, number] = e.pixel;
+      this.dialogService.openDialog(AddpointComponent, point.getCoordinates(), pixels);
+    });
 }
 
 getFeVectorLayer (): VectorLayer {
@@ -122,5 +108,6 @@ getVectSource (): VectorSource {
 removeAllMarkers() {
     this.vectSource.clear();
 }
+
 
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService } from 'src/app/services/dialog.service';
-import { LoginComponent } from '../login/login.component';
-import { RegistrationComponent } from '../registration/registration.component';
+import { DialogService } from 'src/app/dialog/dialog.service';
+import { RegistrationComponent } from 'src/app/user/registration/registration.component';
+import { LoginComponent } from 'src/app/user/login/login.component';
 
 @Component({
   selector: 'app-toolbar',

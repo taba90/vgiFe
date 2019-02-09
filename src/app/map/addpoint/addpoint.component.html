@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Salva Posizione</h2>
 <mat-divider></mat-divider>
 <br />
-<mat-dialog-content [formGroup]="form">
+<form mat-dialog-content [formGroup]="formPoint">
   <div>
     <mat-form-field class="mat-field" >
       <input matInput placeholder="Descrizione" type="textarea" formControlName="descrizione" required>
@@ -9,17 +9,16 @@
  </div>
  <div>
     <mat-form-field class="mat-field">
-      <mat-select placeholder="Selezione legenda" fromControlName="idLegenda" required>
-        <mat-option *ngFor="let l of legende" [value]="l.id">
+      <mat-select placeholder="Selezione legenda" formControlName="idLegenda" required (change)="onChangedValue($event)">
+        <mat-option *ngFor="let l of legende" value="{{l.id}}">
           {{l.codice}}
         </mat-option>
       </mat-select>
-      <input matInput placeholder="Password" type="password" formControlName="password" required>
     </mat-form-field>
  </div>
-</mat-dialog-content>
+</form>
   <div>
-      <button mat-raised-button color="primary" (click)="esci()">Esci</button>
+      <!--button mat-raised-button color="primary" (click)="esci()">Esci</button-->
 </div>
 <div>
     <button mat-raised-button color="primary" type="submit" (click)="salvaPosizione()">Salva</button>

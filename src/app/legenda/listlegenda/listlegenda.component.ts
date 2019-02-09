@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Legenda } from 'src/app/model/legenda';
+import { LegendaService } from '../legenda.service';
 
 @Component({
   selector: 'app-listlegenda',
@@ -7,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListLegendaComponent implements OnInit {
 
-  constructor() { }
+  legende: Legenda[];
+  constructor(private legendaService: LegendaService) { }
 
   ngOnInit() {
   }

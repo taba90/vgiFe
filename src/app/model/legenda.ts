@@ -1,11 +1,11 @@
 export class Legenda {
 
-    private id: number;
-    private codice: string;
-    private descrizione: string;
-    private active: boolean;
+    id: number;
+    codice: string;
+    descrizione: string;
+    active: boolean;
 
-    constructor(codice?: string, descrizione?: string, active?: boolean) {
+    constructor(legenda?: Legenda) {
 
     }
 

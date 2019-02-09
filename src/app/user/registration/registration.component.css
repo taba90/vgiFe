@@ -1,8 +1,10 @@
-.registration-form {
+.modal-form {
     display: flex;
     flex-direction: column;
+    width: 400px;
+    height: 300px;
 }
-  
-.registration-form > * {
+
+.modal-field {
     width: 100%;
 }

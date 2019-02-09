@@ -3,15 +3,20 @@ import { Legenda } from './legenda';
 export class VgiPoint {
 
     private id: number;
-    private longitude: number;
-    private latitude: number;
-    private descrizione: string;
-    private idLegenda: number;
+    longitude: number;
+    latitude: number;
+    descrizione: string;
+    idLegenda: number;
 
-    constructor(longitude?: number, latitude?: number, descrizione?: string) {
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.descrizione = descrizione;
+
+    constructor(point?: VgiPoint) {
+        if (point != null) {
+            this.longitude = point.longitude;
+            this.latitude = point.latitude;
+            this.descrizione = point.descrizione;
+            this.idLegenda = point.idLegenda;
+        }
+
     }
 
     getId (): number {
@@ -46,11 +51,13 @@ export class VgiPoint {
         this.descrizione = descrizione;
     }
 
-    getLegenda (): number {
+    getIdLegenda (): number {
         return this.idLegenda;
     }
 
-    setLegenda (legenda: number) {
-        this.idLegenda = legenda;
+    setIdLegenda (idLegenda: number) {
+        this.idLegenda = idLegenda;
     }
+
+
 }
