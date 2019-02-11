@@ -2,7 +2,7 @@ import { Legenda } from './legenda';
 
 export class VgiPoint {
 
-    private id: number;
+    id: number;
     longitude: number;
     latitude: number;
     descrizione: string;

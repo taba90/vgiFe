@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService } from 'src/app/dialog/dialog.service';
 import { RegistrationComponent } from 'src/app/user/registration/registration.component';
 import { LoginComponent } from 'src/app/user/login/login.component';
+import { MatDialogConfig } from '@angular/material';
+import { DialogService } from '../dialog.service';
+import { User } from 'src/app/model/user';
 
 @Component({
   selector: 'app-toolbar',
@@ -10,17 +12,24 @@ import { LoginComponent } from 'src/app/user/login/login.component';
 })
 export class ToolbarComponent implements OnInit {
 
-  constructor(private dialogService: DialogService) { }
+  constructor(private dialogService: DialogService<User>) { }
 
   ngOnInit() {
   }
 
   openDialog(event: any) {
     const dialogName: string = event.srcElement.innerHTML;
+    const dialogConfig: MatDialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = false;
+      dialogConfig.autoFocus = true;
+      dialogConfig.position = {
+        top : '0px',
+        left : '0px' ,
+      };
     if (dialogName === 'Registrazione') {
-      this.dialogService.openDialog(RegistrationComponent);
+      this.dialogService.openDialog(RegistrationComponent, dialogConfig);
     } else if (dialogName === 'Login') {
-      this.dialogService.openDialog(LoginComponent);    }
+      this.dialogService.openDialog(LoginComponent, dialogConfig);    }
   }
 
 }

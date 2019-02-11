@@ -131,7 +131,12 @@ savePoint (point: VgiPoint, idLegenda: number) {
         risultato.setResult(result.result);
         risultato.setEsito(result.esito);
       },
-      (error) => risultato.setEsito(new Esito ('002', error)),
+      (error) => {
+        const err: Esito = new Esito();
+        err.setCodice('002');
+        err.setDescrizione('Response erro' + error);
+        risultato.setEsito(err);
+      },
     );
     return risultato;
 }

@@ -20,8 +20,10 @@ import {toLonLat} from 'ol/proj.js';
 import Conditions from 'ol/events/condition';
 import Layer from 'ol/layer/Layer';
 import { MapBrowserPointerEvent } from 'openlayers';
-import { DialogService } from '../dialog/dialog.service';
 import { AddpointComponent } from './addpoint/addpoint.component';
+import { MatDialogConfig } from '@angular/material';
+import { DialogService } from '../core/dialog.service';
+import { VgiPoint } from '../model/point';
 
 
 @Component({
@@ -45,7 +47,7 @@ private feVectorLayer: VectorLayer;
 private selectInteraction: Select;
 
 private selectedFeature: any;
-  constructor(private dialogService: DialogService) { }
+  constructor(private dialogService: DialogService<VgiPoint>) { }
 
   ngOnInit() {
 
@@ -93,7 +95,19 @@ private selectedFeature: any;
       });
       this.vectSource.addFeature(feature);
       const pixels: [number, number] = e.pixel;
-      this.dialogService.openDialog(AddpointComponent, point.getCoordinates(), pixels);
+      const coordinates: [number, number] = point.getCoordinates();
+      const dialogConfig: MatDialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = false;
+      dialogConfig.autoFocus = true;
+      dialogConfig.position = {
+        top : '0px',
+        left : '0px' ,
+      };
+      dialogConfig.data = {
+        lon: coordinates [0],
+        lat: coordinates [1]
+      };
+      this.dialogService.openDialog(AddpointComponent, dialogConfig);
     });
 }
 

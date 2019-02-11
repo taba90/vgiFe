@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService } from './dialog/dialog.service';
 import { UserService } from './user/user.service';
 import { MapService } from './map/map.service';
+import { DialogService } from './core/dialog.service';
 
 @Component({
   selector: 'app-root',

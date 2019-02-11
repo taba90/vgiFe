@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MatDialogConfig } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { User } from 'src/app/model/user';
 import { RegistrationComponent } from '../registration/registration.component';
 import { UserService } from '../user.service';
-import { DialogService } from 'src/app/dialog/dialog.service';
+import { DialogService } from 'src/app/core/dialog.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private ref: MatDialogRef<LoginComponent>,
     private userService: UserService,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService<User>) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -28,14 +28,21 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.dialogService.save(this.ref, this.loginForm);
-    this.ref.afterClosed().subscribe((user: User) => {
+    this.dialogService.save(this.ref, this.loginForm)
+    .subscribe((user: User) => {
       this.userService.login(user);
     });
   }
 
   openModalReg () {
-    this.dialogService.openDialog(RegistrationComponent);
+    const dialogConfig: MatDialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = false;
+      dialogConfig.autoFocus = true;
+      dialogConfig.position = {
+        top : '0px',
+        left : '0px' ,
+      };
+    this.dialogService.openDialog(RegistrationComponent, dialogConfig);
   }
 
 

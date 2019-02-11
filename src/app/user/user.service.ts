@@ -29,7 +29,12 @@ export class UserService {
         risultato.setResult(result.result);
         risultato.setEsito(result.esito);
       },
-      (error) => risultato.setEsito(new Esito ('002', error)),
+      (error) => {
+        const err: Esito = new Esito();
+        err.setCodice('002');
+        err.setDescrizione('Response erro' + error);
+        risultato.setEsito(err);
+      },
     );
     return risultato;
   }
@@ -42,7 +47,12 @@ export class UserService {
         console.log(response.headers);
         localStorage.setItem('X-Vgi', response.headers.get('X-Vgi'));
     },
-      (error) => risultato.setEsito(new Esito ('002', error)),
+      (error) => {
+        const err: Esito = new Esito();
+        err.setCodice('002');
+        err.setDescrizione('Response erro' + error);
+        risultato.setEsito(err);
+      },
     );
     // return risultato;
   }

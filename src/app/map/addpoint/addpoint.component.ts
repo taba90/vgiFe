@@ -10,8 +10,8 @@ import { LegendaService } from 'src/app/legenda/legenda.service';
 import { formControlBinding } from '@angular/forms/src/directives/reactive_directives/form_control_directive';
 import { Esito } from 'src/app/model/esito';
 import { MapService } from '../map.service';
-import { DialogService } from 'src/app/dialog/dialog.service';
 import { NumberValueAccessor } from '@angular/forms/src/directives';
+import { DialogService } from 'src/app/core/dialog.service';
 
 @Component({
   selector: 'app-addpoint',
@@ -33,7 +33,7 @@ export class AddpointComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private mapService: MapService,
     private dialogRef: MatDialogRef<AddpointComponent>,
-    private dialogService: DialogService,
+    private dialogService: DialogService<VgiPoint>,
     private legendaService: LegendaService,
     @Inject(MAT_DIALOG_DATA) public data) {
       this.lon = data.lon;
@@ -52,15 +52,20 @@ export class AddpointComponent implements OnInit {
       (data: Result<Legenda>) => {
         this.legende = data.results;
       },
-      (error) => this.esito = new Esito('002', error),
+      (error) => {
+        const err: Esito = new Esito();
+        err.setCodice('002');
+        err.setDescrizione('Response erro' + error);
+        this.esito = err;
+      }
     );
 
   }
 
   salvaPosizione () {
     console.log('lat: ' + this.lat + ' lon: ' + this.lon);
-    this.dialogService.save(this.dialogRef, this.formPoint);
-    this.dialogRef.afterClosed().subscribe( (point: VgiPoint) => {
+    this.dialogService.save(this.dialogRef, this.formPoint)
+    .subscribe( (point: VgiPoint) => {
       point.latitude = this.lat;
       point.longitude = this.lon;
       const vgiPoint: VgiPoint = new VgiPoint(point);
@@ -78,10 +83,6 @@ export class AddpointComponent implements OnInit {
       // this.mapService.savePoint(point);
     }
     );
-  }
-
-  onChangedValue(event) {
-    this.idLegenda = event.value;
   }
 
 }

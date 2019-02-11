@@ -6,7 +6,12 @@ export class Legenda {
     active: boolean;
 
     constructor(legenda?: Legenda) {
-
+        if (legenda != null) {
+            this.id = legenda.id;
+            this.codice = legenda.codice;
+            this.descrizione = legenda.descrizione;
+            this.active = legenda.active;
+        }
     }
 
     getCodice(): string {

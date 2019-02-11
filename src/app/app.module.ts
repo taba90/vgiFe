@@ -13,7 +13,6 @@ import { LoginComponent } from './user/login/login.component';
 import { AddpointComponent } from './map/addpoint/addpoint.component';
 import { TabsComponent } from './core/tabs/tabs.component';
 import { ToolbarComponent } from './core/toolbar/toolbar.component';
-import { DialogComponent } from './dialog/dialog.component';
 import { EditLegendaComponent } from './legenda/editlegenda/editlegenda.component';
 import { ListLegendaComponent } from './legenda/listlegenda/listlegenda.component';
 import { InterceptorService } from './user/interceptor.service';
@@ -33,7 +32,6 @@ const appRoutes: Routes = [
     RegistrationComponent,
     LoginComponent,
     ToolbarComponent,
-    DialogComponent,
     AddpointComponent,
     EditLegendaComponent,
     ListLegendaComponent,
