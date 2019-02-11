@@ -2,9 +2,9 @@ export class Esito {
     codice: string;
     descrizione: string;
 
-    constructor(esito?: Esito) {
-        this.codice = esito.codice;
-        this.descrizione = esito.descrizione;
+    constructor(codice: string, descrizione: string) {
+        this.codice = codice;
+        this.descrizione = descrizione;
     }
 
     getCodice (): string {

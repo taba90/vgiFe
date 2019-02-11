@@ -4,11 +4,11 @@ import OSM from 'ol/source/osm';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import GeoJson from 'ol/format/GeoJSON';
 import OlView from 'ol/View';
 import OlProj from 'ol/proj';
-import OlStyle from 'ol/style/style';
-import OlCircle from 'ol/style/Circle';
-import OlIcon from 'ol/style/Icon';
+import Style from 'ol/style/style';
+import OlCircle from 'ol/style/circle';
 import OlFill from 'ol/style/Fill';
 import OlStroke from 'ol/style/Stroke';
 import Feature from 'ol/Feature';
@@ -21,9 +21,14 @@ import Conditions from 'ol/events/condition';
 import Layer from 'ol/layer/Layer';
 import { MapBrowserPointerEvent } from 'openlayers';
 import { AddpointComponent } from './addpoint/addpoint.component';
-import { MatDialogConfig } from '@angular/material';
+import { MatDialogConfig, MatGridTileFooterCssMatStyler, MatDialogRef } from '@angular/material';
 import { DialogService } from '../core/dialog.service';
 import { VgiPoint } from '../model/point';
+import { MapService } from './map.service';
+import { Result } from '../model/result';
+import { map } from 'rxjs/operators';
+import ol from 'ol';
+import { ReadOptions } from '../model/readoptions';
 
 
 @Component({
@@ -43,28 +48,51 @@ private marker: Feature;
 private markers: [];
 private beVectorLayer: VectorLayer;
 private feVectorLayer: VectorLayer;
-
+private beFeatures: VgiPoint[];
+private geoJsonFormat: GeoJson;
 private selectInteraction: Select;
-
 private selectedFeature: any;
-  constructor(private dialogService: DialogService<VgiPoint>) { }
+
+private markerStyleFe: Style = new Style({
+  image : new OlCircle(({
+        fill: new OlFill({
+          color: 'red',
+        }),
+        radius: 5,
+        stroke: new OlStroke({
+        color: 'red',
+        width: 3,
+      }),
+  }))
+});
+private markerStyleBe: Style = new Style({
+  image : new OlCircle(({
+        fill: new OlFill({
+          color: 'green',
+        }),
+        radius: 5,
+        stroke: new OlStroke({
+        color: 'green',
+        width: 3,
+      }),
+  }))
+});
+
+
+  constructor(private dialogService: DialogService<VgiPoint>, private mapService: MapService) { }
 
   ngOnInit() {
-
-    const markerStyle = new OlStyle({
-      image: new OlIcon(/**  {olx.style.IconOptions} */({
-        // anchor: [0.5, 16],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'pixels',
-        src: 'https://wiki.openstreetmap.org/w/images/c/c5/Orienteering-icon-16px.png'
-      }))
-    });
     this.osmSource = new OSM();
-
-    this.beVectSource = new VectorSource();
+    this.geoJsonFormat = new GeoJson({
+      defaultDataProjection: 'EPSG:3857',
+      featureProjection: 'EPSG:3857'});
+    this.beVectSource = new VectorSource(
+      {
+        format: this.geoJsonFormat,
+      });
     this.vectSource = new VectorSource();
-    this.feVectorLayer = new VectorLayer({ source: this.vectSource, style: markerStyle, renderBuffer: 200 });
-    this.beVectorLayer = new VectorLayer({ source: this.vectSource, style: markerStyle });
+    this.feVectorLayer = new VectorLayer({ source: this.vectSource, style: this.markerStyleFe, renderBuffer: 200 });
+    this.beVectorLayer = new VectorLayer({ source: this.beVectSource, style: this.markerStyleBe });
     this.layers = [
       new TileLayer({
         source: this.osmSource,
@@ -107,8 +135,18 @@ private selectedFeature: any;
         lon: coordinates [0],
         lat: coordinates [1]
       };
-      this.dialogService.openDialog(AddpointComponent, dialogConfig);
+      const dialogRef: MatDialogRef<AddpointComponent> = this.dialogService.openDialog(AddpointComponent, dialogConfig);
+      dialogRef.afterClosed().subscribe(
+        () => {
+            this.vectSource.clear();
+            this.beVectSource.clear();
+            this.getBePoints();
+            this.beVectSource.refresh();
+
+        }
+      );
     });
+    this.getBePoints();
 }
 
 getFeVectorLayer (): VectorLayer {
@@ -121,6 +159,18 @@ getVectSource (): VectorSource {
 
 removeAllMarkers() {
     this.vectSource.clear();
+}
+
+getBePoints () {
+  this.mapService.callUserLocations().subscribe(
+    (data: Result<VgiPoint>) => {
+      for (const point of data.results) {
+        const feature: Feature = this.geoJsonFormat.readFeature(point.location, new ReadOptions(this.map) );
+        this.beVectSource.addFeature(feature);
+      }
+    },
+    error => console.log(error),
+  );
 }
 
 

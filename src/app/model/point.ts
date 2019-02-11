@@ -7,6 +7,7 @@ export class VgiPoint {
     latitude: number;
     descrizione: string;
     idLegenda: number;
+    location: any;
 
 
     constructor(point?: VgiPoint) {
@@ -15,6 +16,7 @@ export class VgiPoint {
             this.latitude = point.latitude;
             this.descrizione = point.descrizione;
             this.idLegenda = point.idLegenda;
+            this.location = point.location;
         }
 
     }
@@ -57,6 +59,14 @@ export class VgiPoint {
 
     setIdLegenda (idLegenda: number) {
         this.idLegenda = idLegenda;
+    }
+
+    getLocation () {
+        return this.location;
+    }
+
+    setLocation (location: any) {
+        this.location = location;
     }
 
 

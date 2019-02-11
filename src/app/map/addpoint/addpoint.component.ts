@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Component, OnInit, Inject, Input, EventEmitter } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { VgiPoint } from 'src/app/model/point';
@@ -21,6 +21,8 @@ import { DialogService } from 'src/app/core/dialog.service';
 export class AddpointComponent implements OnInit {
 
   private formPoint: FormGroup;
+
+  private closingDialog: EventEmitter<any>;
 
   private legende: Legenda[];
 
@@ -50,13 +52,10 @@ export class AddpointComponent implements OnInit {
     });
     this.legendaService.getObsLegende().subscribe(
       (data: Result<Legenda>) => {
-        this.legende = data.results;
+        this.legende = data.getResults();
       },
       (error) => {
-        const err: Esito = new Esito();
-        err.setCodice('002');
-        err.setDescrizione('Response erro' + error);
-        this.esito = err;
+        console.log(error);
       }
     );
 
@@ -73,8 +72,10 @@ export class AddpointComponent implements OnInit {
     }
     );
   }
-
-  esci() {
+  chiudi() {
+    this.dialogService.close(this.dialogRef);
+  }
+ /* esci() {
     this.mapService.getVectSource().clear();
     this.dialogService.close(this.dialogRef);
     this.dialogRef.afterClosed().subscribe( (point: VgiPoint) => {
@@ -83,6 +84,6 @@ export class AddpointComponent implements OnInit {
       // this.mapService.savePoint(point);
     }
     );
-  }
+  }*/
 
 }

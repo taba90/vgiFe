@@ -30,9 +30,7 @@ export class UserService {
         risultato.setEsito(result.esito);
       },
       (error) => {
-        const err: Esito = new Esito();
-        err.setCodice('002');
-        err.setDescrizione('Response erro' + error);
+        const err: Esito = new Esito('002', 'Response erro' + error);
         risultato.setEsito(err);
       },
     );
@@ -48,9 +46,7 @@ export class UserService {
         localStorage.setItem('X-Vgi', response.headers.get('X-Vgi'));
     },
       (error) => {
-        const err: Esito = new Esito();
-        err.setCodice('002');
-        err.setDescrizione('Response erro' + error);
+        const err: Esito = new Esito('002', 'Response erro' + error);
         risultato.setEsito(err);
       },
     );

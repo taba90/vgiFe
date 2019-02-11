@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material';
 
 import { User } from 'src/app/model/user';
 import { UserService } from '../user.service';
-import { DialogService } from 'src/app/dialog/dialog.service';
+import { DialogService } from 'src/app/core/dialog.service';
 
 @Component({
   selector: 'app-registration',
@@ -20,7 +20,7 @@ export class RegistrationComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private ref: MatDialogRef<RegistrationComponent>,
     private userService: UserService,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService<User>) { }
 
   ngOnInit() {
     this.regForm = new FormGroup({

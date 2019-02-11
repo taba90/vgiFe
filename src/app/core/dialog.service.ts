@@ -13,8 +13,8 @@ export class DialogService <T> {
 
   constructor(private dialog: MatDialog) { }
 
-  openDialog(compName: ComponentType<any> | TemplateRef<any>, dialogConfig: MatDialogConfig) {
-    this.dialog.open(compName, dialogConfig);
+  openDialog(compName: ComponentType<any> | TemplateRef<any>, dialogConfig: MatDialogConfig): MatDialogRef<any> {
+    return this.dialog.open(compName, dialogConfig);
 
   }
 

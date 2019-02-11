@@ -23,6 +23,9 @@ import { VgiPoint } from '../model/point';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Result } from '../model/result';
 import { Esito } from '../model/esito';
+import { Observable } from 'rxjs';
+import { map, filter, catchError, mergeMap } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -55,74 +58,6 @@ httpOptions = {
   constructor(private http: HttpClient) { }
 
 
-  initializeMap (): Map {
-    const markerStyle = new OlStyle({
-      image: new OlIcon(/**  {olx.style.IconOptions} */({
-        // anchor: [0.5, 16],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'pixels',
-        src: 'https://wiki.openstreetmap.org/w/images/c/c5/Orienteering-icon-16px.png'
-      }))
-    });
-    this.osmSource = new OSM();
-
-    this.beVectSource = new VectorSource();
-    this.vectSource = new VectorSource();
-    this.feVectorLayer = new VectorLayer({ source: this.vectSource, style: markerStyle, renderBuffer: 200 });
-    this.beVectorLayer = new VectorLayer({ source: this.vectSource, style: markerStyle });
-    this.layers = [
-      new TileLayer({
-        source: this.osmSource,
-      }),
-      this.beVectorLayer,
-      this.feVectorLayer,
-    ];
-    this.view = new OlView({
-      zoom: 13,
-      minZoom: 10,
-      center: fromLonLat([11.1722, 43.5599 ]),
-    });
-
-    this.map = new Map({
-      interactions : defaults({doubleClickZoom : false}),
-      target: 'map',
-      layers: this.layers,
-      view: this.view,
-    });
-  /*this.map.on('dblclick', (event: MapBrowserPointerEvent) => {
-
-    });*/
-
-      // const lonlat = tranform(args.coordinate, 'EPSG:3857', 'EPSG:4326');
-      /*const lonlat = Projection.toLonLat(args.coordinates);
-      const longitude = parseFloat(lonlat[0]);
-      const latitude = parseFloat(lonlat[1]);
-      const point: OlPoint = new OlPoint(fromLonLat([longitude, latitude])); // transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857'));
-      const feature = new OlFeature({
-        geometry: point,
-      });
-      this.vectorSource.addFeature(feature);
-      // this.map.zoomToMaxExtent();
-    });*/
-    /*this.selectInteraction = new Select({
-      layers: [
-        this.feVectorLayer,
-        this.beVectorLayer
-      ]
-    }
-  );
-  this.map.addInteraction(this.selectInteraction);
-  this.selectedFeature = this.selectInteraction.getFeatures();
-    this.selectedFeature.on('pointermove', function(event) {
-      const feature = event.target.item(0);
-      console.log(feature);
-    });*/
-
-    return this.map;
-
-
-}
-
 savePoint (point: VgiPoint, idLegenda: number) {
   const risultato: Result<VgiPoint> = new Result<VgiPoint>();
   this.http.post(this.endpoint + 'location/' + idLegenda.toString() + '/new', point, this.httpOptions)
@@ -132,25 +67,15 @@ savePoint (point: VgiPoint, idLegenda: number) {
         risultato.setEsito(result.esito);
       },
       (error) => {
-        const err: Esito = new Esito();
-        err.setCodice('002');
-        err.setDescrizione('Response erro' + error);
+        const err: Esito = new Esito('002', 'Response erro' + error);
         risultato.setEsito(err);
       },
     );
     return risultato;
 }
 
-getFeVectorLayer (): VectorLayer {
-  return this.feVectorLayer;
-}
-
-getVectSource (): VectorSource {
-  return this.vectSource;
-}
-
-removeAllMarkers() {
-    this.vectSource.clear();
+callUserLocations(): Observable<Result<VgiPoint>> {
+  return this.http.get<Result<VgiPoint>>(this.endpoint + 'location' + '/user');
 }
 
 }
