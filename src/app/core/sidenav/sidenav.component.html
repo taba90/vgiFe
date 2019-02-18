@@ -1,0 +1,14 @@
+<mat-sidenav-container class="container">
+  <mat-sidenav #sidenav [fixedInViewport]="true" 
+  mode="push" class="sidenav">
+  <div *ngIf="componentRef==legendaComponentRef">
+    <app-listlegenda></app-listlegenda>
+  </div>
+  <div *ngIf="componentRef==utenteComponentRef">
+    
+    </div>
+</mat-sidenav>
+  <mat-sidenav-content class="sidenav-content">
+    <app-map></app-map>
+  </mat-sidenav-content>
+</mat-sidenav-container>

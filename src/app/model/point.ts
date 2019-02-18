@@ -8,6 +8,7 @@ export class VgiPoint {
     descrizione: string;
     idLegenda: number;
     location: any;
+    legenda: Legenda;
 
 
     constructor(point?: VgiPoint) {

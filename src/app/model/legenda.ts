@@ -4,6 +4,7 @@ export class Legenda {
     codice: string;
     descrizione: string;
     active: boolean;
+    colore: string;
 
     constructor(legenda?: Legenda) {
         if (legenda != null) {

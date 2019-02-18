@@ -24,7 +24,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Result } from '../model/result';
 import { Esito } from '../model/esito';
 import { Observable } from 'rxjs';
-import { map, filter, catchError, mergeMap } from 'rxjs/operators';
+import { Legenda } from '../model/legenda';
+import { LegendaService } from '../legenda/legenda.service';
+import Style from 'ol/style/style';
 
 
 @Injectable({
@@ -55,7 +57,7 @@ httpOptions = {
 };
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private legendaService: LegendaService) { }
 
 
 savePoint (point: VgiPoint, idLegenda: number) {
@@ -74,8 +76,30 @@ savePoint (point: VgiPoint, idLegenda: number) {
     return risultato;
 }
 
-callUserLocations(): Observable<Result<VgiPoint>> {
+getUserLocations(): Observable<Result<VgiPoint>> {
   return this.http.get<Result<VgiPoint>>(this.endpoint + 'location' + '/user');
+}
+
+getUserLocationsByLegenda(idLegenda: number): Observable<Result<VgiPoint>> {
+  return this.http.get<Result<VgiPoint>>(this.endpoint + 'location/' + idLegenda + '/user');
+}
+
+
+
+
+getMarkerStyle(color: string): Style {
+  return new Style({
+    image : new OlCircle(({
+          fill: new OlFill({
+            color: color,
+          }),
+          radius: 5,
+          stroke: new OlStroke({
+          color: color,
+          width: 3,
+        }),
+    }))
+  });
 }
 
 }

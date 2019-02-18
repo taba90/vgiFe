@@ -16,9 +16,11 @@ import { ToolbarComponent } from './core/toolbar/toolbar.component';
 import { EditLegendaComponent } from './legenda/editlegenda/editlegenda.component';
 import { ListLegendaComponent } from './legenda/listlegenda/listlegenda.component';
 import { InterceptorService } from './user/interceptor.service';
+import { SidenavComponent } from './core/sidenav/sidenav.component';
 
 const appRoutes: Routes = [
-  {path: 'map', component: MapComponent},
+  // {path: 'map', component: MapComponent},
+  {path: 'sideNav/:compRef', component: SidenavComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'login', component: LoginComponent},
   {path: 'addPoint', component: AddpointComponent},
@@ -35,6 +37,7 @@ const appRoutes: Routes = [
     AddpointComponent,
     EditLegendaComponent,
     ListLegendaComponent,
+    SidenavComponent,
   ],
   providers: [
     {

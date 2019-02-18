@@ -1,7 +1,26 @@
+<router-outlet></router-outlet>
 <mat-toolbar color="primary">
-    <span><a routerLink="/map">Home</a></span>
+    <span>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+        Menù
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="showSideContent('Utente')" >
+          <span>Utente</span>
+        </button>
+        <button mat-menu-item (click)="showSideContent('Legenda')">
+          <span>Legenda</span>
+        </button>
+        <button mat-menu-item (click)="showSideContent('Altro')">
+          <span>Altro</span>
+        </button>
+      </mat-menu>
+      </span>
     <!-- This fills the remaining space of the current row -->
     <span class="fill-space"></span>
     <span><a (click) = "openDialog($event)">Registrazione</a></span>
     <span><a (click)="openDialog($event)">Login</a></span>
 </mat-toolbar>
+<div>
+    <app-sidenav #sideNav></app-sidenav>
+</div>

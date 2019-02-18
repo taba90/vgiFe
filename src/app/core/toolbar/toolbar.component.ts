@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RegistrationComponent } from 'src/app/user/registration/registration.component';
 import { LoginComponent } from 'src/app/user/login/login.component';
 import { MatDialogConfig } from '@angular/material';
 import { DialogService } from '../dialog.service';
 import { User } from 'src/app/model/user';
+import { SidenavComponent } from '../sidenav/sidenav.component';
 
 @Component({
   selector: 'app-toolbar',
@@ -11,7 +12,8 @@ import { User } from 'src/app/model/user';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
-
+  @ViewChild('sideNav')
+  private sidenavComp: SidenavComponent;
   constructor(private dialogService: DialogService<User>) { }
 
   ngOnInit() {
@@ -30,6 +32,10 @@ export class ToolbarComponent implements OnInit {
       this.dialogService.openDialog(RegistrationComponent, dialogConfig);
     } else if (dialogName === 'Login') {
       this.dialogService.openDialog(LoginComponent, dialogConfig);    }
+  }
+
+  showSideContent (compRef: string) {
+    this.sidenavComp.toggleSideContent(compRef);
   }
 
 }

@@ -6,7 +6,6 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJson from 'ol/format/GeoJSON';
 import OlView from 'ol/View';
-import OlProj from 'ol/proj';
 import Style from 'ol/style/style';
 import OlCircle from 'ol/style/circle';
 import OlFill from 'ol/style/Fill';
@@ -17,8 +16,6 @@ import OlPoint from 'ol/geom/Point';
 import {defaults} from 'ol/interaction.js';
 import {fromLonLat} from 'ol/proj.js';
 import {toLonLat} from 'ol/proj.js';
-import Conditions from 'ol/events/condition';
-import Layer from 'ol/layer/Layer';
 import { MapBrowserPointerEvent } from 'openlayers';
 import { AddpointComponent } from './addpoint/addpoint.component';
 import { MatDialogConfig, MatGridTileFooterCssMatStyler, MatDialogRef } from '@angular/material';
@@ -53,7 +50,7 @@ private geoJsonFormat: GeoJson;
 private selectInteraction: Select;
 private selectedFeature: any;
 
-private markerStyleFe: Style = new Style({
+private markerStyle: Style = new Style({
   image : new OlCircle(({
         fill: new OlFill({
           color: 'red',
@@ -61,18 +58,6 @@ private markerStyleFe: Style = new Style({
         radius: 5,
         stroke: new OlStroke({
         color: 'red',
-        width: 3,
-      }),
-  }))
-});
-private markerStyleBe: Style = new Style({
-  image : new OlCircle(({
-        fill: new OlFill({
-          color: 'green',
-        }),
-        radius: 5,
-        stroke: new OlStroke({
-        color: 'green',
         width: 3,
       }),
   }))
@@ -91,8 +76,8 @@ private markerStyleBe: Style = new Style({
         format: this.geoJsonFormat,
       });
     this.vectSource = new VectorSource();
-    this.feVectorLayer = new VectorLayer({ source: this.vectSource, style: this.markerStyleFe, renderBuffer: 200 });
-    this.beVectorLayer = new VectorLayer({ source: this.beVectSource, style: this.markerStyleBe });
+    this.feVectorLayer = new VectorLayer({ source: this.vectSource, style: this.markerStyle, renderBuffer: 200 });
+    this.beVectorLayer = new VectorLayer({ source: this.beVectSource, style: this.markerStyle });
     this.layers = [
       new TileLayer({
         source: this.osmSource,
@@ -129,7 +114,7 @@ private markerStyleBe: Style = new Style({
       dialogConfig.autoFocus = true;
       dialogConfig.position = {
         top : '0px',
-        left : '0px' ,
+        left : '80%' ,
       };
       dialogConfig.data = {
         lon: coordinates [0],
@@ -162,15 +147,31 @@ removeAllMarkers() {
 }
 
 getBePoints () {
-  this.mapService.callUserLocations().subscribe(
+  this.mapService.getUserLocations().subscribe(
     (data: Result<VgiPoint>) => {
       for (const point of data.results) {
         const feature: Feature = this.geoJsonFormat.readFeature(point.location, new ReadOptions(this.map) );
+        feature.setStyle(this.getStyle(point.legenda.colore));
         this.beVectSource.addFeature(feature);
       }
     },
     error => console.log(error),
   );
+}
+
+getStyle(color: string): Style {
+  return new Style({
+    image : new OlCircle(({
+          fill: new OlFill({
+            color: color,
+          }),
+          radius: 5,
+          stroke: new OlStroke({
+          color: color,
+          width: 3,
+        }),
+    }))
+  });
 }
 
 

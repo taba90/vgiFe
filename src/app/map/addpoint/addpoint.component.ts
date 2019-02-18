@@ -37,6 +37,7 @@ export class AddpointComponent implements OnInit {
     private dialogRef: MatDialogRef<AddpointComponent>,
     private dialogService: DialogService<VgiPoint>,
     private legendaService: LegendaService,
+
     @Inject(MAT_DIALOG_DATA) public data) {
       this.lon = data.lon;
       this.lat = data.lat;
@@ -50,15 +51,14 @@ export class AddpointComponent implements OnInit {
       'descrizione': new FormControl(null),
       'idLegenda': new FormControl(null),
     });
-    this.legendaService.getObsLegende().subscribe(
+    this.legendaService.getLegende().subscribe(
       (data: Result<Legenda>) => {
-        this.legende = data.getResults();
+        this.legende = data.results;
       },
       (error) => {
         console.log(error);
       }
     );
-
   }
 
   salvaPosizione () {
