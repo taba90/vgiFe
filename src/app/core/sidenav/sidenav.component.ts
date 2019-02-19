@@ -9,10 +9,14 @@ import { MatSidenav } from '@angular/material';
 })
 export class SidenavComponent implements OnInit {
 
+
+readonly utenteComponentRef = 'utente';
+readonly legendaComponentRef = 'legenda';
+readonly altroComponentRef = 'altro';
+
   private componentRef: string;
-  private utenteComponentRef = 'Utente';
-  private legendaComponentRef = 'Legenda';
-  private altroComponentRef = 'Altro';
+
+
   constructor(private route: ActivatedRoute) { }
   @ViewChild('sidenav')
   sideNav: MatSidenav;

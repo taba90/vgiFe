@@ -10,6 +10,7 @@ import { Result } from 'src/app/model/result';
 })
 export class ListLegendaComponent implements OnInit {
 
+  showForm = true;
   legende: Legenda[];
   constructor(private legendaService: LegendaService) { }
 
@@ -20,6 +21,10 @@ export class ListLegendaComponent implements OnInit {
   }
   getColor(item: Legenda) {
     return item.colore;
+  }
+
+  showLegendaForm(hide: boolean) {
+    this.showForm = hide;
   }
 
 }

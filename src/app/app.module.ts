@@ -18,13 +18,6 @@ import { ListLegendaComponent } from './legenda/listlegenda/listlegenda.componen
 import { InterceptorService } from './user/interceptor.service';
 import { SidenavComponent } from './core/sidenav/sidenav.component';
 
-const appRoutes: Routes = [
-  // {path: 'map', component: MapComponent},
-  {path: 'sideNav/:compRef', component: SidenavComponent},
-  {path: 'registration', component: RegistrationComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'addPoint', component: AddpointComponent},
-];
 
 @NgModule({
   declarations: [
@@ -54,7 +47,6 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes),
   ],
   entryComponents: [
     AddpointComponent,

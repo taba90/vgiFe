@@ -152,6 +152,7 @@ getBePoints () {
       for (const point of data.results) {
         const feature: Feature = this.geoJsonFormat.readFeature(point.location, new ReadOptions(this.map) );
         feature.setStyle(this.getStyle(point.legenda.colore));
+        feature.setId(point.id);
         this.beVectSource.addFeature(feature);
       }
     },

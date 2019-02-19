@@ -1,3 +1,17 @@
-<p>
-  edit.legenda works!
-</p>
+<form [formGroup]="legendaForm">
+    <div>
+        <mat-form-field floatLabel="auto" class="modal-field">
+          <input matInput placeholder="Codice" type="text" formControlName="codice" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field floatLabel="auto" class="modal-field">
+          <input matInput placeholder="Descrizione" type="text" formControlName="descrizione" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field floatLabel="auto" class="modal-field">
+          <input matInput placeholder="Colore" type="text" formControlName="colore" required>
+        </mat-form-field>
+      </div>
+</form>

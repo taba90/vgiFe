@@ -22,15 +22,10 @@ export class AddpointComponent implements OnInit {
 
   private formPoint: FormGroup;
 
-  private closingDialog: EventEmitter<any>;
+  legende: Legenda[];
 
-  private legende: Legenda[];
-
-  private esito: Esito;
-
-  private lon: number;
-  private lat: number;
-  private idLegenda: number;
+  lon: number;
+  lat: number;
 
   constructor(private fb: FormBuilder,
     private mapService: MapService,
