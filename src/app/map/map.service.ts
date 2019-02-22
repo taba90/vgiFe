@@ -60,20 +60,10 @@ httpOptions = {
   constructor(private http: HttpClient, private legendaService: LegendaService) { }
 
 
-savePoint (point: VgiPoint, idLegenda: number) {
+savePoint (point: VgiPoint, idLegenda: number): Observable<Result<VgiPoint>> {
   const risultato: Result<VgiPoint> = new Result<VgiPoint>();
-  this.http.post(this.endpoint + 'location/' + idLegenda.toString() + '/new', point, this.httpOptions)
-    .subscribe(
-      (result: Result<VgiPoint>) => {
-        risultato.setResult(result.result);
-        risultato.setEsito(result.esito);
-      },
-      (error) => {
-        const err: Esito = new Esito('002', 'Response erro' + error);
-        risultato.setEsito(err);
-      },
-    );
-    return risultato;
+  return this.http.post<Result<VgiPoint>>
+  (this.endpoint + 'location/' + idLegenda.toString() + '/new', point, this.httpOptions);
 }
 
 getUserLocations(): Observable<Result<VgiPoint>> {

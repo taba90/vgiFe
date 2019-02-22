@@ -21,4 +21,16 @@ export class LegendaService {
      )
    );
   }
+
+  saveLegenda (legenda: Legenda): Observable<Result<Legenda>> {
+    return this.http.post<Result<Legenda>>(this.endpoint + 'legenda/new', legenda);
+  }
+
+  updateLegenda (legenda: Legenda): Observable<Result<Legenda>> {
+    return this.http.patch<Result<Legenda>>(this.endpoint + 'legenda/' + legenda.id, legenda);
+  }
+
+  deleteLegenda (idLegenda: number): Observable<Result<Legenda>> {
+    return this.http.delete<Result<Legenda>>(this.endpoint + 'legenda/' + idLegenda);
+  }
 }

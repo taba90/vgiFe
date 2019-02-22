@@ -12,6 +12,7 @@ import { Esito } from 'src/app/model/esito';
 import { MapService } from '../map.service';
 import { NumberValueAccessor } from '@angular/forms/src/directives';
 import { DialogService } from 'src/app/core/dialog.service';
+import { CommonService } from 'src/app/core/common.service';
 
 @Component({
   selector: 'app-addpoint',
@@ -32,7 +33,7 @@ export class AddpointComponent implements OnInit {
     private dialogRef: MatDialogRef<AddpointComponent>,
     private dialogService: DialogService<VgiPoint>,
     private legendaService: LegendaService,
-
+    private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data) {
       this.lon = data.lon;
       this.lat = data.lat;
@@ -48,7 +49,8 @@ export class AddpointComponent implements OnInit {
     });
     this.legendaService.getLegende().subscribe(
       (data: Result<Legenda>) => {
-        this.legende = data.results;
+        this.commonService.unWrapResult(data);
+        this.legende = this.commonService.results as Legenda[];
       },
       (error) => {
         console.log(error);
@@ -63,7 +65,14 @@ export class AddpointComponent implements OnInit {
       point.latitude = this.lat;
       point.longitude = this.lon;
       const vgiPoint: VgiPoint = new VgiPoint(point);
-      this.mapService.savePoint(vgiPoint, vgiPoint.getIdLegenda());
+      this.mapService.savePoint(vgiPoint, vgiPoint.getIdLegenda()).subscribe(
+        (result: Result<VgiPoint>) => {
+          this.commonService.unWrapResult(result);
+        },
+        (error) => {
+          const err: Esito = new Esito('002', 'Response erro' + error);
+        },
+      );
     }
     );
   }

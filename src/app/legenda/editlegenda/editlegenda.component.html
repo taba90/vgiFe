@@ -14,4 +14,6 @@
           <input matInput placeholder="Colore" type="text" formControlName="colore" required>
         </mat-form-field>
       </div>
+      <input type="hidden" formControlName="id">
+      <button mat-raised-button color="basic" type="submit" (click)="onSubmit()">Salva</button>
 </form>

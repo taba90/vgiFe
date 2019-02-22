@@ -6,14 +6,17 @@ import { Result } from '../model/result';
 })
 export class CommonService {
 
+  results: any[];
+  result: any;
+
   constructor() { }
 
   unWrapResult(result: Result<any>) {
-    if (result.esito.codice === '001') {
-      if (result.results != null) {
-        return result.results;
-      }
+    if (result.esito.codice === '000') {
+      this.results = result.results;
+      this.result = result.result;
     } else {
+
       throw result.esito.descrizione;
     }
   }
