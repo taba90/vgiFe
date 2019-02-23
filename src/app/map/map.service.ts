@@ -87,6 +87,13 @@ getUserLocationsByLegenda(idLegenda: number): Observable<Result<VgiPoint>> {
   return this.http.get<Result<VgiPoint>>(this.endpoint + 'location/' + idLegenda + '/user');
 }
 
+deleteLocationById(idLocation: number): Observable<VgiPoint> {
+  return this.http.delete<Result<VgiPoint>>(this.endpoint + 'location/' + idLocation).pipe(map(
+    (data: Result<VgiPoint>) => this.commonService.unWrapResult(data)
+  ));
+}
+
+
 
 
 

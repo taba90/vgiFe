@@ -13,6 +13,7 @@ import { MapService } from '../map.service';
 import { NumberValueAccessor } from '@angular/forms/src/directives';
 import { DialogService } from 'src/app/core/dialog.service';
 import { CommonService } from 'src/app/core/common.service';
+import { stringify } from '@angular/core/src/render3/util';
 
 @Component({
   selector: 'app-addpoint',
@@ -21,13 +22,19 @@ import { CommonService } from 'src/app/core/common.service';
 })
 export class AddpointComponent implements OnInit {
 
-  private formPoint: FormGroup;
+  formPoint: FormGroup;
 
   pointAdded = new EventEmitter();
 
+  selectedLegenda: number;
+
   legende: Legenda[];
 
-  point: VgiPoint;
+  existingPoint: VgiPoint;
+
+  modalName: string;
+
+  isNew: boolean;
 
   constructor(private fb: FormBuilder,
     private mapService: MapService,
@@ -36,21 +43,19 @@ export class AddpointComponent implements OnInit {
     private legendaService: LegendaService,
     private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data) {
-      this.point = data.point;
+      this.existingPoint = data.point;
+      this.modalName = data.modalName;
+      this.isNew = data.isNew;
     }
 
   ngOnInit() {
     // const point: Point = <Point> feature.getGeometry();
     // const coor: [number, number] = point.getCoordinates();
-    const vgiPoint: VgiPoint = new VgiPoint ();
-    this.formPoint = new FormGroup({
-      'descrizione': new FormControl(this.point.descrizione),
-      'idLegenda': new FormControl(this.point.idLegenda),
-    });
+    // const vgiPoint: VgiPoint = new VgiPoint ();
+    this.formPoint = this.bindPointToForm(this.existingPoint);
     this.legendaService.getLegende().subscribe(
-      (data: Result<Legenda>) => {
-        this.commonService.unWrapResult(data);
-        this.legende = this.commonService.results as Legenda[];
+      (data: Legenda[]) => {
+        this.legende = data;
       },
       (error) => {
         console.log(error);
@@ -61,8 +66,8 @@ export class AddpointComponent implements OnInit {
   salvaPosizione () {
     this.dialogService.save(this.dialogRef, this.formPoint)
     .subscribe( (point: VgiPoint) => {
-      point.latitude = this.point.latitude;
-      point.longitude = this.point.longitude;
+      point.latitude = this.existingPoint.latitude;
+      point.longitude = this.existingPoint.longitude;
       const vgiPoint: VgiPoint = new VgiPoint(point);
       this.mapService.savePoint(vgiPoint, vgiPoint.getIdLegenda()).subscribe(
         (result: Result<VgiPoint>) => {
@@ -76,8 +81,25 @@ export class AddpointComponent implements OnInit {
     }
     );
   }
-  chiudi() {
-    this.dialogService.close(this.dialogRef);
+  cancellaPosizione() {
+    this.mapService.deleteLocationById(this.existingPoint.id);
+  }
+
+  bindPointToForm (point: VgiPoint): FormGroup {
+    let descrizione: string;
+    if (point.descrizione != null) {
+      descrizione = point.descrizione;
+    } else {
+      descrizione = '';
+    }
+    if (point.legenda != null) {
+      this.selectedLegenda = point.legenda.id;
+      // idLegenda = point.legenda.id;
+    }
+    return new FormGroup({
+      'descrizione': new FormControl(descrizione),
+      'idLegenda': new FormControl(null),
+    });
   }
  /* esci() {
     this.mapService.getVectSource().clear();

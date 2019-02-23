@@ -77,7 +77,7 @@ private markerStyle: Style = new Style({
     this.map.on('click', (e: MapBrowserEvent) => {
       this.map.forEachFeatureAtPixel(e.pixel, (feature: Feature) => {
         this.getPointById(feature.getId());
-        const dialogConf: MatDialogConfig = this.getDialogConfig(e.pixel, this.selectedPoint);
+        const dialogConf: MatDialogConfig = this.getDialogConfig(e.pixel, 'Modifica posizione', this.selectedPoint, false);
         const dialogRef: MatDialogRef<AddpointComponent> = this.dialogService.openDialog(AddpointComponent, dialogConf);
         console.log(this.selectedPoint);
       }
@@ -96,7 +96,7 @@ private markerStyle: Style = new Style({
       const pointVgi: VgiPoint = new VgiPoint();
       pointVgi.longitude = coordinates[0];
       pointVgi.latitude = coordinates[1];
-      const dialogConfig: MatDialogConfig = this.getDialogConfig(pixels, pointVgi);
+      const dialogConfig: MatDialogConfig = this.getDialogConfig(pixels, 'Salva posizione', pointVgi, true);
       const dialogRef: MatDialogRef<AddpointComponent> = this.dialogService.openDialog(AddpointComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(
         () => {
@@ -189,7 +189,7 @@ getPointFromLonLat(lonlat: string[]): OlPoint {
   return new OlPoint(fromLonLat([longitude, latitude])); // transform([longitude, latitude], 'EPSG:4326', 'EPSG:3857'));
 }
 
-  getDialogConfig(pixels: number[], point?: VgiPoint): MatDialogConfig {
+  getDialogConfig(pixels: number[], modalName: string, point: VgiPoint, isNew: boolean): MatDialogConfig {
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
@@ -198,7 +198,9 @@ getPointFromLonLat(lonlat: string[]): OlPoint {
       left: '80%',
     };
     dialogConfig.data = {
-      point: point
+      modalName: modalName,
+      point: point,
+      isNew: isNew,
     };
     return dialogConfig;
   }

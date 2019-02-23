@@ -5,6 +5,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Esito } from '../model/esito';
 import { map, filter, catchError, mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { CommonService } from '../core/common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,12 @@ import { Observable } from 'rxjs';
 export class LegendaService {
   endpoint = 'http://localhost:8081/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private commonService: CommonService) { }
 
-  getLegende (): Observable<Result<Legenda>> {
+  getLegende (): Observable<Legenda[]> {
    return this.http.get<Result<Legenda>>(this.endpoint + 'legenda/findAll').pipe(
      map(
-      (data: Result<Legenda>) => new Result<Legenda>(data)
+      (data: Result<Legenda>) => this.commonService.unWrapResult(data)
      )
    );
   }

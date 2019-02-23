@@ -43,7 +43,7 @@ export class ListLegendaComponent implements OnInit {
 
   getLegende() {
     this.legendaService.getLegende().subscribe(
-      (data: Result<Legenda>) => this.legende = data.results,
+      (legende: Legenda []) => this.legende = legende,
     );
   }
 
