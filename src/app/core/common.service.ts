@@ -15,8 +15,10 @@ export class CommonService {
     if (result.esito.codice === '000') {
       if (result.results != null) {
         return result.results;
-      } else {
+      } else if (result.result != null) {
         return result.result;
+      } else {
+        return result.esito;
       }
     } else {
 

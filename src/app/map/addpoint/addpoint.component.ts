@@ -82,7 +82,9 @@ export class AddpointComponent implements OnInit {
     );
   }
   cancellaPosizione() {
-    this.mapService.deleteLocationById(this.existingPoint.id);
+    this.mapService.deleteLocationById(this.existingPoint.id).subscribe(
+      (data: VgiPoint | Esito) => console.log(data)
+    );
   }
 
   bindPointToForm (point: VgiPoint): FormGroup {

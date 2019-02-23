@@ -76,10 +76,14 @@ private markerStyle: Style = new Style({
     this.map = this.getMap();
     this.map.on('click', (e: MapBrowserEvent) => {
       this.map.forEachFeatureAtPixel(e.pixel, (feature: Feature) => {
-        this.getPointById(feature.getId());
-        const dialogConf: MatDialogConfig = this.getDialogConfig(e.pixel, 'Modifica posizione', this.selectedPoint, false);
-        const dialogRef: MatDialogRef<AddpointComponent> = this.dialogService.openDialog(AddpointComponent, dialogConf);
-        console.log(this.selectedPoint);
+        console.log(feature);
+        this.mapService.getLocationById(feature.getId() as number).subscribe(
+          (point: VgiPoint) => {
+            const dialogConf: MatDialogConfig = this.getDialogConfig(e.pixel, 'Modifica posizione', point, false);
+            const dialogRef: MatDialogRef<AddpointComponent> = this.dialogService.openDialog(AddpointComponent, dialogConf);
+            console.log(this.selectedPoint);
+          }
+        );
       }
       );
     }
