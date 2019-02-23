@@ -17,18 +17,19 @@ export class ListLegendaComponent implements OnInit {
   constructor(private legendaService: LegendaService, private commonService: CommonService) { }
 
   ngOnInit() {
-    this.legendaService.getLegende().subscribe(
-      (data: Result<Legenda>) => this.legende = data.results,
-    );
+    this.getLegende();
   }
   getColor(item: Legenda) {
     return item.colore;
   }
 
-  showLegendaForm(hide: boolean, legenda?: Legenda) {
+  hideLegendaForm(hide: boolean, legenda?: Legenda) {
     this.showForm = hide;
     if (legenda != null) {
       this.legendaUp = legenda;
+    }
+    if (hide === true) {
+      this.getLegende();
     }
   }
 
@@ -37,6 +38,12 @@ export class ListLegendaComponent implements OnInit {
       (data: Result<Legenda>) => {
         this.commonService.unWrapResult(data);
       }
+    );
+  }
+
+  getLegende() {
+    this.legendaService.getLegende().subscribe(
+      (data: Result<Legenda>) => this.legende = data.results,
     );
   }
 

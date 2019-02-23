@@ -13,8 +13,11 @@ export class CommonService {
 
   unWrapResult(result: Result<any>) {
     if (result.esito.codice === '000') {
-      this.results = result.results;
-      this.result = result.result;
+      if (result.results != null) {
+        return result.results;
+      } else {
+        return result.result;
+      }
     } else {
 
       throw result.esito.descrizione;

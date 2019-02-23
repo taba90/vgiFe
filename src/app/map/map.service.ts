@@ -27,6 +27,9 @@ import { Observable } from 'rxjs';
 import { Legenda } from '../model/legenda';
 import { LegendaService } from '../legenda/legenda.service';
 import Style from 'ol/style/style';
+import { CommonService } from '../core/common.service';
+import { map } from 'rxjs/operators';
+
 
 
 @Injectable({
@@ -57,7 +60,7 @@ httpOptions = {
 };
 
 
-  constructor(private http: HttpClient, private legendaService: LegendaService) { }
+  constructor(private http: HttpClient, private legendaService: LegendaService, private commonService: CommonService) { }
 
 
 savePoint (point: VgiPoint, idLegenda: number): Observable<Result<VgiPoint>> {
@@ -66,8 +69,18 @@ savePoint (point: VgiPoint, idLegenda: number): Observable<Result<VgiPoint>> {
   (this.endpoint + 'location/' + idLegenda.toString() + '/new', point, this.httpOptions);
 }
 
-getUserLocations(): Observable<Result<VgiPoint>> {
-  return this.http.get<Result<VgiPoint>>(this.endpoint + 'location' + '/user');
+getUserLocations(): Observable<VgiPoint []> {
+  return this.http.get<Result<VgiPoint>>(this.endpoint + 'location' + '/user').pipe(map(
+    (result: Result<VgiPoint>) => this.commonService.unWrapResult(result)
+    )
+  );
+}
+
+getLocationById(idLocation: number): Observable<VgiPoint> {
+  return this.http.get<Result<VgiPoint>>(this.endpoint + 'location/' + idLocation).pipe(map(
+    (result: Result<VgiPoint>) => this.commonService.unWrapResult(result)
+  )
+  );
 }
 
 getUserLocationsByLegenda(idLegenda: number): Observable<Result<VgiPoint>> {

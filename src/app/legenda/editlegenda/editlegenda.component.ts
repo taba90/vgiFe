@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Legenda } from 'src/app/model/legenda';
 import { LegendaService } from '../legenda.service';
@@ -16,6 +16,8 @@ export class EditLegendaComponent implements OnInit, OnChanges {
   private legendaForm: FormGroup;
   @Input()
   private legenda: Legenda;
+  @Output()
+  submitted = new EventEmitter();
 
   constructor(private formBuilder: FormBuilder, private legendaService: LegendaService,
     private commonService: CommonService) {}
@@ -35,12 +37,14 @@ export class EditLegendaComponent implements OnInit, OnChanges {
       this.legendaService.updateLegenda(legenda).subscribe(
         (result: Result<Legenda>) => {
           this.commonService.unWrapResult(result);
+          this.submitted.emit();
         }
       );
     } else {
       this.legendaService.saveLegenda(this.bindFormToLegenda()).subscribe(
         (result: Result<Legenda>) => {
           this.commonService.unWrapResult(result);
+          this.submitted.emit('submitted');
         }
       );
     }

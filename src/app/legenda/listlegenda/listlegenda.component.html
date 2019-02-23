@@ -16,16 +16,16 @@
         </mat-expansion-panel>
       </mat-accordion>
       <button mat-raised-button color="basic" (click)="onDelete(l.id)">Cancella</button>
-      <button mat-raised-button color="basic" (click)="showLegendaForm(false, l)">Modifica</button>
+      <button mat-raised-button color="basic" (click)="hideLegendaForm(false, l)">Modifica</button>
     </mat-list-item>
     <br />
     <mat-list-item>
-      <button mat-raised-button color="basic" (click)="showLegendaForm(false)">Nuovo campo legenda</button>
+      <button mat-raised-button color="basic" (click)="hideLegendaForm(false)">Nuovo campo legenda</button>
     </mat-list-item>
   </mat-list>
 </div>
 <br />
 <div [hidden]="showForm">
-  <app-editlegenda [legenda]="legendaUp"></app-editlegenda>
-  <button mat-raised-button color="basic" (click)="showLegendaForm(true)">Chiudi</button>
+  <app-editlegenda [legenda]="legendaUp" (submitted)= "hideLegendaForm(true)"></app-editlegenda>
+  <button mat-raised-button color="basic" (click)="hideLegendaForm(true)">Chiudi</button>
 </div>

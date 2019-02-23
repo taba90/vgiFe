@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, Inject, Input, EventEmitter, Output } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { VgiPoint } from 'src/app/model/point';
@@ -23,10 +23,11 @@ export class AddpointComponent implements OnInit {
 
   private formPoint: FormGroup;
 
+  pointAdded = new EventEmitter();
+
   legende: Legenda[];
 
-  lon: number;
-  lat: number;
+  point: VgiPoint;
 
   constructor(private fb: FormBuilder,
     private mapService: MapService,
@@ -35,8 +36,7 @@ export class AddpointComponent implements OnInit {
     private legendaService: LegendaService,
     private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data) {
-      this.lon = data.lon;
-      this.lat = data.lat;
+      this.point = data.point;
     }
 
   ngOnInit() {
@@ -44,8 +44,8 @@ export class AddpointComponent implements OnInit {
     // const coor: [number, number] = point.getCoordinates();
     const vgiPoint: VgiPoint = new VgiPoint ();
     this.formPoint = new FormGroup({
-      'descrizione': new FormControl(null),
-      'idLegenda': new FormControl(null),
+      'descrizione': new FormControl(this.point.descrizione),
+      'idLegenda': new FormControl(this.point.idLegenda),
     });
     this.legendaService.getLegende().subscribe(
       (data: Result<Legenda>) => {
@@ -59,15 +59,15 @@ export class AddpointComponent implements OnInit {
   }
 
   salvaPosizione () {
-    console.log('lat: ' + this.lat + ' lon: ' + this.lon);
     this.dialogService.save(this.dialogRef, this.formPoint)
     .subscribe( (point: VgiPoint) => {
-      point.latitude = this.lat;
-      point.longitude = this.lon;
+      point.latitude = this.point.latitude;
+      point.longitude = this.point.longitude;
       const vgiPoint: VgiPoint = new VgiPoint(point);
       this.mapService.savePoint(vgiPoint, vgiPoint.getIdLegenda()).subscribe(
         (result: Result<VgiPoint>) => {
           this.commonService.unWrapResult(result);
+          this.pointAdded.emit();
         },
         (error) => {
           const err: Esito = new Esito('002', 'Response erro' + error);
