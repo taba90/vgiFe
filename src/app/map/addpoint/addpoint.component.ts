@@ -81,9 +81,34 @@ export class AddpointComponent implements OnInit {
     }
     );
   }
+
+  aggiornaPosizione () {
+    this.dialogService.save(this.dialogRef, this.formPoint)
+    .subscribe( (point: VgiPoint) => {
+      point.latitude = this.existingPoint.latitude;
+      point.longitude = this.existingPoint.longitude;
+      const vgiPoint: VgiPoint = new VgiPoint(point);
+      this.mapService.updatePoint(vgiPoint, vgiPoint.getIdLegenda()).subscribe(
+        (result: VgiPoint | string) => {
+          console.log(result);
+          this.pointAdded.emit();
+        },
+        (error) => {
+          const err: Esito = new Esito('002', 'Response erro' + error);
+        },
+      );
+    }
+    );
+  }
+
+
+
   cancellaPosizione() {
     this.mapService.deleteLocationById(this.existingPoint.id).subscribe(
-      (data: VgiPoint | Esito) => console.log(data)
+      (data: VgiPoint | Esito) => {
+        this.dialogService.close(this.dialogRef);
+        this.pointAdded.emit();
+      }
     );
   }
 
