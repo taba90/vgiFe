@@ -33,7 +33,14 @@ export class RegistrationComponent implements OnInit {
   submit() {
     this.dialogService.save(this.ref, this.regForm);
     this.ref.afterClosed().subscribe( (user: User) => {
-      this.userService.registerUser(user);
+      this.userService.registerUser(user).subscribe(
+        (utente: User) => console.log(user),
+        (response: Response) => {
+          if (response.status === 403) {
+            localStorage.removeItem('X-Vgi');
+          }
+        },
+      );
     }
     );
   }

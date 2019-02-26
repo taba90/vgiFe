@@ -9,8 +9,7 @@ import { MapComponent } from './map/map.component';
 
 const routes: Routes = [
   // {path: 'map', component: MapComponent},
-  {path: 'registration', component: RegistrationComponent},
-  {path: 'Login', component: LoginComponent},
+  {path: 'login', component: LoginComponent},
 ];
 
 @NgModule({

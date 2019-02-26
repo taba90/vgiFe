@@ -26,4 +26,10 @@ export class CommonService {
     }
   }
 
+  unWrapResponse(response: Response): string {
+    if (response.status !== 200) {
+      return 'Errore durante la chiamata. Status: ' + response.statusText;
+    }
+  }
+
 }

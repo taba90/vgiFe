@@ -18,6 +18,11 @@ import { ListLegendaComponent } from './legenda/listlegenda/listlegenda.componen
 import { InterceptorService } from './user/interceptor.service';
 import { SidenavComponent } from './core/sidenav/sidenav.component';
 
+const routes: Routes = [
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
+  {path: 'login', component: LoginComponent},
+  {path: 'map', component: MapComponent},
+];
 
 @NgModule({
   declarations: [
@@ -41,7 +46,7 @@ import { SidenavComponent } from './core/sidenav/sidenav.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    RouterModule.forRoot(routes),
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,

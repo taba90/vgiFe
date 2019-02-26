@@ -88,7 +88,7 @@ export class AddpointComponent implements OnInit {
       point.latitude = this.existingPoint.latitude;
       point.longitude = this.existingPoint.longitude;
       const vgiPoint: VgiPoint = new VgiPoint(point);
-      this.mapService.updatePoint(vgiPoint, vgiPoint.getIdLegenda()).subscribe(
+      this.mapService.updatePoint(vgiPoint).subscribe(
         (result: VgiPoint | string) => {
           console.log(result);
           this.pointAdded.emit();

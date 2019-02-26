@@ -69,9 +69,9 @@ savePoint (point: VgiPoint, idLegenda: number): Observable<Result<VgiPoint>> {
   (this.endpoint + 'location/' + idLegenda.toString() + '/new', point, this.httpOptions);
 }
 
-updatePoint (point: VgiPoint, idPoint: number): Observable<VgiPoint> {
+updatePoint (point: VgiPoint): Observable<VgiPoint> {
   return this.http.patch<Result<VgiPoint>>
-  (this.endpoint + 'location/' + idPoint.toString() + '/update', point, this.httpOptions).pipe(map(
+  (this.endpoint + 'location', point, this.httpOptions).pipe(map(
     (result: Result<VgiPoint>) => this.commonService.unWrapResult(result)
     )
   );

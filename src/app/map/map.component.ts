@@ -23,8 +23,6 @@ import { MatDialogConfig, MatGridTileFooterCssMatStyler, MatDialogRef } from '@a
 import { DialogService } from '../core/dialog.service';
 import { VgiPoint } from '../model/point';
 import { MapService } from './map.service';
-import { Result } from '../model/result';
-import { map } from 'rxjs/operators';
 import { ReadOptions } from '../model/readoptions';
 
 

@@ -6,6 +6,7 @@ import { Result } from '../model/result';
 import { Esito } from '../model/esito';
 import { Role } from '../model/role';
 import { map, filter, catchError, mergeMap } from 'rxjs/operators';
+import { CommonService } from '../core/common.service';
 
 
 @Injectable({
@@ -19,38 +20,22 @@ export class UserService {
       'Content-Type':  'application/json'
     })
   };
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private commonService: CommonService) { }
 
-  registerUser(user: User): Result<User> {
-    const risultato: Result<User> = new Result<User>();
-    this.http.post(this.endpoint + 'register', user, this.httpOptions)
-    .subscribe(
-      (result: Result<User>) => {
-        risultato.setResult(result.result);
-        risultato.setEsito(result.esito);
-      },
-      (error) => {
-        const err: Esito = new Esito('002', 'Response erro' + error);
-        risultato.setEsito(err);
-      },
-    );
-    return risultato;
+  registerUser(user: User): Observable<User> {
+    return this.http.post<Result<User>>
+    (this.endpoint + 'register', user, this.httpOptions).pipe(map(
+      (result: Result<User>) => this.commonService.unWrapResult(result),
+      )
+      );
   }
 
-  login(user: User) {
-    const risultato: Result<User> = new Result<User>();
-    this.http.post(this.endpoint + 'login', user, {observe: 'response'})
-    .subscribe (
-      (response: HttpResponse<any>) => {
-        console.log(response.headers);
-        localStorage.setItem('X-Vgi', response.headers.get('X-Vgi'));
-    },
-      (error) => {
-        const err: Esito = new Esito('002', 'Response erro' + error);
-        risultato.setEsito(err);
-      },
+  login(user: User): Observable<User | string>  {
+    return this.http.post(this.endpoint + 'login', user).pipe(map(
+      (result: Result<User>) => this.commonService.unWrapResult(result),
+      (response: Response) => this.commonService.unWrapResponse(response)
+    )
     );
-    // return risultato;
   }
 
   getUserRoles(): Observable<Result<Role>> {
