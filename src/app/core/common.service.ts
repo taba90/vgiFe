@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Result } from '../model/result';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -26,10 +27,19 @@ export class CommonService {
     }
   }
 
-  unWrapResponse(response: Response): string {
-    if (response.status !== 200) {
-      return 'Errore durante la chiamata. Status: ' + response.statusText;
-    }
+  unWrapErrorResponse(response: HttpErrorResponse): string {
+    let message: string = null;
+      if (response.status === 403) {
+          message = response.headers.get('Ex-Token');
+          if (message === null) {
+            message = 'Errore durante la chiamata. Status: ' + response.statusText;
+          } else {
+            localStorage.removeItem('X-Vgi');
+          }
+      } else {
+        message = 'Errore durante la chiamata. Status: ' + response.statusText;
+      }
+    return message;
   }
 
 }

@@ -11,24 +11,24 @@ import { MapComponent } from './map/map.component';
 import { RegistrationComponent } from './user/registration/registration.component';
 import { LoginComponent } from './user/login/login.component';
 import { AddpointComponent } from './map/addpoint/addpoint.component';
-import { TabsComponent } from './core/tabs/tabs.component';
 import { ToolbarComponent } from './core/toolbar/toolbar.component';
 import { EditLegendaComponent } from './legenda/editlegenda/editlegenda.component';
 import { ListLegendaComponent } from './legenda/listlegenda/listlegenda.component';
 import { InterceptorService } from './user/interceptor.service';
 import { SidenavComponent } from './core/sidenav/sidenav.component';
+import { MessageComponent } from './message/message.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'map', component: MapComponent},
+  {path: 'legenda', component: ListLegendaComponent},
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    TabsComponent,
     RegistrationComponent,
     LoginComponent,
     ToolbarComponent,
@@ -36,6 +36,7 @@ const routes: Routes = [
     EditLegendaComponent,
     ListLegendaComponent,
     SidenavComponent,
+    MessageComponent,
   ],
   providers: [
     {
@@ -55,6 +56,7 @@ const routes: Routes = [
   ],
   entryComponents: [
     AddpointComponent,
+    MessageComponent,
   ],
   bootstrap: [AppComponent]
 })

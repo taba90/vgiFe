@@ -30,8 +30,7 @@ export class ToolbarComponent implements OnInit {
       };
     if (dialogName === 'Registrazione') {
       this.dialogService.openDialog(RegistrationComponent, dialogConfig);
-    } else if (dialogName === 'Login') {
-      this.dialogService.openDialog(LoginComponent, dialogConfig);    }
+    }
   }
 
   showSideContent (compRef: string) {

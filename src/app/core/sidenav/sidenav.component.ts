@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material';
 
 @Component({
@@ -14,24 +14,17 @@ readonly utenteComponentRef = 'utente';
 readonly legendaComponentRef = 'legenda';
 readonly altroComponentRef = 'altro';
 
-  private componentRef: string;
-
-
-  constructor(private route: ActivatedRoute) { }
+  constructor(private router: Router) { }
   @ViewChild('sidenav')
   sideNav: MatSidenav;
   @Output()
   sideNavEvent = new EventEmitter<MatSidenav>();
   ngOnInit() {
-    this.sideNavEvent.emit(this.sideNav);
-        this.route.params.subscribe(
-      params => this.componentRef = params['compRef'],
-    );
   }
 
   toggleSideContent (componentRef: string) {
-    this.componentRef = componentRef;
     this.sideNav.toggle();
+    this.router.navigate([componentRef]);
   }
 
 }

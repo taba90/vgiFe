@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../model/user';
 import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Result } from '../model/result';
 import { Esito } from '../model/esito';
 import { Role } from '../model/role';
@@ -30,12 +30,8 @@ export class UserService {
       );
   }
 
-  login(user: User): Observable<User | string>  {
-    return this.http.post(this.endpoint + 'login', user).pipe(map(
-      (result: Result<User>) => this.commonService.unWrapResult(result),
-      (response: Response) => this.commonService.unWrapResponse(response)
-    )
-    );
+  login(user: User): Observable<any> {
+    return this.http.post(this.endpoint + 'login', user, {observe: 'response' as 'body'});
   }
 
   getUserRoles(): Observable<Result<Role>> {

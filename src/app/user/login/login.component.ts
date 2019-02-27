@@ -7,6 +7,11 @@ import { UserService } from '../user.service';
 import { DialogService } from 'src/app/core/dialog.service';
 import { Router } from '@angular/router';
 import { routerNgProbeToken } from '@angular/router/src/router_module';
+import { Message } from 'src/app/model/message';
+import { MessageComponent } from 'src/app/message/message.component';
+import { HttpErrorResponse, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { Result } from 'src/app/model/result';
+import { CommonService } from 'src/app/core/common.service';
 
 @Component({
   selector: 'app-login',
@@ -17,10 +22,11 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   username: string;
   password: string;
-  constructor(private fb: FormBuilder,
+   constructor(private fb: FormBuilder,
     // private ref: MatDialogRef<LoginComponent>,
     private userService: UserService,
-    private dialogService: DialogService<User>,
+    private dialogService: DialogService<Message>,
+    private commonService: CommonService,
     private router: Router,
     ) { }
 
@@ -34,10 +40,22 @@ export class LoginComponent implements OnInit {
   login() {
     const utente: User = this.bindFormToUser();
       this.userService.login(utente).subscribe(
-        (data: User | string) => {
-          if (data instanceof User) {
+        (response) => {
+          const token: string = response.headers.get('X-Vgi');
+          if (token !== null) {
+            localStorage.setItem('X-Vgi', token);
+            this.router.navigate(['/map']);
+          } else {
+            console.log(response);
+          }
+        },
+        (error: HttpErrorResponse) => {
+          if (error === null) {
             this.router.navigate(['/map']);
           }
+          console.log(error);
+          const text: string = this.commonService.unWrapErrorResponse(error);
+          this.dialogService.openMessageAlert(MessageComponent, text, 'red');
         }
       );
   }
