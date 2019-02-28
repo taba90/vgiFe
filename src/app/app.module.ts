@@ -22,7 +22,7 @@ const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'map', component: MapComponent},
-  {path: 'legenda', component: ListLegendaComponent},
+  {path: 'legenda', component: ListLegendaComponent, outlet: 'side-route'},
 ];
 
 @NgModule({

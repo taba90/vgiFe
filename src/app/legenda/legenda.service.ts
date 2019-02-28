@@ -15,7 +15,7 @@ export class LegendaService {
 
   constructor(private http: HttpClient, private commonService: CommonService) { }
 
-  getLegende (): Observable<Legenda[]> {
+  getLegende (): Observable<any> {
    return this.http.get<Result<Legenda>>(this.endpoint + 'legenda/findAll').pipe(
      map(
       (data: Result<Legenda>) => this.commonService.unWrapResult(data)

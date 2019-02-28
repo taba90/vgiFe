@@ -24,7 +24,7 @@ readonly altroComponentRef = 'altro';
 
   toggleSideContent (componentRef: string) {
     this.sideNav.toggle();
-    this.router.navigate([componentRef]);
+    this.router.navigate([{outlets: {'side-route': [componentRef]}}]);
   }
 
 }

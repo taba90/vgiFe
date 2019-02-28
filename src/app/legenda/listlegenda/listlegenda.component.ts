@@ -3,6 +3,9 @@ import { Legenda } from 'src/app/model/legenda';
 import { LegendaService } from '../legenda.service';
 import { Result } from 'src/app/model/result';
 import { CommonService } from 'src/app/core/common.service';
+import { DialogService } from 'src/app/core/dialog.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MessageComponent } from 'src/app/message/message.component';
 
 @Component({
   selector: 'app-listlegenda',
@@ -14,7 +17,8 @@ export class ListLegendaComponent implements OnInit {
   showForm = true;
   legende: Legenda[];
   legendaUp: Legenda;
-  constructor(private legendaService: LegendaService, private commonService: CommonService) { }
+  constructor(private legendaService: LegendaService, private commonService: CommonService,
+    private dialogService: DialogService<MessageComponent>) { }
 
   ngOnInit() {
     this.getLegende();
@@ -44,6 +48,10 @@ export class ListLegendaComponent implements OnInit {
   getLegende() {
     this.legendaService.getLegende().subscribe(
       (legende: Legenda []) => this.legende = legende,
+      (response: HttpErrorResponse) => {
+        const text: string = this.commonService.unWrapErrorResponse(response);
+        this.dialogService.openMessageAlert(MessageComponent, 'text', 'orange');
+      }
     );
   }
 
