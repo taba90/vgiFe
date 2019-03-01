@@ -19,8 +19,17 @@ export class DialogService <T> {
     return this.dialog.open(compName, dialogConfig);
   }
 
-  openMessageAlert (componentRef:  ComponentType<any> | TemplateRef<any>, text: string, color: string) {
-    const config: MatDialogConfig = this.getAlertConfig(text, color);
+  openMessageAlert (componentRef:  ComponentType<any> | TemplateRef<any>, message?: Message, text?: string, color?: string) {
+    let sText: string;
+    let sColor: string;
+    if (message != null) {
+      sText = message.testo;
+      sColor = message.color;
+    } else {
+      sText = text;
+      sColor = color;
+    }
+    const config: MatDialogConfig = this.getAlertConfig(sText, sColor);
     this.openDialog(componentRef, config);
   }
 

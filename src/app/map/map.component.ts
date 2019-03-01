@@ -24,6 +24,8 @@ import { DialogService } from '../core/dialog.service';
 import { VgiPoint } from '../model/point';
 import { MapService } from './map.service';
 import { ReadOptions } from '../model/readoptions';
+import { MessageComponent } from '../message/message.component';
+import { Message } from '../model/message';
 
 
 @Component({
@@ -76,11 +78,15 @@ private markerStyle: Style = new Style({
       this.map.forEachFeatureAtPixel(e.pixel, (feature: Feature) => {
         console.log(feature);
         this.mapService.getLocationById(feature.getId() as number).subscribe(
-          (point: VgiPoint) => {
-            const dialogConf: MatDialogConfig = this.getDialogConfig(e.pixel, 'Modifica posizione', point, false);
+          (data: VgiPoint | Message) => {
+            if (data instanceof VgiPoint) {
+            const dialogConf: MatDialogConfig = this.getDialogConfig(e.pixel, 'Modifica posizione', data, false);
             const dialogRef: MatDialogRef<AddpointComponent> = this.dialogService.openDialog(AddpointComponent, dialogConf);
             console.log(this.selectedPoint);
+          } else {
+            this.dialogService.openMessageAlert(MessageComponent, data as Message);
           }
+        }
         );
       }
       );
@@ -122,13 +128,17 @@ removeAllMarkers() {
 getBePoints () {
   this.beVectSource.clear();
   this.mapService.getUserLocations().subscribe(
-    (data: VgiPoint []) => {
-      for (const point of data) {
+    (data: VgiPoint [] | Message) => {
+      if ( data instanceof Array ) {
+      for (const point of data as VgiPoint[]) {
         const feature: Feature = this.geoJsonFormat.readFeature(point.location, new ReadOptions(this.map) );
         feature.setStyle(this.getStyle(point.legenda.colore));
         feature.setId(point.id);
         this.beVectSource.addFeature(feature);
       }
+    } else {
+      this.dialogService.openMessageAlert(MessageComponent, data as Message);
+    }
     },
     error => console.log(error),
   );

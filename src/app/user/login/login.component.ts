@@ -54,8 +54,8 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/home/login']);
           }
           console.log(error);
-          const text: string = this.commonService.unWrapErrorResponse(error);
-          this.dialogService.openMessageAlert(MessageComponent, text, 'orange');
+          const message: Message = this.commonService.unWrapErrorResponse(error);
+          this.dialogService.openMessageAlert(MessageComponent, message);
         }
       );
   }

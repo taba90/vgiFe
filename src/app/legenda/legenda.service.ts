@@ -23,15 +23,21 @@ export class LegendaService {
    );
   }
 
-  saveLegenda (legenda: Legenda): Observable<Result<Legenda>> {
-    return this.http.post<Result<Legenda>>(this.endpoint + 'legenda/new', legenda);
+  saveLegenda (legenda: Legenda): Observable<any> {
+    return this.http.post<Result<Legenda>>(this.endpoint + 'legenda/new', legenda).pipe(map(
+      (result: Result<Legenda>) => this.commonService.unWrapResult(result)
+    ));
   }
 
-  updateLegenda (legenda: Legenda): Observable<Result<Legenda>> {
-    return this.http.patch<Result<Legenda>>(this.endpoint + 'legenda/' + legenda.id, legenda);
+  updateLegenda (legenda: Legenda): Observable<any> {
+    return this.http.patch<Result<Legenda>>(this.endpoint + 'legenda/' + legenda.id, legenda).pipe(map(
+      (result: Result<Legenda>) => this.commonService.unWrapResult(result)
+    ));
   }
 
-  deleteLegenda (idLegenda: number): Observable<Result<Legenda>> {
-    return this.http.delete<Result<Legenda>>(this.endpoint + 'legenda/' + idLegenda);
+  deleteLegenda (idLegenda: number): Observable<any> {
+    return this.http.delete<Result<Legenda>>(this.endpoint + 'legenda/' + idLegenda).pipe(map(
+      (result: Result<Legenda>) => this.commonService.unWrapResult(result)
+    ));
   }
 }

@@ -77,22 +77,24 @@ updatePoint (point: VgiPoint): Observable<VgiPoint> {
   );
 }
 
-getUserLocations(): Observable<VgiPoint []> {
+getUserLocations(): Observable<any> {
   return this.http.get<Result<VgiPoint>>(this.endpoint + 'location' + '/user').pipe(map(
     (result: Result<VgiPoint>) => this.commonService.unWrapResult(result)
     )
   );
 }
 
-getLocationById(idLocation: number): Observable<VgiPoint> {
+getLocationById(idLocation: number): Observable<any> {
   return this.http.get<Result<VgiPoint>>(this.endpoint + 'location/' + idLocation).pipe(map(
     (result: Result<VgiPoint>) => this.commonService.unWrapResult(result)
   )
   );
 }
 
-getUserLocationsByLegenda(idLegenda: number): Observable<Result<VgiPoint>> {
-  return this.http.get<Result<VgiPoint>>(this.endpoint + 'location/' + idLegenda + '/user');
+getUserLocationsByLegenda(idLegenda: number): Observable<any> {
+  return this.http.get<Result<VgiPoint>>(this.endpoint + 'location/' + idLegenda + '/user').pipe(map(
+    (result: Result<VgiPoint>) => this.commonService.unWrapResult(result)
+  ));
 }
 
 deleteLocationById(idLocation: number): Observable<VgiPoint> {

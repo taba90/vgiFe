@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Result } from '../model/result';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Message } from '../model/message';
+import { Esito } from '../model/esito';
 
 @Injectable({
   providedIn: 'root'
@@ -19,15 +21,18 @@ export class CommonService {
       } else if (result.result != null) {
         return result.result;
       } else {
-        return result.esito;
+        return new Message(result.esito.descrizione, 'green');
       }
     } else {
-
-      throw result.esito.descrizione;
+      if (result.esito.codice === '001') {
+        return new Message(result.esito.descrizione, 'orange');
+      } else {
+        return new Message(result.esito.descrizione, 'red');
+      }
     }
   }
 
-  unWrapErrorResponse(response: HttpErrorResponse): string {
+  unWrapErrorResponse(response: HttpErrorResponse): Message {
     let message: string = null;
       if (response.status === 403) {
           message = response.headers.get('Ex-Token');
@@ -39,7 +44,7 @@ export class CommonService {
       } else {
         message = 'Errore durante la chiamata. Status: ' + response.statusText;
       }
-    return message;
+    return new Message(message, 'red');
   }
 
 }
