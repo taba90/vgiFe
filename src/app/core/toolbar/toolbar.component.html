@@ -1,10 +1,9 @@
-<router-outlet></router-outlet>
 <mat-toolbar color="primary">
     <span>
-        <button mat-icon-button [matMenuTriggerFor]="menu">
+        <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="userService.isLoggedIn === true">
         Menù
       </button>
-      <mat-menu #menu="matMenu">
+      <mat-menu #menu="matMenu" >
         <button mat-menu-item (click)="showSideContent('utente')" >
           <span>Utente</span>
         </button>
@@ -19,7 +18,7 @@
     <!-- This fills the remaining space of the current row -->
     <span class="fill-space"></span>
     <span><a (click) = "openDialog($event)">Registrazione</a></span>
-    <span><a (click)="openDialog($event)">Login</a></span>
+    <span><a (click)="logout()">Logout</a></span>
 </mat-toolbar>
 <div>
     <app-sidenav #sideNav></app-sidenav>

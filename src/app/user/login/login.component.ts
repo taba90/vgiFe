@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
           const token: string = response.headers.get('X-Vgi');
           if (token !== null) {
             localStorage.setItem('X-Vgi', token);
+            this.userService.isLoggedIn = true;
             this.router.navigate(['/map']);
           } else {
             console.log(response);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, AfterViewInit, OnDestroy } from '@angular/core';
 import { Legenda } from 'src/app/model/legenda';
 import { LegendaService } from '../legenda.service';
 import { Result } from 'src/app/model/result';
@@ -7,29 +7,49 @@ import { DialogService } from 'src/app/core/dialog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessageComponent } from 'src/app/message/message.component';
 import { Message } from 'src/app/model/message';
+import { UserService } from 'src/app/user/user.service';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Role } from 'src/app/model/role';
 
 @Component({
   selector: 'app-listlegenda',
   templateUrl: './listlegenda.component.html',
   styleUrls: ['./listlegenda.component.css']
 })
-export class ListLegendaComponent implements OnInit {
+export class ListLegendaComponent implements OnInit, OnDestroy {
 
-  showForm = true;
+  isAuthorized = false;
+  hide = true;
   legende: Legenda[];
   legendaUp: Legenda;
   constructor(private legendaService: LegendaService, private commonService: CommonService,
-    private dialogService: DialogService<MessageComponent>) { }
+    private dialogService: DialogService<MessageComponent>, private userService: UserService,
+     private route: ActivatedRoute) {
+    }
 
   ngOnInit() {
     this.getLegende();
+      this.userService.getUserRoles().subscribe(
+        (roles: Role []) => {
+          for ( const r of roles) {
+            if (r.roleName === 'ROLE_ADMIN') {
+              this.isAuthorized = true;
+            }
+          }
+        }
+      );
   }
+
+  ngOnDestroy(): void {
+    // nothing to do
+  }
+
   getColor(item: Legenda) {
     return item.colore;
   }
 
   hideLegendaForm(hide: boolean, legenda?: Legenda) {
-    this.showForm = hide;
+    this.hide = hide;
     if (legenda != null) {
       this.legendaUp = legenda;
     }
@@ -61,8 +81,6 @@ export class ListLegendaComponent implements OnInit {
       (data: Legenda [] | Message) => {
         if ( data instanceof Array) {
           this.legende = data;
-        } else {
-          this.dialogService.openMessageAlert(MessageComponent, data as Message );
         }
       },
       (response: HttpErrorResponse) => {

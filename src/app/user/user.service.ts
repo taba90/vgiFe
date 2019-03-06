@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { User } from '../model/user';
-import { Observable, of } from 'rxjs';
+import { Observable} from 'rxjs';
 import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Result } from '../model/result';
 import { Esito } from '../model/esito';
 import { Role } from '../model/role';
-import { map, filter, catchError, mergeMap } from 'rxjs/operators';
+import { map, filter, catchError, mergeMap} from 'rxjs/operators';
 import { CommonService } from '../core/common.service';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -15,12 +16,18 @@ import { CommonService } from '../core/common.service';
 export class UserService {
 
   endpoint = 'http://localhost:8081/';
+
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json'
     })
   };
-  constructor(private http: HttpClient, private commonService: CommonService) { }
+
+  isLoggedIn = false;
+
+  isAdmin = false;
+
+  constructor(private http: HttpClient, private commonService: CommonService, private router: Router) { }
 
   registerUser(user: User): Observable<User> {
     return this.http.post<Result<User>>
@@ -34,25 +41,53 @@ export class UserService {
     return this.http.post(this.endpoint + 'login', user, {observe: 'response' as 'body'});
   }
 
-  getUserRoles(): Observable<Result<Role>> {
+  getUserRoles(): Observable<any> {
     return this.http.get<Result<Role>>(this.endpoint + 'roles').pipe(map(
-      (result: Result<Role>) => new Result<Role>(result)
+      (result: Result<Role>) => this.commonService.unWrapResult(result)
     )
     );
   }
 
-  isUserAdmin(): boolean {
-    let isAdmin = false;
-    this.getUserRoles().subscribe(
-      (result) => {
-        for (const r of result.getResults()) {
-          if (r.roleName === 'ROLE_ADMIN') {
-            isAdmin = true;
-            return isAdmin;
+  isUserAdmin(): Observable<boolean> {
+    this.getUserRoles().pipe(map(
+      (roles) => {
+        for (const role of roles as Role []) {
+          if (role.roleName === 'ROLE_ADMIN') {
+            this.isAdmin = true;
           }
         }
       }
+    )
     );
-    return isAdmin;
+    return Observable.create(this.isAdmin);
+  }
+
+  logout() {
+    localStorage.removeItem('X-Vgi');
+    this.isLoggedIn = false;
+    this.router.navigate(['/login']);
+  }
+    /*this.getUserRoles().pipe(map(
+      (roles: Role []) => {
+        for (const r of roles) {
+          if (r.roleName === 'ROLE_ADMIN') {
+            this.isAdmin = true;
+          }
+        }
+        return this.isAdmin;
+      }
+    )
+    );
+    return Observable.of(this.isAdmin);
+  }*/
+
+  checkLogin () {
+    if (localStorage.getItem('X-Vgi') !== null) {
+      this.isLoggedIn = true;
+      return true;
+    } else {
+      this.isLoggedIn = false;
+      return false;
+    }
   }
 }

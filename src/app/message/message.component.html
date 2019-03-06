@@ -1,5 +1,7 @@
-<mat-dialog-content class ="message-alert" [ngStyle]="{'background-color': getColor()}">
-  <p>
+<div [ngStyle]="{'background': getColor()}">
+<mat-dialog-content class ="message-alert">
+  <p style='color: white'>
    {{message.testo}}
   </p>
 </mat-dialog-content>
+</div>

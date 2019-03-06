@@ -17,12 +17,20 @@ import { ListLegendaComponent } from './legenda/listlegenda/listlegenda.componen
 import { InterceptorService } from './user/interceptor.service';
 import { SidenavComponent } from './core/sidenav/sidenav.component';
 import { MessageComponent } from './message/message.component';
+import { AuthGuardService } from './user/auth-guard.service';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'map', component: MapComponent},
-  {path: 'legenda', component: ListLegendaComponent, outlet: 'side-route'},
+  {path: 'map',
+  component: MapComponent,
+  canActivate: [AuthGuardService],
+},
+  {path: 'legenda',
+   component: ListLegendaComponent,
+   outlet: 'side-route',
+   canActivate: [AuthGuardService]
+},
 ];
 
 @NgModule({
@@ -44,10 +52,11 @@ const routes: Routes = [
       useClass: InterceptorService,
       multi: true
   },
+  AuthGuardService
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
