@@ -14,10 +14,10 @@ import { AddpointComponent } from './map/addpoint/addpoint.component';
 import { ToolbarComponent } from './core/toolbar/toolbar.component';
 import { EditLegendaComponent } from './legenda/editlegenda/editlegenda.component';
 import { ListLegendaComponent } from './legenda/listlegenda/listlegenda.component';
-import { InterceptorService } from './user/interceptor.service';
+import { InterceptorService } from './core/interceptor.service';
 import { SidenavComponent } from './core/sidenav/sidenav.component';
 import { MessageComponent } from './message/message.component';
-import { AuthGuardService } from './user/auth-guard.service';
+import { AuthGuardService } from './core/auth-guard.service';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},

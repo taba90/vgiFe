@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { DialogService } from '../core/dialog.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+
 import { Message } from '../model/message';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material';
 
 @Component({
   selector: 'app-message',
@@ -12,14 +12,11 @@ export class MessageComponent implements OnInit {
 
   message: Message;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data,
-  private ref: MatDialogRef<MessageComponent>,
-  private dialogService: DialogService<Message>) {
-    this.message = data.message;
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data) {
+    this.message = new Message(data.text, data.color);
    }
 
   ngOnInit() {
-    window.setTimeout(() => this.dialogService.close(this.ref), 1000);
   }
 
   getColor() {

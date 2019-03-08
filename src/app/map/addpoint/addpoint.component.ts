@@ -11,7 +11,7 @@ import { formControlBinding } from '@angular/forms/src/directives/reactive_direc
 import { Esito } from 'src/app/model/esito';
 import { MapService } from '../map.service';
 import { NumberValueAccessor } from '@angular/forms/src/directives';
-import { DialogService } from 'src/app/core/dialog.service';
+import { ModalService } from 'src/app/core/modal-popups.service';
 import { CommonService } from 'src/app/core/common.service';
 import { stringify } from '@angular/core/src/render3/util';
 
@@ -39,7 +39,7 @@ export class AddpointComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private mapService: MapService,
     private dialogRef: MatDialogRef<AddpointComponent>,
-    private dialogService: DialogService<VgiPoint>,
+    private modalService: ModalService<VgiPoint>,
     private legendaService: LegendaService,
     private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data) {
@@ -64,7 +64,7 @@ export class AddpointComponent implements OnInit {
   }
 
   salvaPosizione () {
-    this.dialogService.save(this.dialogRef, this.formPoint)
+    this.modalService.save(this.dialogRef, this.formPoint)
     .subscribe( (point: VgiPoint) => {
       point.latitude = this.existingPoint.latitude;
       point.longitude = this.existingPoint.longitude;
@@ -83,7 +83,7 @@ export class AddpointComponent implements OnInit {
   }
 
   aggiornaPosizione () {
-    this.dialogService.save(this.dialogRef, this.formPoint)
+    this.modalService.save(this.dialogRef, this.formPoint)
     .subscribe( (point: VgiPoint) => {
       point.latitude = this.existingPoint.latitude;
       point.longitude = this.existingPoint.longitude;
@@ -106,7 +106,7 @@ export class AddpointComponent implements OnInit {
   cancellaPosizione() {
     this.mapService.deleteLocationById(this.existingPoint.id).subscribe(
       (data: VgiPoint | Esito) => {
-        this.dialogService.close(this.dialogRef);
+        this.modalService.close(this.dialogRef);
         this.pointAdded.emit();
       }
     );

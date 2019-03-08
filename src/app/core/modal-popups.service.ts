@@ -4,22 +4,23 @@ import { FormGroup } from '@angular/forms';
 import { ComponentType } from '@angular/cdk/overlay/index';
 import { Observable } from 'rxjs';
 import { Message } from '../model/message';
+import { MatSnackBar} from '@angular/material';
 import { MessageComponent } from '../message/message.component';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DialogService <T> {
+export class ModalService <T> {
 
   private t: T;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   openDialog(compName: ComponentType<any> | TemplateRef<any>, dialogConfig: MatDialogConfig): MatDialogRef<any> {
     return this.dialog.open(compName, dialogConfig);
   }
 
-  openMessageAlert (componentRef:  ComponentType<any> | TemplateRef<any>, message?: Message, text?: string, color?: string) {
+  openMessageAlert (componentRef:  ComponentType<any>, message?: Message, text?: string, color?: string) {
     let sText: string;
     let sColor: string;
     if (message != null) {
@@ -29,8 +30,13 @@ export class DialogService <T> {
       sText = text;
       sColor = color;
     }
-    const config: MatDialogConfig = this.getAlertConfig(sText, sColor);
-    this.openDialog(componentRef, config);
+    this.snackBar.openFromComponent(componentRef, {
+      duration: 500,
+      data: {
+        text: sText,
+        color: sColor
+      }
+    });
   }
 
   getAlertConfig (text: string, color: string): MatDialogConfig {

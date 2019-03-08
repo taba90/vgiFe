@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material';
 
 import { User } from 'src/app/model/user';
 import { UserService } from '../user.service';
-import { DialogService } from 'src/app/core/dialog.service';
+import { ModalService } from 'src/app/core/modal-popups.service';
 
 @Component({
   selector: 'app-registration',
@@ -20,7 +20,7 @@ export class RegistrationComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private ref: MatDialogRef<RegistrationComponent>,
     private userService: UserService,
-    private dialogService: DialogService<User>) { }
+    private modalService: ModalService<User>) { }
 
   ngOnInit() {
     this.regForm = new FormGroup({
@@ -31,7 +31,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   submit() {
-    this.dialogService.save(this.ref, this.regForm);
+    this.modalService.save(this.ref, this.regForm);
     this.ref.afterClosed().subscribe( (user: User) => {
       this.userService.registerUser(user).subscribe(
         (utente: User) => console.log(user),

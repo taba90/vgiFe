@@ -3,13 +3,13 @@ import { Legenda } from 'src/app/model/legenda';
 import { LegendaService } from '../legenda.service';
 import { Result } from 'src/app/model/result';
 import { CommonService } from 'src/app/core/common.service';
-import { DialogService } from 'src/app/core/dialog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessageComponent } from 'src/app/message/message.component';
 import { Message } from 'src/app/model/message';
 import { UserService } from 'src/app/user/user.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Role } from 'src/app/model/role';
+import { ModalService } from 'src/app/core/modal-popups.service';
 
 @Component({
   selector: 'app-listlegenda',
@@ -23,7 +23,7 @@ export class ListLegendaComponent implements OnInit, OnDestroy {
   legende: Legenda[];
   legendaUp: Legenda;
   constructor(private legendaService: LegendaService, private commonService: CommonService,
-    private dialogService: DialogService<MessageComponent>, private userService: UserService,
+    private modalService: ModalService<MessageComponent>, private userService: UserService,
      private route: ActivatedRoute) {
     }
 
@@ -67,11 +67,11 @@ export class ListLegendaComponent implements OnInit, OnDestroy {
         } else {
           message = data as Message;
         }
-        this.dialogService.openMessageAlert(MessageComponent, message);
+        this.modalService.openMessageAlert(MessageComponent, message);
       },
       (response: HttpErrorResponse) => {
        const message: Message = this.commonService.unWrapErrorResponse(response);
-       this.dialogService.openMessageAlert(MessageComponent, message);
+       this.modalService.openMessageAlert(MessageComponent, message);
       }
     );
   }
@@ -85,7 +85,7 @@ export class ListLegendaComponent implements OnInit, OnDestroy {
       },
       (response: HttpErrorResponse) => {
         const message: Message = this.commonService.unWrapErrorResponse(response);
-        this.dialogService.openMessageAlert(MessageComponent, message);
+        this.modalService.openMessageAlert(MessageComponent, message);
       }
     );
   }

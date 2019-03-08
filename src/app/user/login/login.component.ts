@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { User } from 'src/app/model/user';
 import { RegistrationComponent } from '../registration/registration.component';
 import { UserService } from '../user.service';
-import { DialogService } from 'src/app/core/dialog.service';
+import { ModalService } from 'src/app/core/modal-popups.service';
 import { Router } from '@angular/router';
 import { routerNgProbeToken } from '@angular/router/src/router_module';
 import { Message } from 'src/app/model/message';
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
    constructor(private fb: FormBuilder,
     // private ref: MatDialogRef<LoginComponent>,
     private userService: UserService,
-    private dialogService: DialogService<Message>,
+    private modalService: ModalService<Message>,
     private commonService: CommonService,
     private router: Router,
     ) { }
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
           }
           console.log(error);
           const message: Message = this.commonService.unWrapErrorResponse(error);
-          this.dialogService.openMessageAlert(MessageComponent, message);
+          this.modalService.openMessageAlert(MessageComponent, message);
         }
       );
   }
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
         top : '0px',
         left : '0px' ,
       };
-    this.dialogService.openDialog(RegistrationComponent, dialogConfig);
+    this.modalService.openDialog(RegistrationComponent, dialogConfig);
   }
 
   bindFormToUser() {

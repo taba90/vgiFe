@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnChanges } from '@angular/core';
 import { RegistrationComponent } from 'src/app/user/registration/registration.component';
 import { LoginComponent } from 'src/app/user/login/login.component';
 import { MatDialogConfig } from '@angular/material';
-import { DialogService } from '../dialog.service';
+import { ModalService } from '../modal-popups.service';
 import { User } from 'src/app/model/user';
 import { SidenavComponent } from '../sidenav/sidenav.component';
 import { UserService } from 'src/app/user/user.service';
@@ -17,7 +17,7 @@ export class ToolbarComponent implements OnInit {
   @ViewChild('sideNav')
   private sidenavComp: SidenavComponent;
   isLoggedIn = false;
-  constructor(private dialogService: DialogService<User>, private userService: UserService) { }
+  constructor(private modalService: ModalService<User>, private userService: UserService) { }
 
   ngOnInit() {
 
@@ -33,7 +33,7 @@ export class ToolbarComponent implements OnInit {
         left : '0px' ,
       };
     if (dialogName === 'Registrazione') {
-      this.dialogService.openDialog(RegistrationComponent, dialogConfig);
+      this.modalService.openDialog(RegistrationComponent, dialogConfig);
     }
   }
 

@@ -20,7 +20,7 @@ import {toLonLat} from 'ol/proj.js';
 import { MapBrowserPointerEvent, MapBrowserEvent } from 'openlayers';
 import { AddpointComponent } from './addpoint/addpoint.component';
 import { MatDialogConfig, MatGridTileFooterCssMatStyler, MatDialogRef } from '@angular/material';
-import { DialogService } from '../core/dialog.service';
+import { ModalService } from '../core/modal-popups.service';
 import { VgiPoint } from '../model/point';
 import { MapService } from './map.service';
 import { ReadOptions } from '../model/readoptions';
@@ -61,7 +61,7 @@ private markerStyle: Style = new Style({
 });
 
 
-  constructor(private dialogService: DialogService<VgiPoint>, private mapService: MapService) { }
+  constructor(private dialogService: ModalService<VgiPoint>, private mapService: MapService) { }
 
   ngOnInit() {
 
