@@ -35,9 +35,9 @@ export class CommonService {
   unWrapErrorResponse(response: HttpErrorResponse): Message {
     let message: string = null;
       if (response.status === 403) {
-          message = response.headers.get('Ex-Token');
+          message = response.headers.get('Auth-Error');
           if (message === null) {
-            message = 'Errore durante la chiamata. Status: ' + response.statusText;
+            message = 'Il servizio non è disponibile';
           } else {
             localStorage.removeItem('X-Vgi');
           }

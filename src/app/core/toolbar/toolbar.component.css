@@ -3,3 +3,8 @@
        Every toolbar row uses a flexbox row layout. */
     flex: 1 1 auto;
 }
+
+.sidenav {
+    width: 100%;
+    height: 100%;
+}

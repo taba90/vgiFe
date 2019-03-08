@@ -40,11 +40,16 @@ export class LoginComponent implements OnInit {
   login() {
     const utente: User = this.bindFormToUser();
       this.userService.login(utente).subscribe(
-        (response) => {
+        (response: HttpResponse<Result<boolean>>) => {
           const token: string = response.headers.get('X-Vgi');
           if (token !== null) {
             localStorage.setItem('X-Vgi', token);
             this.userService.isLoggedIn = true;
+            const result: Result<boolean> = response.body as Result<boolean>;
+            const unwrapped = this.commonService.unWrapResult(result);
+            if (unwrapped instanceof Message) {
+               this.modalService.openMessageAlert(MessageComponent, unwrapped as Message);
+            }
             this.router.navigate(['/map']);
           } else {
             console.log(response);

@@ -31,7 +31,8 @@ export class ModalService <T> {
       sColor = color;
     }
     this.snackBar.openFromComponent(componentRef, {
-      duration: 500,
+      duration: 1000,
+      verticalPosition: 'top',
       data: {
         text: sText,
         color: sColor
