@@ -1,10 +1,10 @@
 <form [formGroup]="loginForm" class="login-form">
-  <div class="login-input">
+  <div >
     <mat-form-field class="mat-field">
       <input matInput placeholder="Username" type="text" formControlName="username"  required>
     </mat-form-field>
  </div>
- <div class="login-input">
+ <div >
     <mat-form-field class="mat-field">
       <input matInput placeholder="Password" type="password" formControlName="password" required>
     </mat-form-field>
@@ -12,6 +12,6 @@
  <div>
   <p>Non sei ancora iscritto? <a href="#" (click)="openModalReg()">Registrati</a> </p>
   <br/>
-  <button mat-raised-button color="primary" (click)="login()">Log-in</button>
+  <button mat-raised-button color="primary" (click)="login()">Login</button>
  </div>
 </form>

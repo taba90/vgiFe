@@ -20,7 +20,7 @@ import {toLonLat} from 'ol/proj.js';
 import Conditions from 'ol/events/condition';
 import Layer from 'ol/layer/Layer';
 import { VgiPoint } from '../model/point';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Result } from '../model/result';
 import { Esito } from '../model/esito';
 import { Observable } from 'rxjs';

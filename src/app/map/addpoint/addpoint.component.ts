@@ -14,6 +14,9 @@ import { NumberValueAccessor } from '@angular/forms/src/directives';
 import { ModalService } from 'src/app/core/modal-popups.service';
 import { CommonService } from 'src/app/core/common.service';
 import { stringify } from '@angular/core/src/render3/util';
+import { HttpResponse } from '@angular/common/http';
+import { Message } from 'src/app/model/message';
+import { MessageComponent } from 'src/app/message/message.component';
 
 @Component({
   selector: 'app-addpoint',
@@ -70,9 +73,12 @@ export class AddpointComponent implements OnInit {
       point.longitude = this.existingPoint.longitude;
       const vgiPoint: VgiPoint = new VgiPoint(point);
       this.mapService.savePoint(vgiPoint, vgiPoint.getIdLegenda()).subscribe(
-        (result: Result<VgiPoint>) => {
-          this.commonService.unWrapResult(result);
+        (data: Message | any) => {
+          this.commonService.unWrapResult(data);
           this.pointAdded.emit();
+          if (data instanceof Message) {
+            this.modalService.openMessageAlert(MessageComponent, data);
+          }
         },
         (error) => {
           const err: Esito = new Esito('002', 'Response erro' + error);
@@ -87,11 +93,15 @@ export class AddpointComponent implements OnInit {
     .subscribe( (point: VgiPoint) => {
       point.latitude = this.existingPoint.latitude;
       point.longitude = this.existingPoint.longitude;
+      point.id = this.existingPoint.id;
       const vgiPoint: VgiPoint = new VgiPoint(point);
       this.mapService.updatePoint(vgiPoint).subscribe(
-        (result: VgiPoint | string) => {
-          console.log(result);
+        (data: Message | any) => {
+          console.log(data);
           this.pointAdded.emit();
+          if (data instanceof Message) {
+            this.modalService.openMessageAlert(MessageComponent, data);
+          }
         },
         (error) => {
           const err: Esito = new Esito('002', 'Response erro' + error);
@@ -105,10 +115,14 @@ export class AddpointComponent implements OnInit {
 
   cancellaPosizione() {
     this.mapService.deleteLocationById(this.existingPoint.id).subscribe(
-      (data: VgiPoint | Esito) => {
+      (data: Message | any) => {
         this.modalService.close(this.dialogRef);
         this.pointAdded.emit();
-      }
+        if (data instanceof Message) {
+          this.modalService.openMessageAlert(MessageComponent, data);
+        }
+      },
+      (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
     );
   }
 

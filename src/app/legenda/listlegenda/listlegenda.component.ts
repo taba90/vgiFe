@@ -3,7 +3,7 @@ import { Legenda } from 'src/app/model/legenda';
 import { LegendaService } from '../legenda.service';
 import { Result } from 'src/app/model/result';
 import { CommonService } from 'src/app/core/common.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { MessageComponent } from 'src/app/message/message.component';
 import { Message } from 'src/app/model/message';
 import { UserService } from 'src/app/user/user.service';
@@ -60,18 +60,13 @@ export class ListLegendaComponent implements OnInit, OnDestroy {
 
   onDelete (idLegenda: number) {
     this.legendaService.deleteLegenda(idLegenda).subscribe(
-      (data: Legenda | Message) => {
-        let message: Message;
-        if (data instanceof Legenda) {
-          message = new Message('Operazione completata', 'green');
-        } else {
-          message = data as Message;
+      (data: Message | any) => {
+        if (data instanceof Message) {
+          this.modalService.openMessageAlert(MessageComponent, data);
         }
-        this.modalService.openMessageAlert(MessageComponent, message);
       },
-      (response: HttpErrorResponse) => {
-       const message: Message = this.commonService.unWrapErrorResponse(response);
-       this.modalService.openMessageAlert(MessageComponent, message);
+      (response: HttpResponse<Result<any>>) => {
+       this.commonService.unWrapErrorResponse(response);
       }
     );
   }
@@ -83,9 +78,8 @@ export class ListLegendaComponent implements OnInit, OnDestroy {
           this.legende = data;
         }
       },
-      (response: HttpErrorResponse) => {
-        const message: Message = this.commonService.unWrapErrorResponse(response);
-        this.modalService.openMessageAlert(MessageComponent, message);
+      (response: HttpResponse<Result<any>>) => {
+        this.commonService.unWrapErrorResponse(response);
       }
     );
   }

@@ -26,7 +26,7 @@ export class LegendaService {
   saveLegenda (legenda: Legenda): Observable<any> {
     return this.http.post<Result<Legenda>>(this.endpoint + 'legenda/new', legenda).pipe(map(
       (result: Result<Legenda>) => this.commonService.unWrapResult(result)
-    ));
+   ));
   }
 
   updateLegenda (legenda: Legenda): Observable<any> {

@@ -4,6 +4,10 @@ import { Legenda } from 'src/app/model/legenda';
 import { LegendaService } from '../legenda.service';
 import { Result } from 'src/app/model/result';
 import { CommonService } from 'src/app/core/common.service';
+import { Message } from 'src/app/model/message';
+import { MessageComponent } from 'src/app/message/message.component';
+import { ModalService } from 'src/app/core/modal-popups.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-editlegenda',
@@ -20,7 +24,7 @@ export class EditLegendaComponent implements OnInit, OnChanges {
   submitted = new EventEmitter();
 
   constructor(private formBuilder: FormBuilder, private legendaService: LegendaService,
-    private commonService: CommonService) {}
+    private commonService: CommonService, private modalService: ModalService<Legenda>) {}
 
   ngOnInit() {
     this.legendaForm = this.getForm();
@@ -38,14 +42,18 @@ export class EditLegendaComponent implements OnInit, OnChanges {
         (result: Result<Legenda>) => {
           this.commonService.unWrapResult(result);
           this.submitted.emit();
-        }
+        },
+        (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
       );
     } else {
       this.legendaService.saveLegenda(this.bindFormToLegenda()).subscribe(
-        (result: Result<Legenda>) => {
-          this.commonService.unWrapResult(result);
+        (data: Message | any) => {
           this.submitted.emit('submitted');
-        }
+          if (data instanceof Message) {
+            this.modalService.openMessageAlert(MessageComponent, data);
+          }
+        },
+        (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
       );
     }
   }

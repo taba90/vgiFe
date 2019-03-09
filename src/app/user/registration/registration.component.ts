@@ -5,6 +5,9 @@ import { MatDialogRef } from '@angular/material';
 import { User } from 'src/app/model/user';
 import { UserService } from '../user.service';
 import { ModalService } from 'src/app/core/modal-popups.service';
+import { Message } from 'src/app/model/message';
+import { HttpResponse } from '@angular/common/http';
+import { CommonService } from 'src/app/core/common.service';
 
 @Component({
   selector: 'app-registration',
@@ -20,7 +23,7 @@ export class RegistrationComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private ref: MatDialogRef<RegistrationComponent>,
     private userService: UserService,
-    private modalService: ModalService<User>) { }
+    private modalService: ModalService<User>, private commonService: CommonService) { }
 
   ngOnInit() {
     this.regForm = new FormGroup({
@@ -34,12 +37,8 @@ export class RegistrationComponent implements OnInit {
     this.modalService.save(this.ref, this.regForm);
     this.ref.afterClosed().subscribe( (user: User) => {
       this.userService.registerUser(user).subscribe(
-        (utente: User) => console.log(user),
-        (response: Response) => {
-          if (response.status === 403) {
-            localStorage.removeItem('X-Vgi');
-          }
-        },
+        (data: Message | any) =>
+        (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
       );
     }
     );

@@ -6,12 +6,11 @@ import { RegistrationComponent } from '../registration/registration.component';
 import { UserService } from '../user.service';
 import { ModalService } from 'src/app/core/modal-popups.service';
 import { Router } from '@angular/router';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
 import { Message } from 'src/app/model/message';
 import { MessageComponent } from 'src/app/message/message.component';
-import { HttpErrorResponse, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Result } from 'src/app/model/result';
 import { CommonService } from 'src/app/core/common.service';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +22,6 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
    constructor(private fb: FormBuilder,
-    // private ref: MatDialogRef<LoginComponent>,
     private userService: UserService,
     private modalService: ModalService<Message>,
     private commonService: CommonService,
@@ -46,22 +44,15 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('X-Vgi', token);
             this.userService.isLoggedIn = true;
             const result: Result<boolean> = response.body as Result<boolean>;
-            const unwrapped = this.commonService.unWrapResult(result);
-            if (unwrapped instanceof Message) {
-               this.modalService.openMessageAlert(MessageComponent, unwrapped as Message);
-            }
+            this.commonService.unWrapResult(result);
             this.router.navigate(['/map']);
           } else {
             console.log(response);
           }
         },
         (error: HttpErrorResponse) => {
-          if (error === null) {
-            this.router.navigate(['/home/login']);
-          }
-          console.log(error);
-          const message: Message = this.commonService.unWrapErrorResponse(error);
-          this.modalService.openMessageAlert(MessageComponent, message);
+          this.router.navigate(['/login']);
+          // this.commonService.unWrapErrorResponse(error);
         }
       );
   }
@@ -81,8 +72,8 @@ export class LoginComponent implements OnInit {
     const username: string = this.loginForm.get('username').value;
     const password: string = this.loginForm.get('password').value;
     const utente: User = new User();
-    utente.setUsername(username);
-    utente.setPassword(password);
+    utente.username = username;
+    utente.password = password;
     return utente;
   }
 

@@ -26,6 +26,8 @@ import { MapService } from './map.service';
 import { ReadOptions } from '../model/readoptions';
 import { MessageComponent } from '../message/message.component';
 import { Message } from '../model/message';
+import { HttpResponse } from '@angular/common/http';
+import { CommonService } from '../core/common.service';
 
 
 @Component({
@@ -61,7 +63,8 @@ private markerStyle: Style = new Style({
 });
 
 
-  constructor(private dialogService: ModalService<VgiPoint>, private mapService: MapService) { }
+  constructor(private dialogService: ModalService<VgiPoint>, private mapService: MapService,
+    private commonService: CommonService) { }
 
   ngOnInit() {
 
@@ -78,15 +81,13 @@ private markerStyle: Style = new Style({
       this.map.forEachFeatureAtPixel(e.pixel, (feature: Feature) => {
         console.log(feature);
         this.mapService.getLocationById(feature.getId() as number).subscribe(
-          (data: VgiPoint | Message) => {
-            if (data instanceof VgiPoint) {
+          (data: VgiPoint) => {
+            if (! (data instanceof Message)) {
             const dialogConf: MatDialogConfig = this.getDialogConfig(e.pixel, 'Modifica posizione', data, false);
             const dialogRef: MatDialogRef<AddpointComponent> = this.dialogService.openDialog(AddpointComponent, dialogConf);
-            console.log(this.selectedPoint);
-          } else {
-            this.dialogService.openMessageAlert(MessageComponent, data as Message);
           }
-        }
+        },
+        (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
         );
       }
       );
@@ -128,7 +129,7 @@ removeAllMarkers() {
 getBePoints () {
   this.beVectSource.clear();
   this.mapService.getUserLocations().subscribe(
-    (data: VgiPoint [] | Message) => {
+    (data: VgiPoint [] ) => {
       if ( data instanceof Array ) {
       for (const point of data as VgiPoint[]) {
         const feature: Feature = this.geoJsonFormat.readFeature(point.location, new ReadOptions(this.map) );
@@ -136,18 +137,17 @@ getBePoints () {
         feature.setId(point.id);
         this.beVectSource.addFeature(feature);
       }
-    } else {
-      this.dialogService.openMessageAlert(MessageComponent, data as Message);
     }
-    },
-    error => console.log(error),
+  },
+  (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
   );
 }
 
 getPointById (id: number| string): VgiPoint | void {
   id = id as number;
   this.mapService.getLocationById(id).subscribe(
-    (point: VgiPoint) => this.selectedPoint = point
+    (point: VgiPoint) => this.selectedPoint = point,
+    (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
   );
 }
 
