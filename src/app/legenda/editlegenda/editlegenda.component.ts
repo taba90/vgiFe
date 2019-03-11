@@ -2,7 +2,6 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitte
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Legenda } from 'src/app/model/legenda';
 import { LegendaService } from '../legenda.service';
-import { Result } from 'src/app/model/result';
 import { CommonService } from 'src/app/core/common.service';
 import { Message } from 'src/app/model/message';
 import { MessageComponent } from 'src/app/message/message.component';
@@ -39,21 +38,19 @@ export class EditLegendaComponent implements OnInit, OnChanges {
     const legenda: Legenda = this.bindFormToLegenda();
     if (legenda.id != null) {
       this.legendaService.updateLegenda(legenda).subscribe(
-        (result: Result<Legenda>) => {
-          this.commonService.unWrapResult(result);
+        (result: Legenda) => {
           this.submitted.emit();
+          this.modalService.openMessageAlert(MessageComponent, new Message('Operazione eseguita con successo', 'green'));
         },
-        (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
       );
     } else {
       this.legendaService.saveLegenda(this.bindFormToLegenda()).subscribe(
-        (data: Message | any) => {
+        (data: Legenda) => {
+          if (data != null) {
           this.submitted.emit('submitted');
-          if (data instanceof Message) {
-            this.modalService.openMessageAlert(MessageComponent, data);
+          this.modalService.openMessageAlert(MessageComponent, new Message('Operazione eseguita con successo', 'green'));
           }
         },
-        (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
       );
     }
   }

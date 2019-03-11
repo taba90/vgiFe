@@ -1,34 +1,22 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable} from '@angular/core';
 import Map from 'ol/map';
 import OSM from 'ol/source/osm';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import OlView from 'ol/View';
-import OlProj from 'ol/proj';
-import OlStyle from 'ol/style/style';
 import OlCircle from 'ol/style/Circle';
-import OlIcon from 'ol/style/Icon';
 import OlFill from 'ol/style/Fill';
 import OlStroke from 'ol/style/Stroke';
 import Feature from 'ol/Feature';
 import Select from 'ol/interaction/select';
-import OlPoint from 'ol/geom/Point';
-import {defaults} from 'ol/interaction.js';
-import {fromLonLat} from 'ol/proj.js';
-import {toLonLat} from 'ol/proj.js';
-import Conditions from 'ol/events/condition';
-import Layer from 'ol/layer/Layer';
 import { VgiPoint } from '../model/point';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Result } from '../model/result';
 import { Esito } from '../model/esito';
 import { Observable } from 'rxjs';
-import { Legenda } from '../model/legenda';
 import { LegendaService } from '../legenda/legenda.service';
 import Style from 'ol/style/style';
 import { CommonService } from '../core/common.service';
-import { map } from 'rxjs/operators';
 
 
 
@@ -63,44 +51,28 @@ httpOptions = {
   constructor(private http: HttpClient, private legendaService: LegendaService, private commonService: CommonService) { }
 
 
-savePoint (point: VgiPoint, idLegenda: number): Observable<Result<VgiPoint>> {
-  const risultato: Result<VgiPoint> = new Result<VgiPoint>();
-  return this.http.post<Result<VgiPoint>>
-  (this.endpoint + 'location/' + idLegenda.toString() + '/new', point, this.httpOptions);
+savePoint (point: VgiPoint, idLegenda: number): Observable<VgiPoint> {
+  return this.http.post<VgiPoint>(this.endpoint + 'location/' + idLegenda.toString() + '/new', point, this.httpOptions);
 }
 
 updatePoint (point: VgiPoint): Observable<VgiPoint> {
-  return this.http.patch<Result<VgiPoint>>
-  (this.endpoint + 'location', point, this.httpOptions).pipe(map(
-    (result: Result<VgiPoint>) => this.commonService.unWrapResult(result)
-    )
-  );
+  return this.http.patch<VgiPoint>(this.endpoint + 'location', point, this.httpOptions);
 }
 
 getUserLocations(): Observable<any> {
-  return this.http.get<Result<VgiPoint>>(this.endpoint + 'location' + '/user').pipe(map(
-    (result: Result<VgiPoint>) => this.commonService.unWrapResult(result)
-    )
-  );
+  return this.http.get<VgiPoint[]>(this.endpoint + 'location' + '/user');
 }
 
-getLocationById(idLocation: number): Observable<any> {
-  return this.http.get<Result<VgiPoint>>(this.endpoint + 'location/' + idLocation).pipe(map(
-    (result: Result<VgiPoint>) => this.commonService.unWrapResult(result)
-  )
-  );
+getLocationById(idLocation: number): Observable<VgiPoint> {
+  return this.http.get<VgiPoint>(this.endpoint + 'location/' + idLocation);
 }
 
 getUserLocationsByLegenda(idLegenda: number): Observable<any> {
-  return this.http.get<Result<VgiPoint>>(this.endpoint + 'location/' + idLegenda + '/user').pipe(map(
-    (result: Result<VgiPoint>) => this.commonService.unWrapResult(result)
-  ));
+  return this.http.get<VgiPoint[]>(this.endpoint + 'location/' + idLegenda + '/user');
 }
 
-deleteLocationById(idLocation: number): Observable<VgiPoint> {
-  return this.http.delete<Result<VgiPoint>>(this.endpoint + 'location/' + idLocation).pipe(map(
-    (data: Result<VgiPoint>) => this.commonService.unWrapResult(data)
-  ));
+deleteLocationById(idLocation: number): Observable<Esito> {
+  return this.http.delete<Esito>(this.endpoint + 'location/' + idLocation);
 }
 
 

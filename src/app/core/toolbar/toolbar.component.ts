@@ -23,7 +23,7 @@ export class ToolbarComponent implements OnInit {
 
   }
 
-  openDialog(event: any) {
+  openDialog() {
     const dialogName: string = event.srcElement.innerHTML;
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = false;
@@ -32,9 +32,7 @@ export class ToolbarComponent implements OnInit {
         top : '0px',
         left : '0px' ,
       };
-    if (dialogName === 'Registrazione') {
       this.modalService.openDialog(RegistrationComponent, dialogConfig);
-    }
   }
 
   showSideContent (compRef: string) {

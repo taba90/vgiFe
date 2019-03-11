@@ -13,6 +13,7 @@ export class VgiPoint {
 
     constructor(point?: VgiPoint) {
         if (point != null) {
+            this.id = point.id;
             this.longitude = point.longitude;
             this.latitude = point.latitude;
             this.descrizione = point.descrizione;

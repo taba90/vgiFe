@@ -1,7 +1,6 @@
 import { Component, OnInit, OnChanges, AfterViewInit, OnDestroy } from '@angular/core';
 import { Legenda } from 'src/app/model/legenda';
 import { LegendaService } from '../legenda.service';
-import { Result } from 'src/app/model/result';
 import { CommonService } from 'src/app/core/common.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { MessageComponent } from 'src/app/message/message.component';
@@ -10,6 +9,7 @@ import { UserService } from 'src/app/user/user.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Role } from 'src/app/model/role';
 import { ModalService } from 'src/app/core/modal-popups.service';
+import { Esito } from 'src/app/model/esito';
 
 @Component({
   selector: 'app-listlegenda',
@@ -60,27 +60,16 @@ export class ListLegendaComponent implements OnInit, OnDestroy {
 
   onDelete (idLegenda: number) {
     this.legendaService.deleteLegenda(idLegenda).subscribe(
-      (data: Message | any) => {
-        if (data instanceof Message) {
-          this.modalService.openMessageAlert(MessageComponent, data);
-        }
-      },
-      (response: HttpResponse<Result<any>>) => {
-       this.commonService.unWrapErrorResponse(response);
-      }
-    );
+      (data: Esito) => {
+        this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'green'));
+      });
   }
 
   getLegende() {
     this.legendaService.getLegende().subscribe(
-      (data: Legenda [] | Message) => {
-        if ( data instanceof Array) {
-          this.legende = data;
-        }
+      (data: Legenda []) => {
+        this.legende = data;
       },
-      (response: HttpResponse<Result<any>>) => {
-        this.commonService.unWrapErrorResponse(response);
-      }
     );
   }
 

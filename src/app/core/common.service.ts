@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Result } from '../model/result';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Message } from '../model/message';
 import { Esito } from '../model/esito';
@@ -16,7 +15,7 @@ export class CommonService {
 
   constructor(private modalService: ModalService<any>) { }
 
-  unWrapResult(result: Result<any>) {
+  unWrapResult(result: any) {
     if (result.esito.codice === '000') {
       if (result.results != null) {
         return result.results;
@@ -34,10 +33,10 @@ export class CommonService {
     }
   }
 
-  unWrapErrorResponse(response: HttpResponse<Result<any>>) {
+  unWrapErrorResponse(response: HttpResponse<any>) {
     let message: Message;
       if (response.status === 403 || response.status === 401) {
-        const result: Result<any> = response.body as Result<any>;
+        const result: any = response.body as any;
           message = new Message (result.esito.descrizione, 'red');
       } else {
         message = new Message('Errore durante la chiamata. Servizio non disponibile' , 'red');

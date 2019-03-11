@@ -18,6 +18,7 @@ import { InterceptorService } from './core/interceptor.service';
 import { SidenavComponent } from './core/sidenav/sidenav.component';
 import { MessageComponent } from './message/message.component';
 import { AuthGuardService } from './core/auth-guard.service';
+import { UserDataComponent } from './user/view-utente/user-data/user-data.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -31,6 +32,11 @@ const routes: Routes = [
    outlet: 'side-route',
    canActivate: [AuthGuardService]
 },
+{path: 'user',
+component: UserDataComponent,
+outlet: 'side-route',
+canActivate: [AuthGuardService]
+}
 ];
 
 @NgModule({
@@ -45,6 +51,7 @@ const routes: Routes = [
     ListLegendaComponent,
     SidenavComponent,
     MessageComponent,
+    UserDataComponent,
   ],
   providers: [
     {
@@ -66,6 +73,7 @@ const routes: Routes = [
   entryComponents: [
     AddpointComponent,
     MessageComponent,
+    RegistrationComponent
   ],
   bootstrap: [AppComponent]
 })

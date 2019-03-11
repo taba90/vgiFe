@@ -20,18 +20,13 @@ export class ModalService <T> {
     return this.dialog.open(compName, dialogConfig);
   }
 
-  openMessageAlert (componentRef:  ComponentType<any>, message?: Message, text?: string, color?: string) {
+  openMessageAlert (componentRef:  ComponentType<any>, message: Message) {
     let sText: string;
     let sColor: string;
-    if (message != null) {
-      sText = message.testo;
-      sColor = message.color;
-    } else {
-      sText = text;
-      sColor = color;
-    }
+    sText = message.testo;
+    sColor = message.color;
     this.snackBar.openFromComponent(componentRef, {
-      duration: 1000,
+      duration: 2000,
       verticalPosition: 'top',
       data: {
         text: sText,

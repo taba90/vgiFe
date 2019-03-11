@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { User } from '../model/user';
 import { Observable} from 'rxjs';
 import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Result } from '../model/result';
 import { Esito } from '../model/esito';
 import { Role } from '../model/role';
 import { map, filter, catchError, mergeMap} from 'rxjs/operators';
@@ -30,22 +29,15 @@ export class UserService {
   constructor(private http: HttpClient, private commonService: CommonService, private router: Router) { }
 
   registerUser(user: User): Observable<User> {
-    return this.http.post<Result<User>>
-    (this.endpoint + 'register', user, this.httpOptions).pipe(map(
-      (result: Result<User>) => this.commonService.unWrapResult(result),
-      )
-      );
+    return this.http.post<User>(this.endpoint + 'register', user, this.httpOptions);
   }
 
-  login(user: User): Observable<any> {
-    return this.http.post(this.endpoint + 'login', user, {observe: 'response' as 'body'});
+  login(user: User): Observable<HttpResponse<Esito>> {
+    return this.http.post<HttpResponse<Esito>>(this.endpoint + 'login', user, {observe: 'response' as 'body'});
   }
 
   getUserRoles(): Observable<any> {
-    return this.http.get<Result<Role>>(this.endpoint + 'roles').pipe(map(
-      (result: Result<Role>) => this.commonService.unWrapResult(result)
-    )
-    );
+    return this.http.get<Role[]>(this.endpoint + 'roles');
   }
 
   isUserAdmin(): Observable<boolean> {
@@ -60,6 +52,14 @@ export class UserService {
     )
     );
     return Observable.create(this.isAdmin);
+  }
+
+  getSelf(): Observable<User> {
+    return this.http.get<User>(this.endpoint + 'self');
+  }
+
+  deleteSelf(): Observable<Esito> {
+    return this.http.delete<Esito>(this.endpoint + 'self');
   }
 
   logout() {

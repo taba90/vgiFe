@@ -8,9 +8,9 @@ import { ModalService } from 'src/app/core/modal-popups.service';
 import { Router } from '@angular/router';
 import { Message } from 'src/app/model/message';
 import { MessageComponent } from 'src/app/message/message.component';
-import { Result } from 'src/app/model/result';
 import { CommonService } from 'src/app/core/common.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Esito } from 'src/app/model/esito';
 
 @Component({
   selector: 'app-login',
@@ -37,24 +37,20 @@ export class LoginComponent implements OnInit {
 
   login() {
     const utente: User = this.bindFormToUser();
-      this.userService.login(utente).subscribe(
-        (response: HttpResponse<Result<boolean>>) => {
+    this.userService.login(utente).subscribe(
+      (response: HttpResponse<Esito>) => {
+        const esito: Esito = response.body as Esito;
+        if (esito.esito === true) {
           const token: string = response.headers.get('X-Vgi');
           if (token !== null) {
             localStorage.setItem('X-Vgi', token);
             this.userService.isLoggedIn = true;
-            const result: Result<boolean> = response.body as Result<boolean>;
-            this.commonService.unWrapResult(result);
             this.router.navigate(['/map']);
-          } else {
-            console.log(response);
           }
-        },
-        (error: HttpErrorResponse) => {
-          this.router.navigate(['/login']);
-          // this.commonService.unWrapErrorResponse(error);
+        } else {
+          this.modalService.openMessageAlert(MessageComponent, new Message(esito.descrizione, 'red'));
         }
-      );
+      });
   }
 
   openModalReg () {

@@ -87,7 +87,6 @@ private markerStyle: Style = new Style({
             const dialogRef: MatDialogRef<AddpointComponent> = this.dialogService.openDialog(AddpointComponent, dialogConf);
           }
         },
-        (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
         );
       }
       );

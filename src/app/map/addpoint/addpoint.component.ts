@@ -5,7 +5,6 @@ import { VgiPoint } from 'src/app/model/point';
 import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
 import { Legenda } from 'src/app/model/legenda';
-import { Result } from 'src/app/model/result';
 import { LegendaService } from 'src/app/legenda/legenda.service';
 import { formControlBinding } from '@angular/forms/src/directives/reactive_directives/form_control_directive';
 import { Esito } from 'src/app/model/esito';
@@ -81,7 +80,7 @@ export class AddpointComponent implements OnInit {
           }
         },
         (error) => {
-          const err: Esito = new Esito('002', 'Response erro' + error);
+          const err: Esito = new Esito('Response erro' + error, false);
         },
       );
     }
@@ -104,7 +103,7 @@ export class AddpointComponent implements OnInit {
           }
         },
         (error) => {
-          const err: Esito = new Esito('002', 'Response erro' + error);
+          const err: Esito = new Esito('Response erro' + error, false);
         },
       );
     }

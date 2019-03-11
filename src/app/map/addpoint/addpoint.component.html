@@ -23,7 +23,7 @@
 <div>
     <button mat-raised-button color="primary" (click)="salvaPosizione()" *ngIf="isNew == true; else isUpdate">Salva</button>
     <ng-template #isUpdate>
-    <button mat-raised-button color="primary" (click)="modificaPosizione()">Aggiorna</button>
+    <button mat-raised-button color="primary" (click)="aggiornaPosizione()">Aggiorna</button>
     <div>
       <button mat-raised-button color="primary" (click)="cancellaPosizione()">Cancella</button>
     </div>
