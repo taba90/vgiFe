@@ -9,6 +9,7 @@ import { Message } from 'src/app/model/message';
 import { HttpResponse } from '@angular/common/http';
 import { CommonService } from 'src/app/core/common.service';
 import { MessageComponent } from 'src/app/message/message.component';
+import { Esito } from 'src/app/model/esito';
 
 @Component({
   selector: 'app-registration',
@@ -18,9 +19,6 @@ import { MessageComponent } from 'src/app/message/message.component';
 export class RegistrationComponent implements OnInit {
 
   regForm: FormGroup;
-  username: string;
-  password: string;
-  email: string;
   constructor(private fb: FormBuilder,
     private ref: MatDialogRef<RegistrationComponent>,
     private userService: UserService,
@@ -31,6 +29,7 @@ export class RegistrationComponent implements OnInit {
       'username': new FormControl(null),
       'password': new FormControl(null),
       'email': new FormControl(null),
+      'anni': new FormControl(null),
     });
   }
 
@@ -38,14 +37,7 @@ export class RegistrationComponent implements OnInit {
     this.modalService.save(this.ref, this.regForm);
     this.ref.afterClosed().subscribe((user: User) => {
       this.userService.registerUser(user).subscribe(
-        (data: Message | any) => {
-          if (data instanceof Message) {
-            console.log(data);
-          } else {
-            this.modalService.openMessageAlert(MessageComponent, data as Message);
-          }
-        },
-        (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
+        (data: Esito | any) => this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'green'))
       );
     }
     );
