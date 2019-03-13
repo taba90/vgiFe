@@ -24,18 +24,36 @@ export class InterceptorService implements HttpInterceptor {
         }
       }
       );
-      const headers: HttpHeaders = new HttpHeaders();
-      headers.set('X-Vgi', token);
-      request = this.setHeaders(request, headers);
-      return next.handle(req).pipe(
-        retry(1),
+      return this.handleRequest(req, next);
+    } else {
+      return this.handleRequest(request, next);
+    }
+  }
+
+  setHeaders(request: HttpRequest<any>, reqHeaders: HttpHeaders): HttpRequest<any> {
+    request.clone({
+      headers: reqHeaders
+    }
+    );
+    return request;
+  }
+
+  handleRequest( request: HttpRequest<any>, next: HttpHandler) {
+    return next.handle(request).pipe(
+      retry(1),
         catchError((error) => {
           let message: string;
           if (error.error instanceof ErrorEvent) {
             message = error.error.message;
           } else {
             const errorResponse: HttpErrorResponse = error as HttpErrorResponse;
-            message = errorResponse.error.message;
+            if (typeof errorResponse.error.message !== 'undefined') {
+              message = errorResponse.error.message;
+            } else if (errorResponse.status as number === 403) {
+              message = 'Credenziali di accesso non valide';
+            } else {
+              message = 'Servizio non disponibile';
+            }
             this.modalService.openMessageAlert(MessageComponent, new Message(message, 'red'));
             if (errorResponse.status as number === 403 ||
               errorResponse.status as number === 401) {
@@ -46,17 +64,6 @@ export class InterceptorService implements HttpInterceptor {
           }
           throw message;
         })
-      );
-    } else {
-      return next.handle(request);
-    }
-  }
-
-  setHeaders(request: HttpRequest<any>, reqHeaders: HttpHeaders): HttpRequest<any> {
-    request.clone({
-      headers: reqHeaders
-    }
     );
-    return request;
   }
 }

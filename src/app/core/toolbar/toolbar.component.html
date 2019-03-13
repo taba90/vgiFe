@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" class="toolbar">
+<mat-toolbar class="toolbar">
     <span>
         <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="userService.checkLogin() === true">
         Menù
@@ -17,8 +17,10 @@
       </span>
     <!-- This fills the remaining space of the current row -->
     <span class="fill-space"></span>
-    <span><a (click) = "openDialog()">Registrazione</a></span>
-    <span><a (click)="logout()">Logout</a></span>
+    <span  *ngIf="userService.checkLogin() === true; else registration">
+      <a (click)="logout()">Logout</a>
+    </span>
+    <ng-template #registration><a (click) = "openDialog()" >Registrazione</a></ng-template>
 </mat-toolbar>
 <div>
     <app-sidenav #sideNav></app-sidenav>

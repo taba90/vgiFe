@@ -12,7 +12,6 @@ import OlCircle from 'ol/style/circle';
 import OlFill from 'ol/style/Fill';
 import OlStroke from 'ol/style/Stroke';
 import Feature from 'ol/Feature';
-import Select from 'ol/interaction/select';
 import OlPoint from 'ol/geom/Point';
 import {defaults} from 'ol/interaction.js';
 import {fromLonLat} from 'ol/proj.js';
@@ -24,7 +23,6 @@ import { ModalService } from '../core/modal-popups.service';
 import { VgiPoint } from '../model/point';
 import { MapService } from './map.service';
 import { ReadOptions } from '../model/readoptions';
-import { MessageComponent } from '../message/message.component';
 import { Message } from '../model/message';
 import { HttpResponse } from '@angular/common/http';
 import { CommonService } from '../core/common.service';
@@ -37,19 +35,19 @@ import { CommonService } from '../core/common.service';
 })
 export class MapComponent implements OnInit {
 
-private map: Map;
-private osmSource: OSM = new OSM();
-private beVectSource: VectorSource;
-private vectSource: VectorSource = new VectorSource();
+map: Map;
+osmSource: OSM = new OSM();
+beVectSource: VectorSource;
+vectSource: VectorSource = new VectorSource();
 // private view: OlView;
 // private layers: Layer [];
-private beVectorLayer: VectorLayer;
-private feVectorLayer: VectorLayer;
-private geoJsonFormat: GeoJson = new GeoJson({
-  defaultDataProjection: 'EPSG:3857',
-  featureProjection: 'EPSG:3857'});
-private selectedPoint: VgiPoint;
-private markerStyle: Style = new Style({
+beVectorLayer: VectorLayer;
+feVectorLayer: VectorLayer;
+geoJsonFormat: GeoJson = new GeoJson({
+defaultDataProjection: 'EPSG:3857',
+featureProjection: 'EPSG:3857'});
+selectedPoint: VgiPoint;
+markerStyle: Style = new Style({
   image : new OlCircle(({
         fill: new OlFill({
           color: 'red',
@@ -85,6 +83,11 @@ private markerStyle: Style = new Style({
             if (! (data instanceof Message)) {
             const dialogConf: MatDialogConfig = this.getDialogConfig(e.pixel, 'Modifica posizione', data, false);
             const dialogRef: MatDialogRef<AddpointComponent> = this.dialogService.openDialog(AddpointComponent, dialogConf);
+            const pointSubscription = dialogRef.componentInstance.pointEvent.subscribe(
+              () => {
+                this.getBePoints();
+                pointSubscription.unsubscribe();
+              });
           }
         },
         );
@@ -106,16 +109,11 @@ private markerStyle: Style = new Style({
       pointVgi.latitude = coordinates[1];
       const dialogConfig: MatDialogConfig = this.getDialogConfig(pixels, 'Salva posizione', pointVgi, true);
       const dialogRef: MatDialogRef<AddpointComponent> = this.dialogService.openDialog(AddpointComponent, dialogConfig);
-      dialogRef.afterClosed().subscribe(
-        () => {
-            this.vectSource.clear();
-            this.beVectSource.clear();
-            this.getBePoints();
-            this.beVectSource.refresh();
-
-        }
+      const pointSubscription = dialogRef.componentInstance.pointEvent.subscribe(() => {
+        this.getBePoints();
+        pointSubscription.unsubscribe();
+      }
       );
-      dialogRef.componentInstance.pointAdded.subscribe(() => this.getBePoints());
     });
     this.getBePoints();
 }
@@ -138,7 +136,6 @@ getBePoints () {
       }
     }
   },
-  (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
   );
 }
 

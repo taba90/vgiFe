@@ -4,6 +4,12 @@
     flex: 1 1 auto;
 }
 
+.toolbar {
+
+    color: primary
+
+}
+
 .sidenav {
     width: 100%;
     height: 100%;

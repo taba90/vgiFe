@@ -1,7 +1,6 @@
-<mat-list role="list">
+<mat-list role="list" *ngIf="formReady === true;">
   <mat-list-item role="listitem">Username: {{thisUser.username}}</mat-list-item>
   <mat-list-item role="listitem">Email: {{thisUser.email}}</mat-list-item>
   <mat-list-item role="listitem">Anni: {{thisUser.anni}}</mat-list-item>
+  <button mat-raised-button color="basic" (click)="deleteSelf()">Auto cancellazione</button>
 </mat-list>
-
-<button mat-raised-button color="basic" (click)="deleteSelf()">Auto cancellazione</button>

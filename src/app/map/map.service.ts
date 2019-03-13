@@ -51,12 +51,12 @@ httpOptions = {
   constructor(private http: HttpClient, private legendaService: LegendaService, private commonService: CommonService) { }
 
 
-savePoint (point: VgiPoint, idLegenda: number): Observable<VgiPoint> {
-  return this.http.post<VgiPoint>(this.endpoint + 'location/' + idLegenda.toString() + '/new', point, this.httpOptions);
+savePoint (point: VgiPoint): Observable<Esito> {
+  return this.http.post<Esito>(this.endpoint + 'location', point, this.httpOptions);
 }
 
-updatePoint (point: VgiPoint): Observable<VgiPoint> {
-  return this.http.patch<VgiPoint>(this.endpoint + 'location', point, this.httpOptions);
+updatePoint (point: VgiPoint): Observable<Esito> {
+  return this.http.patch<Esito>(this.endpoint + 'location', point, this.httpOptions);
 }
 
 getUserLocations(): Observable<any> {

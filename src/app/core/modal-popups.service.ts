@@ -1,5 +1,5 @@
 import { Injectable, TemplateRef } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBarRef } from '@angular/material';
 import { FormGroup } from '@angular/forms';
 import { ComponentType } from '@angular/cdk/overlay/index';
 import { Observable } from 'rxjs';
@@ -20,12 +20,12 @@ export class ModalService <T> {
     return this.dialog.open(compName, dialogConfig);
   }
 
-  openMessageAlert (componentRef:  ComponentType<any>, message: Message) {
+  openMessageAlert (componentRef:  ComponentType<any>, message: Message): MatSnackBarRef<MessageComponent> {
     let sText: string;
     let sColor: string;
     sText = message.testo;
     sColor = message.color;
-    this.snackBar.openFromComponent(componentRef, {
+    return this.snackBar.openFromComponent(componentRef, {
       duration: 2000,
       verticalPosition: 'top',
       data: {

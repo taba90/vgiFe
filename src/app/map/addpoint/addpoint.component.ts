@@ -1,18 +1,13 @@
-import { Component, OnInit, Inject, Input, EventEmitter, Output } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { Component, OnInit, Inject, EventEmitter, Output } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { VgiPoint } from 'src/app/model/point';
-import Point from 'ol/geom/Point';
-import Feature from 'ol/Feature';
 import { Legenda } from 'src/app/model/legenda';
 import { LegendaService } from 'src/app/legenda/legenda.service';
-import { formControlBinding } from '@angular/forms/src/directives/reactive_directives/form_control_directive';
 import { Esito } from 'src/app/model/esito';
 import { MapService } from '../map.service';
-import { NumberValueAccessor } from '@angular/forms/src/directives';
 import { ModalService } from 'src/app/core/modal-popups.service';
 import { CommonService } from 'src/app/core/common.service';
-import { stringify } from '@angular/core/src/render3/util';
 import { HttpResponse } from '@angular/common/http';
 import { Message } from 'src/app/model/message';
 import { MessageComponent } from 'src/app/message/message.component';
@@ -26,7 +21,8 @@ export class AddpointComponent implements OnInit {
 
   formPoint: FormGroup;
 
-  pointAdded = new EventEmitter();
+  @Output()
+  pointEvent: EventEmitter<any> = new EventEmitter();
 
   selectedLegenda: number;
 
@@ -45,10 +41,10 @@ export class AddpointComponent implements OnInit {
     private legendaService: LegendaService,
     private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data) {
-      this.existingPoint = data.point;
-      this.modalName = data.modalName;
-      this.isNew = data.isNew;
-    }
+    this.existingPoint = data.point;
+    this.modalName = data.modalName;
+    this.isNew = data.isNew;
+  }
 
   ngOnInit() {
     // const point: Point = <Point> feature.getGeometry();
@@ -65,67 +61,69 @@ export class AddpointComponent implements OnInit {
     );
   }
 
-  salvaPosizione () {
+  salvaPosizione() {
     this.modalService.save(this.dialogRef, this.formPoint)
-    .subscribe( (point: VgiPoint) => {
-      point.latitude = this.existingPoint.latitude;
-      point.longitude = this.existingPoint.longitude;
-      const vgiPoint: VgiPoint = new VgiPoint(point);
-      this.mapService.savePoint(vgiPoint, vgiPoint.getIdLegenda()).subscribe(
-        (data: Message | any) => {
-          this.commonService.unWrapResult(data);
-          this.pointAdded.emit();
-          if (data instanceof Message) {
-            this.modalService.openMessageAlert(MessageComponent, data);
+      .subscribe((point: VgiPoint) => {
+        point.latitude = this.existingPoint.latitude;
+        point.longitude = this.existingPoint.longitude;
+        point.location = this.existingPoint.location;
+        const legenda: Legenda = new Legenda();
+        legenda.id = point.idLegenda;
+        point.legenda = legenda;
+        this.mapService.savePoint(point).subscribe(
+          (data: Esito) => {
+            if (data.esito === true) {
+                this.pointEvent.emit();
+            } else {
+              throw data.descrizione;
+            }
           }
-        },
-        (error) => {
-          const err: Esito = new Esito('Response erro' + error, false);
-        },
+        );
+      }
       );
-    }
-    );
   }
 
-  aggiornaPosizione () {
+  aggiornaPosizione() {
     this.modalService.save(this.dialogRef, this.formPoint)
-    .subscribe( (point: VgiPoint) => {
-      point.latitude = this.existingPoint.latitude;
-      point.longitude = this.existingPoint.longitude;
-      point.id = this.existingPoint.id;
-      const vgiPoint: VgiPoint = new VgiPoint(point);
-      this.mapService.updatePoint(vgiPoint).subscribe(
-        (data: Message | any) => {
-          console.log(data);
-          this.pointAdded.emit();
-          if (data instanceof Message) {
-            this.modalService.openMessageAlert(MessageComponent, data);
-          }
-        },
-        (error) => {
-          const err: Esito = new Esito('Response erro' + error, false);
-        },
+      .subscribe((point: VgiPoint) => {
+        point.latitude = this.existingPoint.latitude;
+        point.longitude = this.existingPoint.longitude;
+        point.id = this.existingPoint.id;
+        const legenda: Legenda = new Legenda();
+        legenda.id = point.idLegenda;
+        point.legenda = legenda;
+        this.mapService.updatePoint(point).subscribe(
+          (data: Esito) => {
+            console.log(data);
+            if (data.esito === true) {
+              this.pointEvent.emit();
+            } else {
+              throw data.descrizione;
+            }
+          },
+        );
+      }
       );
-    }
-    );
   }
 
 
 
   cancellaPosizione() {
     this.mapService.deleteLocationById(this.existingPoint.id).subscribe(
-      (data: Message | any) => {
-        this.modalService.close(this.dialogRef);
-        this.pointAdded.emit();
-        if (data instanceof Message) {
-          this.modalService.openMessageAlert(MessageComponent, data);
+      (data: Esito) => {
+        if (data.esito === true) {
+          this.modalService.close(this.dialogRef);
+          this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'green'));
+          this.pointEvent.emit();
+        } else {
+          this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
         }
       },
       (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
     );
   }
 
-  bindPointToForm (point: VgiPoint): FormGroup {
+  bindPointToForm(point: VgiPoint): FormGroup {
     let descrizione: string;
     if (point.descrizione != null) {
       descrizione = point.descrizione;
@@ -141,15 +139,15 @@ export class AddpointComponent implements OnInit {
       'idLegenda': new FormControl(null),
     });
   }
- /* esci() {
-    this.mapService.getVectSource().clear();
-    this.dialogService.close(this.dialogRef);
-    this.dialogRef.afterClosed().subscribe( (point: VgiPoint) => {
-      point.setLongitude(this.lon);
-      point.setLatitude(this.lat);
-      // this.mapService.savePoint(point);
-    }
-    );
-  }*/
+  /* esci() {
+     this.mapService.getVectSource().clear();
+     this.dialogService.close(this.dialogRef);
+     this.dialogRef.afterClosed().subscribe( (point: VgiPoint) => {
+       point.setLongitude(this.lon);
+       point.setLatitude(this.lat);
+       // this.mapService.savePoint(point);
+     }
+     );
+   }*/
 
 }
