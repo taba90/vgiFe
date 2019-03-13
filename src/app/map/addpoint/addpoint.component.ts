@@ -75,7 +75,7 @@ export class AddpointComponent implements OnInit {
             if (data.esito === true) {
                 this.pointEvent.emit();
             } else {
-              throw data.descrizione;
+              this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
             }
           }
         );
@@ -98,7 +98,7 @@ export class AddpointComponent implements OnInit {
             if (data.esito === true) {
               this.pointEvent.emit();
             } else {
-              throw data.descrizione;
+              this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
             }
           },
         );
@@ -113,7 +113,6 @@ export class AddpointComponent implements OnInit {
       (data: Esito) => {
         if (data.esito === true) {
           this.modalService.close(this.dialogRef);
-          this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'green'));
           this.pointEvent.emit();
         } else {
           this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));

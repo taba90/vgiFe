@@ -52,7 +52,7 @@ export class InterceptorService implements HttpInterceptor {
             } else if (errorResponse.status as number === 403) {
               message = 'Credenziali di accesso non valide';
             } else {
-              message = 'Servizio non disponibile';
+              message = 'Errore durante l\'operazione. Ritentare o contattare l\'assistenza';
             }
             this.modalService.openMessageAlert(MessageComponent, new Message(message, 'red'));
             if (errorResponse.status as number === 403 ||

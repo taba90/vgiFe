@@ -1,24 +1,18 @@
 <div>
   <mat-list>
     <h2 mat-subheader>Legenda</h2>
-    <mat-list-item *ngFor="let l of legende">
-      <mat-accordion>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <p class="circle" [ngStyle]="{'background-color': getColor(l)}"></p>
-            </mat-panel-title>
-            <mat-panel-description>
-              <h3>{{l.codice}}</h3>
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <p>{{l.descrizione}}</p>
-          <p>{{isAuthorized}}</p>
-        </mat-expansion-panel>
-      </mat-accordion>
+    <br/>
+    <mat-list-item *ngFor="let l of legende" >
+      <h3 mat-line>
+          {{l.codice}}
+        <p class="circle" [ngStyle]="{'background-color': getColor(l)}"></p>
+        </h3>
       <button mat-raised-button color="basic" (click)="onDelete(l.id)" *ngIf="isAuthorized === true">Cancella</button>
       <button mat-raised-button color="basic" (click)="hideLegendaForm(false, l)" *ngIf="isAuthorized === true">Modifica</button>
+      <p mat-line>{{l.descrizione}}</p>
+
     </mat-list-item>
+    <br/>
     <br/>
     <mat-list-item *ngIf="isAuthorized === true">
       <button mat-raised-button color="basic" (click)="hideLegendaForm(false)">Nuovo campo legenda</button>

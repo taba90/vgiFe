@@ -124,6 +124,7 @@ removeAllMarkers() {
 }
 
 getBePoints () {
+  this.removeAllMarkers();
   this.beVectSource.clear();
   this.mapService.getUserLocations().subscribe(
     (data: VgiPoint [] ) => {
