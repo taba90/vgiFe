@@ -23,7 +23,7 @@ export class LegendaService {
   }
 
   updateLegenda (legenda: Legenda): Observable<any> {
-    return this.http.patch<Legenda>(this.endpoint + 'legenda' + legenda.id, legenda);
+    return this.http.patch<Legenda>(this.endpoint + 'legenda', legenda);
   }
 
   deleteLegenda (idLegenda: number): Observable<any> {

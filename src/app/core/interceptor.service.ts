@@ -49,6 +49,8 @@ export class InterceptorService implements HttpInterceptor {
             const errorResponse: HttpErrorResponse = error as HttpErrorResponse;
             if (typeof errorResponse.error.message !== 'undefined') {
               message = errorResponse.error.message;
+            } else if (typeof errorResponse.error.descrizione !== 'undefined') {
+              message = errorResponse.error.descrizione;
             } else if (errorResponse.status as number === 403) {
               message = 'Credenziali di accesso non valide';
             } else {

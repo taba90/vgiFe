@@ -3,19 +3,19 @@
     <h2 mat-subheader>Legenda</h2>
     <br/>
     <mat-list-item *ngFor="let l of legende" >
-      <h3 mat-line>
-          {{l.codice}}
-        <p class="circle" [ngStyle]="{'background-color': getColor(l)}"></p>
-        </h3>
-      <button mat-raised-button color="basic" (click)="onDelete(l.id)" *ngIf="isAuthorized === true">Cancella</button>
-      <button mat-raised-button color="basic" (click)="hideLegendaForm(false, l)" *ngIf="isAuthorized === true">Modifica</button>
+      <h3 mat-line style= 'align-content: center'>
+          {{l.codice}} <mat-icon [ngStyle]="{'color': getColor(l)}">brightness_1</mat-icon>
+        <!--p class="circle" [ngStyle]="{'background-color': getColor(l)}"></p-->
+      </h3>
+      <br/>
       <p mat-line>{{l.descrizione}}</p>
-
+      <mat-icon (click)="hideLegendaForm(false, l)" *ngIf="isAuthorized === true">reorder</mat-icon>
+      <mat-icon (click)="onDelete(l.id)" *ngIf="isAuthorized === true">delete</mat-icon>
     </mat-list-item>
     <br/>
     <br/>
     <mat-list-item *ngIf="isAuthorized === true">
-      <button mat-raised-button color="basic" (click)="hideLegendaForm(false)">Nuovo campo legenda</button>
+      <mat-icon class="add-icon" (click)="hideLegendaForm(false)">add_circle</mat-icon>
     </mat-list-item>
   </mat-list>
 </div>

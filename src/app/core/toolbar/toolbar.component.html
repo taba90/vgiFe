@@ -18,9 +18,9 @@
     <!-- This fills the remaining space of the current row -->
     <span class="fill-space"></span>
     <span  *ngIf="userService.checkLogin() === true; else registration">
-      <a (click)="logout()">Logout</a>
+      <a href="#" (click)="logout()">Logout</a>
     </span>
-    <ng-template #registration><a (click) = "openDialog()" >Registrazione</a></ng-template>
+    <ng-template #registration><a (click) = "openDialog()"><mat-icon>account_circle</mat-icon></a></ng-template>
 </mat-toolbar>
 <div>
     <app-sidenav #sideNav></app-sidenav>

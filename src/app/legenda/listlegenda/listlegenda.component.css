@@ -5,3 +5,11 @@
   border-radius: 50%;
   display: inline-block;
   }
+mat-icon {
+  cursor: pointer;
+}
+
+.add-icon {
+  font-size: 40px;
+  color: grey
+}
