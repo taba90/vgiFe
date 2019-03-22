@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, EventEmitter, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { VgiPoint } from 'src/app/model/point';
 import { Legenda } from 'src/app/model/legenda';
 import { LegendaService } from 'src/app/legenda/legenda.service';
@@ -50,7 +50,7 @@ export class AddpointComponent implements OnInit {
     // const point: Point = <Point> feature.getGeometry();
     // const coor: [number, number] = point.getCoordinates();
     // const vgiPoint: VgiPoint = new VgiPoint ();
-    this.formPoint = this.bindPointToForm(this.existingPoint);
+    this.bindPointToForm(this.existingPoint);
     this.legendaService.getLegende().subscribe(
       (data: Legenda[]) => {
         this.legende = data;
@@ -62,7 +62,11 @@ export class AddpointComponent implements OnInit {
   }
 
   salvaPosizione() {
-    this.modalService.save(this.dialogRef, this.formPoint)
+    if (this.formPoint.invalid) {
+      this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti', 'red'));
+      this.pointEvent.emit();
+    } else {
+      this.modalService.save(this.dialogRef, this.formPoint)
       .subscribe((point: VgiPoint) => {
         point.latitude = this.existingPoint.latitude;
         point.longitude = this.existingPoint.longitude;
@@ -76,34 +80,41 @@ export class AddpointComponent implements OnInit {
                 this.pointEvent.emit();
             } else {
               this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
+              this.pointEvent.emit();
             }
           }
         );
       }
       );
+    }
   }
 
   aggiornaPosizione() {
-    this.modalService.save(this.dialogRef, this.formPoint)
-      .subscribe((point: VgiPoint) => {
-        point.latitude = this.existingPoint.latitude;
-        point.longitude = this.existingPoint.longitude;
-        point.id = this.existingPoint.id;
-        const legenda: Legenda = new Legenda();
-        legenda.id = point.idLegenda;
-        point.legenda = legenda;
-        this.mapService.updatePoint(point).subscribe(
-          (data: Esito) => {
-            console.log(data);
-            if (data.esito === true) {
-              this.pointEvent.emit();
-            } else {
-              this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
-            }
-          },
+    if (this.formPoint.invalid) {
+      this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti', 'red'));
+      this.pointEvent.emit();
+    } else {
+      this.modalService.save(this.dialogRef, this.formPoint)
+        .subscribe((point: VgiPoint) => {
+          point.latitude = this.existingPoint.latitude;
+          point.longitude = this.existingPoint.longitude;
+          point.id = this.existingPoint.id;
+          const legenda: Legenda = new Legenda();
+          legenda.id = point.idLegenda;
+          point.legenda = legenda;
+          this.mapService.updatePoint(point).subscribe(
+            (data: Esito) => {
+              console.log(data);
+              if (data.esito === true) {
+                this.pointEvent.emit();
+              } else {
+                this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
+              }
+            },
+          );
+        }
         );
-      }
-      );
+    }
   }
 
 
@@ -122,21 +133,20 @@ export class AddpointComponent implements OnInit {
     );
   }
 
-  bindPointToForm(point: VgiPoint): FormGroup {
-    let descrizione: string;
-    if (point.descrizione != null) {
-      descrizione = point.descrizione;
-    } else {
-      descrizione = '';
-    }
+  bindPointToForm(point: VgiPoint) {
+
+    const descrizione: string = point.descrizione != null ? point.descrizione : '';
+    const nome: string = point.nome != null ? point.nome : '';
     if (point.legenda != null) {
       this.selectedLegenda = point.legenda.id;
       // idLegenda = point.legenda.id;
     }
-    return new FormGroup({
-      'descrizione': new FormControl(descrizione),
-      'idLegenda': new FormControl(null),
-    });
+    this.formPoint = this.fb.group({
+      descrizione: [descrizione],
+      idLegenda: ['', Validators.required],
+      nome: [nome]
+    }
+    );
   }
   /* esci() {
      this.mapService.getVectSource().clear();

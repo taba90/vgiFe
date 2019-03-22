@@ -1,7 +1,6 @@
 import { Component, OnInit, OnChanges, AfterViewInit, OnDestroy } from '@angular/core';
 import { Legenda } from 'src/app/model/legenda';
 import { LegendaService } from '../legenda.service';
-import { CommonService } from 'src/app/core/common.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { MessageComponent } from 'src/app/message/message.component';
 import { Message } from 'src/app/model/message';
@@ -22,7 +21,7 @@ export class ListLegendaComponent implements OnInit, OnDestroy {
   hide = true;
   legende: Legenda[];
   legendaUp: Legenda;
-  constructor(private legendaService: LegendaService, private commonService: CommonService,
+  constructor(private legendaService: LegendaService,
     private modalService: ModalService<MessageComponent>, private userService: UserService,
      private route: ActivatedRoute) {
     }

@@ -25,7 +25,6 @@ import { MapService } from './map.service';
 import { ReadOptions } from '../model/readoptions';
 import { Message } from '../model/message';
 import { HttpResponse } from '@angular/common/http';
-import { CommonService } from '../core/common.service';
 
 
 @Component({
@@ -61,8 +60,7 @@ markerStyle: Style = new Style({
 });
 
 
-  constructor(private dialogService: ModalService<VgiPoint>, private mapService: MapService,
-    private commonService: CommonService) { }
+  constructor(private dialogService: ModalService<VgiPoint>, private mapService: MapService) { }
 
   ngOnInit() {
 
@@ -144,7 +142,6 @@ getPointById (id: number| string): VgiPoint | void {
   id = id as number;
   this.mapService.getLocationById(id).subscribe(
     (point: VgiPoint) => this.selectedPoint = point,
-    (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
   );
 }
 

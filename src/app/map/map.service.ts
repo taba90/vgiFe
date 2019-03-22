@@ -16,7 +16,6 @@ import { Esito } from '../model/esito';
 import { Observable } from 'rxjs';
 import { LegendaService } from '../legenda/legenda.service';
 import Style from 'ol/style/style';
-import { CommonService } from '../core/common.service';
 
 
 
@@ -48,7 +47,7 @@ httpOptions = {
 };
 
 
-  constructor(private http: HttpClient, private legendaService: LegendaService, private commonService: CommonService) { }
+  constructor(private http: HttpClient, private legendaService: LegendaService) { }
 
 
 savePoint (point: VgiPoint): Observable<Esito> {

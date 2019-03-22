@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 
 import { User } from 'src/app/model/user';
 import { UserService } from '../user.service';
 import { ModalService } from 'src/app/core/modal-popups.service';
 import { Message } from 'src/app/model/message';
-import { HttpResponse } from '@angular/common/http';
-import { CommonService } from 'src/app/core/common.service';
 import { MessageComponent } from 'src/app/message/message.component';
 import { Esito } from 'src/app/model/esito';
 
@@ -22,25 +20,39 @@ export class RegistrationComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private ref: MatDialogRef<RegistrationComponent>,
     private userService: UserService,
-    private modalService: ModalService<User>, private commonService: CommonService) { }
+    private modalService: ModalService<User>) { }
 
   ngOnInit() {
-    this.regForm = new FormGroup({
-      'username': new FormControl(null),
-      'password': new FormControl(null),
-      'email': new FormControl(null),
-      'anni': new FormControl(null),
+    this.regForm = this.fb.group({
+      'username': ['', Validators.required],
+      'password': ['', Validators.required],
+      'email': ['', Validators.email],
+      'anni': ['', Validators.required],
     });
   }
 
   submit() {
-    this.modalService.save(this.ref, this.regForm);
-    this.ref.afterClosed().subscribe((user: User) => {
+    if (this.regForm.invalid) {
+      this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti', 'red'));
+    } else {
+      this.modalService.save(this.ref, this.regForm);
+      this.ref.afterClosed().subscribe((user: User) => {
       this.userService.registerUser(user).subscribe(
         (data: Esito | any) => this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'green'))
       );
     }
     );
+    }
   }
+
+  /*checkInvalidControls (): string [] {
+    const result: string [] = [];
+      for (const name of this.regForm.controls {
+        if (name.invalid) {
+          result.push(name);
+        }
+      }
+      return controls;
+  }*/
 
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef, MatDialogConfig } from '@angular/material';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from 'src/app/model/user';
 import { RegistrationComponent } from '../registration/registration.component';
 import { UserService } from '../user.service';
@@ -8,7 +8,6 @@ import { ModalService } from 'src/app/core/modal-popups.service';
 import { Router } from '@angular/router';
 import { Message } from 'src/app/model/message';
 import { MessageComponent } from 'src/app/message/message.component';
-import { CommonService } from 'src/app/core/common.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Esito } from 'src/app/model/esito';
 
@@ -24,18 +23,20 @@ export class LoginComponent implements OnInit {
    constructor(private fb: FormBuilder,
     private userService: UserService,
     private modalService: ModalService<Message>,
-    private commonService: CommonService,
     private router: Router,
     ) { }
 
   ngOnInit() {
-    this.loginForm = new FormGroup({
-      'username' : new FormControl(),
-      'password': new FormControl(),
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
   login() {
+    if (this.loginForm.invalid) {
+       this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti', 'red'));
+    } else {
     const utente: User = this.bindFormToUser();
     this.userService.login(utente).subscribe(
       (response: HttpResponse<Esito>) => {
@@ -51,6 +52,7 @@ export class LoginComponent implements OnInit {
           this.modalService.openMessageAlert(MessageComponent, new Message(esito.descrizione, 'red'));
         }
       });
+    }
   }
 
   openModalReg () {

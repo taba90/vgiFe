@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Legenda } from 'src/app/model/legenda';
 import { LegendaService } from '../legenda.service';
-import { CommonService } from 'src/app/core/common.service';
 import { Message } from 'src/app/model/message';
 import { MessageComponent } from 'src/app/message/message.component';
 import { ModalService } from 'src/app/core/modal-popups.service';
@@ -23,19 +22,22 @@ export class EditLegendaComponent implements OnInit, OnChanges {
   submitted = new EventEmitter();
 
   constructor(private formBuilder: FormBuilder, private legendaService: LegendaService,
-    private commonService: CommonService, private modalService: ModalService<Legenda>) {}
+    private modalService: ModalService<Legenda>) {}
 
   ngOnInit() {
-    this.legendaForm = this.getForm();
+    this.populateForm();
     this.formBuilder.group(this.legendaForm);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.legendaForm = this.getForm();
+    this.populateForm();
   }
 
   onSubmit() {
-    const legenda: Legenda = this.bindFormToLegenda();
+    if (this.legendaForm.invalid) {
+        this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti', 'red'));
+    } else {
+      const legenda: Legenda = this.bindFormToLegenda();
     if (legenda.id != null) {
       this.legendaService.updateLegenda(legenda).subscribe(
         (result: Legenda) => {
@@ -53,6 +55,7 @@ export class EditLegendaComponent implements OnInit, OnChanges {
         },
       );
     }
+    }
   }
 
 
@@ -69,28 +72,18 @@ export class EditLegendaComponent implements OnInit, OnChanges {
     return legenda;
   }
 
-  getForm (): FormGroup {
-    let codice: string;
-    let descrizione: string;
-    let colore: string;
-    let id: number;
-    if (this.legenda != null) {
-      codice = this.legenda.codice;
-      descrizione = this.legenda.descrizione;
-      colore = this.legenda.colore;
-      id = this.legenda.id;
-    } else {
-      codice = '';
-      descrizione = '';
-      colore = '';
-      id = null;
+  populateForm () {
+    const codice: string = this.legenda != null && this.legenda.codice != null ? this.legenda.codice : '';
+    const descrizione: string = this.legenda != null && this.legenda.descrizione != null ? this.legenda.descrizione : '';
+    const colore: string = this.legenda != null && this.legenda.colore != null ? this.legenda.colore : '';
+    const idLegenda: number = this.legenda != null && this.legenda.id != null ? this.legenda.id : null;
+    this.legendaForm = this.formBuilder.group({
+      codice: [codice, Validators.required],
+      descrizione: [descrizione, Validators.required],
+      colore: [colore, Validators.required],
+      id: [idLegenda]
     }
-    return new FormGroup({
-      'codice': new FormControl(codice),
-      'descrizione': new FormControl(descrizione),
-      'colore': new FormControl(colore),
-      'id': new FormControl(id)
-    });
+    );
 
   }
 

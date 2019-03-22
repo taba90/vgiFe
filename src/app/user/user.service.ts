@@ -5,7 +5,6 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angul
 import { Esito } from '../model/esito';
 import { Role } from '../model/role';
 import { map, filter, catchError, mergeMap} from 'rxjs/operators';
-import { CommonService } from '../core/common.service';
 import { Router } from '@angular/router';
 
 
@@ -26,7 +25,7 @@ export class UserService {
 
   isAdmin = false;
 
-  constructor(private http: HttpClient, private commonService: CommonService, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   registerUser(user: User): Observable<User> {
     return this.http.post<User>(this.endpoint + 'register', user, this.httpOptions);

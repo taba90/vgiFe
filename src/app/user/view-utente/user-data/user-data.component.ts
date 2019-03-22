@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../user.service';
 import { User } from 'src/app/model/user';
 import { CommonService } from 'src/app/core/common.service';
-import { HttpResponse } from '@angular/common/http';
 import { Message } from 'src/app/model/message';
 import { ModalService } from 'src/app/core/modal-popups.service';
 import { MessageComponent } from 'src/app/message/message.component';
@@ -18,7 +17,7 @@ export class UserDataComponent implements OnInit {
   thisUser: User;
   formReady: boolean;
 
-  constructor(private userService: UserService, private commonService: CommonService,
+  constructor(private userService: UserService,
     private modalService: ModalService<User>) { }
 
   ngOnInit() {
