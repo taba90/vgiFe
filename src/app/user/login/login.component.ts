@@ -60,8 +60,10 @@ export class LoginComponent implements OnInit {
       dialogConfig.disableClose = false;
       dialogConfig.autoFocus = true;
       dialogConfig.position = {
-        top : '0px',
-        left : '0px' ,
+        top : '',
+        bottom: '',
+        left : '' ,
+        right: '',
       };
     this.modalService.openDialog(RegistrationComponent, dialogConfig);
   }

@@ -1,8 +1,8 @@
 .modal-form {
     display: flex;
     flex-direction: column;
-    width: 400px;
-    height: 300px;
+    width: 600px;
+    height: 400px;
 }
 
 .modal-field {

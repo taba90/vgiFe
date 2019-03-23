@@ -1,31 +1,35 @@
-<h2 mat-dialog-title>{{modalName}}</h2>
+<div class="point-div">
+<h2 mat-dialog-title ="accent">{{modalName}}</h2>
 <mat-divider></mat-divider>
 <br />
-<form mat-dialog-content [formGroup]="formPoint">
+<form mat-dialog-content [formGroup]="formPoint" class="point-form">
   <div>
-    <mat-form-field class="mat-field" >
-      <input matInput placeholder="Descrizione" type="textarea" formControlName="descrizione" required>
-    </mat-form-field>
- </div>
- <div>
     <mat-form-field class="mat-field">
-      <mat-select placeholder="Selezione legenda" formControlName="idLegenda" [(ngModel)]= "selectedLegenda" required>
+      <input matInput placeholder="Nome" type="text" formControlName="nome" required>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="input-fullwidth">
+      <textarea matInput placeholder="Descrizione" formControlName="descrizione" required></textarea>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="mat-field">
+      <mat-select placeholder="Selezione legenda" formControlName="idLegenda" [(ngModel)]="selectedLegenda" required>
         <mat-option *ngFor="let l of legende" [value]="l.id">
           {{l.codice}}
         </mat-option>
       </mat-select>
     </mat-form-field>
- </div>
-</form>
-  <div>
-      <!--button mat-raised-button color="primary" (click)="esci()">Esci</button-->
-</div>
-<div>
-    <button mat-raised-button color="primary" (click)="salvaPosizione()" *ngIf="isNew == true; else isUpdate">Salva</button>
-    <ng-template #isUpdate>
-    <button mat-raised-button color="primary" (click)="aggiornaPosizione()">Aggiorna</button>
-    <div>
-      <button mat-raised-button color="primary" (click)="cancellaPosizione()">Cancella</button>
-    </div>
-  </ng-template>
   </div>
+  <div>
+    <button mat-raised-button color="primary" (click)="salvaPosizione()"
+      *ngIf="isNew == true; else isUpdate">Salva</button>
+    <ng-template #isUpdate>
+      <span><button mat-raised-button color="primary" (click)="aggiornaPosizione()">Aggiorna</button></span>
+      <span class="fill-space"></span>
+      <span><button mat-raised-button color="warn" (click)="cancellaPosizione()">Cancella</button></span>
+    </ng-template>
+  </div>
+</form>
+</div>

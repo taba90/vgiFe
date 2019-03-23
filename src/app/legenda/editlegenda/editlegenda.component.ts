@@ -84,7 +84,5 @@ export class EditLegendaComponent implements OnInit, OnChanges {
       id: [idLegenda]
     }
     );
-
   }
-
 }

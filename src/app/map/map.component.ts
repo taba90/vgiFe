@@ -200,8 +200,10 @@ getPointFromLonLat(lonlat: string[]): OlPoint {
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.position = {
-      top: '0px',
-      left: '80%',
+      top: '',
+      bottom: '',
+      left: '',
+      right: '',
     };
     dialogConfig.data = {
       modalName: modalName,

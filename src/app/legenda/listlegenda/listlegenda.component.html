@@ -11,6 +11,7 @@
       <p mat-line>{{l.descrizione}}</p>
       <mat-icon (click)="hideLegendaForm(false, l)" *ngIf="isAuthorized === true">reorder</mat-icon>
       <mat-icon (click)="onDelete(l.id)" *ngIf="isAuthorized === true">delete</mat-icon>
+      <mat-divider></mat-divider>
     </mat-list-item>
     <br/>
     <br/>

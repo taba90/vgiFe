@@ -1,2 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+a {
+    cursor: pointer;
+    color: green;
+}
+
+mat-icon {
+    color: black;
+}
+
+input-fullwidth {
+    width: '100%'
+}
+
+h2 {
+    color: 'accent'
+}
+
+.white-text {
+    color: #FFF!important;
+}
+
+.color-input {
+    size: 10%
+}
+
+.fill-space {
+    /* This fills the remaining space, by using flexbox. 
+       Every toolbar row uses a flexbox row layout. */
+    flex: 1 1 auto;
+}
