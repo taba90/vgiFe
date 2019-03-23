@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
           if (token !== null) {
             localStorage.setItem('X-Vgi', token);
             this.userService.isLoggedIn = true;
-            this.router.navigate(['/map']);
+            this.router.navigate(['/home']);
           }
         } else {
           this.modalService.openMessageAlert(MessageComponent, new Message(esito.descrizione, 'red'));

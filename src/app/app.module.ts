@@ -23,18 +23,18 @@ import { UserDataComponent } from './user/view-utente/user-data/user-data.compon
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'map',
-  component: MapComponent,
+  {path: 'home',
+  component: SidenavComponent,
   canActivate: [AuthGuardService],
-},
+  },
   {path: 'legenda',
    component: ListLegendaComponent,
-   outlet: 'side-route',
+   // outlet: 'side-route',
    canActivate: [AuthGuardService]
 },
 {path: 'user',
 component: UserDataComponent,
-outlet: 'side-route',
+// outlet: 'side-route',
 canActivate: [AuthGuardService]
 }
 ];

@@ -1,5 +1,16 @@
+.container {
+    width:100%;
+    height: 100%;
+    /*justify-content: center;*/
+}
 
-.sidenav{
-    width: 35%;
-    align-content: center;
+.main-content {
+    width: 100%;
+    height: 100%;
+    /*align-items: center;
+    justify-content: center;*/
+    background: white;
+  }
+mat-drawer{
+    width: '35px';
 }

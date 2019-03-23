@@ -22,14 +22,12 @@ readonly altroComponentRef = 'altro';
   }
   @ViewChild('sidenav')
   sideNav: MatSidenav;
-  @Output()
-  sideNavEvent = new EventEmitter<MatSidenav>();
   ngOnInit() {
   }
 
   toggleSideContent (componentRef: string) {
-    this.sideNav.toggle();
-    this.router.navigate([{outlets: {'side-route': [componentRef]}}]);
+    this.sideNav.open();
+    this.router.navigate(['/' + componentRef]);
   }
 
 }

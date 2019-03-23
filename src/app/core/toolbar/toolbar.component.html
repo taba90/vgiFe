@@ -23,5 +23,5 @@
     <ng-template #registration><a (click) = "openDialog()"><mat-icon>account_circle</mat-icon></a></ng-template>
 </mat-toolbar>
 <div>
-    <app-sidenav #sideNav></app-sidenav>
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, OnChanges, ContentChild } from '@angular/core';
 import { RegistrationComponent } from 'src/app/user/registration/registration.component';
 import { LoginComponent } from 'src/app/user/login/login.component';
 import { MatDialogConfig } from '@angular/material';
@@ -14,7 +14,8 @@ import { Role } from 'src/app/model/role';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
-  @ViewChild('sideNav')
+
+
   private sidenavComp: SidenavComponent;
   isLoggedIn = false;
   constructor(private modalService: ModalService<User>, private userService: UserService) { }
@@ -44,6 +45,12 @@ export class ToolbarComponent implements OnInit {
   }
   logout () {
     this.userService.logout();
+  }
+
+  onActivate (componentRef: any) {
+    if (componentRef instanceof SidenavComponent) {
+      this.sidenavComp = componentRef;
+    }
   }
 
 }
