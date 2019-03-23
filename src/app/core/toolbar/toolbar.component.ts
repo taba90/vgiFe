@@ -24,14 +24,13 @@ export class ToolbarComponent implements OnInit {
   }
 
   openDialog() {
+    const dialogName: string = event.srcElement.innerHTML;
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = false;
       dialogConfig.autoFocus = true;
       dialogConfig.position = {
-        top : '',
-        bottom: '',
-        right: '',
-        left : '' ,
+        top : '0px',
+        left : '0px' ,
       };
       this.modalService.openDialog(RegistrationComponent, dialogConfig);
   }

@@ -12,7 +12,7 @@ import { LegendaService } from './legenda/legenda.service';
 })
 export class AppComponent {
 
-// @HostListener('window:beforeunload', ['$event'])
+@HostListener('window:beforeunload', ['$event'])
 beforeUnloadHander(event) {
     if (localStorage.getItem('X-Vgi') !== null) {
       localStorage.removeItem('X-Vgi');

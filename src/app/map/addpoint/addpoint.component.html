@@ -1,8 +1,8 @@
-<div class="point-div">
-<h2 mat-dialog-title ="accent">{{modalName}}</h2>
+<div class="point-form-container">
+<h2 mat-dialog-title color="accent">{{modalName}}</h2>
 <mat-divider></mat-divider>
 <br />
-<form mat-dialog-content [formGroup]="formPoint" class="point-form">
+<form mat-dialog-content [formGroup]="formPoint">
   <div>
     <mat-form-field class="mat-field">
       <input matInput placeholder="Nome" type="text" formControlName="nome" required>
