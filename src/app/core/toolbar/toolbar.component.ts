@@ -1,12 +1,13 @@
-import { Component, OnInit, ViewChild, OnChanges, ContentChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnChanges, ContentChild, Input } from '@angular/core';
 import { RegistrationComponent } from 'src/app/user/registration/registration.component';
 import { LoginComponent } from 'src/app/user/login/login.component';
-import { MatDialogConfig } from '@angular/material';
+import { MatDialogConfig, MatSidenav } from '@angular/material';
 import { ModalService } from '../modal-popups.service';
 import { User } from 'src/app/model/user';
 import { SidenavComponent } from '../sidenav/sidenav.component';
 import { UserService } from 'src/app/user/user.service';
 import { Role } from 'src/app/model/role';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-toolbar',
@@ -16,16 +17,16 @@ import { Role } from 'src/app/model/role';
 export class ToolbarComponent implements OnInit {
 
 
-  private sidenavComp: SidenavComponent;
+  @Input()
+  sidenav: MatSidenav;
   isLoggedIn = false;
-  constructor(private modalService: ModalService<User>, private userService: UserService) { }
+  constructor(private modalService: ModalService<User>, private userService: UserService, private router: Router) { }
 
   ngOnInit() {
 
   }
 
   openDialog() {
-    const dialogName: string = event.srcElement.innerHTML;
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = false;
       dialogConfig.autoFocus = true;
@@ -36,8 +37,9 @@ export class ToolbarComponent implements OnInit {
       this.modalService.openDialog(RegistrationComponent, dialogConfig);
   }
 
-  showSideContent (compRef: string) {
-    this.sidenavComp.toggleSideContent(compRef);
+  showSideContent (componentRef: string) {
+    this.sidenav.toggle();
+    this.router.navigate(['/home/' + componentRef]);
   }
 
   checkLogin () {
@@ -47,10 +49,5 @@ export class ToolbarComponent implements OnInit {
     this.userService.logout();
   }
 
-  onActivate (componentRef: any) {
-    if (componentRef instanceof SidenavComponent) {
-      this.sidenavComp = componentRef;
-    }
-  }
 
 }

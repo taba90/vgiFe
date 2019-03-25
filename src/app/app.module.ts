@@ -19,25 +19,9 @@ import { SidenavComponent } from './core/sidenav/sidenav.component';
 import { MessageComponent } from './message/message.component';
 import { AuthGuardService } from './core/auth-guard.service';
 import { UserDataComponent } from './user/view-utente/user-data/user-data.component';
+import { AppSideRoutingModule } from './app-side-routing.module';
 
-const routes: Routes = [
-  {path: '', redirectTo: 'login', pathMatch: 'full'},
-  {path: 'login', component: LoginComponent},
-  {path: 'home',
-  component: SidenavComponent,
-  canActivate: [AuthGuardService],
-  },
-  {path: 'legenda',
-   component: ListLegendaComponent,
-   // outlet: 'side-route',
-   canActivate: [AuthGuardService]
-},
-{path: 'user',
-component: UserDataComponent,
-// outlet: 'side-route',
-canActivate: [AuthGuardService]
-}
-];
+
 
 @NgModule({
   declarations: [
@@ -63,7 +47,8 @@ canActivate: [AuthGuardService]
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
+    AppRoutingModule,
+    AppSideRoutingModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,

@@ -1,8 +1,9 @@
-<mat-drawer-container class="container">
-  <mat-drawer #sidenav mode="side" class="side-content">
-  <router-outlet (activate)="onActivate($event)"></router-outlet>
-</mat-drawer>
-  <mat-drawer-content>
-  <app-map></app-map>
-  </mat-drawer-content>
-</mat-drawer-container>
+<app-toolbar [sidenav]="sidenav"></app-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="over" class="side-content">
+    <router-outlet></router-outlet>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-map></app-map>
+  </mat-sidenav-content>
+</mat-sidenav-container>

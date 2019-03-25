@@ -11,6 +11,6 @@
     justify-content: center;*/
     background: white;
   }
-mat-drawer{
-    width: '35px';
+.side-content{
+    width: '30%';
 }

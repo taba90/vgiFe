@@ -15,19 +15,16 @@ readonly utenteComponentRef = 'utente';
 readonly legendaComponentRef = 'legenda';
 readonly altroComponentRef = 'altro';
 
-  constructor(private router: Router, private userService: UserService) {
+  constructor(private router: Router) {
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
   };
   }
   @ViewChild('sidenav')
-  sideNav: MatSidenav;
+  sidenav: MatSidenav;
+
   ngOnInit() {
   }
 
-  toggleSideContent (componentRef: string) {
-    this.sideNav.open();
-    this.router.navigate(['/' + componentRef]);
-  }
 
 }
