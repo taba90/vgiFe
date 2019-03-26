@@ -42,16 +42,16 @@ export class MapComponent implements OnInit {
   vectSource: VectorSource = new VectorSource();
   wmsSource: WMSSource;
   isWmsAdded = false;
-  // private view: OlView;
-  // private layers: Layer [];
   beVectorLayer: VectorLayer;
   feVectorLayer: VectorLayer;
   feImageLayer: ImageLayer;
+  selectedPoint: VgiPoint;
+
+
   geoJsonFormat: GeoJson = new GeoJson({
     defaultDataProjection: 'EPSG:3857',
     featureProjection: 'EPSG:3857'
   });
-  selectedPoint: VgiPoint;
   markerStyle: Style = new Style({
     image: new OlCircle(({
       fill: new OlFill({
@@ -175,8 +175,8 @@ export class MapComponent implements OnInit {
 
   getView(): OlView {
     return new OlView({
-      zoom: 13,
-      minZoom: 10,
+      zoom: 14,
+      minZoom: 8,
       center: fromLonLat([11.1722, 43.5599]),
     });
   }
