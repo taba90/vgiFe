@@ -1,16 +1,16 @@
 import { Component, OnInit, Inject, EventEmitter, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { VgiPoint } from 'src/app/model/point';
 import { Legenda } from 'src/app/model/legenda';
-import { LegendaService } from 'src/app/legenda/legenda.service';
 import { Esito } from 'src/app/model/esito';
-import { MapService } from '../map.service';
-import { ModalService } from 'src/app/core/modal-popups.service';
-import { CommonService } from 'src/app/core/common.service';
+import { ModalService } from 'src/app/services/modal-popups.service';
+import { CommonService } from 'src/app/services/common.service';
 import { HttpResponse } from '@angular/common/http';
 import { Message } from 'src/app/model/message';
 import { MessageComponent } from 'src/app/message/message.component';
+import { MapService } from 'src/app/services/map.service';
+import { LegendaService } from 'src/app/services/legenda.service';
 
 @Component({
   selector: 'app-addpoint',

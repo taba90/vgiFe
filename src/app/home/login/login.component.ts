@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef, MatDialogConfig } from '@angular/material';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialogConfig } from '@angular/material';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/model/user';
 import { RegistrationComponent } from '../registration/registration.component';
-import { UserService } from '../user.service';
-import { ModalService } from 'src/app/core/modal-popups.service';
+import { UserService } from '../../services/user.service';
+import { ModalService } from 'src/app/services/modal-popups.service';
 import { Router } from '@angular/router';
 import { Message } from 'src/app/model/message';
 import { MessageComponent } from 'src/app/message/message.component';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse} from '@angular/common/http';
 import { Esito } from 'src/app/model/esito';
 
 @Component({

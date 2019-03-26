@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Legenda } from '../model/legenda';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Esito } from '../model/esito';
-import { map, filter, catchError, mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Injectable({

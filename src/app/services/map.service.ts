@@ -11,11 +11,11 @@ import OlStroke from 'ol/style/Stroke';
 import Feature from 'ol/Feature';
 import Select from 'ol/interaction/select';
 import { VgiPoint } from '../model/point';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Esito } from '../model/esito';
 import { Observable } from 'rxjs';
-import { LegendaService } from '../legenda/legenda.service';
 import Style from 'ol/style/style';
+import { LegendaService } from './legenda.service';
 
 
 

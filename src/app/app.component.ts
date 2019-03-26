@@ -1,8 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { UserService } from './user/user.service';
-import { MapService } from './map/map.service';
-import { ModalService } from './core/modal-popups.service';
-import { LegendaService } from './legenda/legenda.service';
+import { UserService } from './services/user.service';
+import { MapService } from './services/map.service';
+import { ModalService } from './services/modal-popups.service';
+import { LegendaService } from './services/legenda.service';
 
 @Component({
   selector: 'app-root',

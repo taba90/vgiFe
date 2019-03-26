@@ -1,13 +1,12 @@
-import { Component, OnInit, OnChanges, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Legenda } from 'src/app/model/legenda';
-import { LegendaService } from '../legenda.service';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { LegendaService } from '../../../services/legenda.service';
 import { MessageComponent } from 'src/app/message/message.component';
 import { Message } from 'src/app/model/message';
-import { UserService } from 'src/app/user/user.service';
-import { ActivatedRoute, Params } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
+import { ActivatedRoute} from '@angular/router';
 import { Role } from 'src/app/model/role';
-import { ModalService } from 'src/app/core/modal-popups.service';
+import { ModalService } from 'src/app/services/modal-popups.service';
 import { Esito } from 'src/app/model/esito';
 
 @Component({

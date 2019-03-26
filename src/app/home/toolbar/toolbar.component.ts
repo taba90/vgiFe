@@ -1,13 +1,10 @@
-import { Component, OnInit, ViewChild, OnChanges, ContentChild, Input } from '@angular/core';
-import { RegistrationComponent } from 'src/app/user/registration/registration.component';
-import { LoginComponent } from 'src/app/user/login/login.component';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatDialogConfig, MatSidenav } from '@angular/material';
-import { ModalService } from '../modal-popups.service';
+import { ModalService } from '../../services/modal-popups.service';
 import { User } from 'src/app/model/user';
-import { SidenavComponent } from '../sidenav/sidenav.component';
-import { UserService } from 'src/app/user/user.service';
-import { Role } from 'src/app/model/role';
+import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
+import { RegistrationComponent } from '../registration/registration.component';
 
 @Component({
   selector: 'app-toolbar',

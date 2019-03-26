@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { Message } from '../model/message';
-import { Esito } from '../model/esito';
 import { ModalService } from './modal-popups.service';
 import { MessageComponent } from '../message/message.component';
 

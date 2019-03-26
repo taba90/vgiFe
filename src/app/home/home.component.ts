@@ -1,14 +1,13 @@
-import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material';
-import { UserService } from 'src/app/user/user.service';
 
 @Component({
-  selector: 'app-sidenav',
-  templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.css']
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-export class SidenavComponent implements OnInit {
+export class HomeComponent implements OnInit {
 
 
 readonly utenteComponentRef = 'utente';

@@ -21,12 +21,12 @@ import { fromLonLat } from 'ol/proj.js';
 import { toLonLat } from 'ol/proj.js';
 import { MapBrowserPointerEvent, MapBrowserEvent } from 'openlayers';
 import { AddpointComponent } from './addpoint/addpoint.component';
-import { MatDialogConfig, MatGridTileFooterCssMatStyler, MatDialogRef } from '@angular/material';
-import { ModalService } from '../core/modal-popups.service';
-import { VgiPoint } from '../model/point';
-import { MapService } from './map.service';
-import { ReadOptions } from '../model/readoptions';
-import { Message } from '../model/message';
+import { MatDialogConfig, MatDialogRef } from '@angular/material';
+import { VgiPoint } from 'src/app/model/point';
+import { ModalService } from 'src/app/services/modal-popups.service';
+import { MapService } from 'src/app/services/map.service';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { ReadOptions } from 'src/app/model/readoptions';
 
 
 @Component({

@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { SidenavComponent } from './core/sidenav/sidenav.component';
-import { AuthGuardService } from './core/auth-guard.service';
-import { ListLegendaComponent } from './legenda/listlegenda/listlegenda.component';
-import { UserDataComponent } from './user/view-utente/user-data/user-data.component';
+import { AuthGuardService } from './services/auth-guard.service';
+import { HomeComponent } from './home/home.component';
+import { ListLegendaComponent } from './home/legenda/listlegenda/listlegenda.component';
+import { UserDataComponent } from './home/user-data/user-data.component';
 
 const routes: Routes = [
   {path: 'home',
-  component: SidenavComponent,
+  component: HomeComponent,
   canActivate: [AuthGuardService],
   children: [
     { path: 'legenda', component: ListLegendaComponent },

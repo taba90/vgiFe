@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../user.service';
 import { User } from 'src/app/model/user';
-import { CommonService } from 'src/app/core/common.service';
 import { Message } from 'src/app/model/message';
-import { ModalService } from 'src/app/core/modal-popups.service';
+import { ModalService } from 'src/app/services/modal-popups.service';
 import { MessageComponent } from 'src/app/message/message.component';
 import { Esito } from 'src/app/model/esito';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-data',
