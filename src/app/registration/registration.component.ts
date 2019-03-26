@@ -3,11 +3,11 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 
 import { User } from 'src/app/model/user';
-import { UserService } from '../../services/user.service';
 import { ModalService } from 'src/app/services/modal-popups.service';
 import { Message } from 'src/app/model/message';
 import { MessageComponent } from 'src/app/message/message.component';
 import { Esito } from 'src/app/model/esito';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-registration',

@@ -16,9 +16,9 @@ import { MapComponent } from './home/map/map.component';
 import { AddpointComponent } from './home/map/addpoint/addpoint.component';
 import { EditLegendaComponent } from './home/legenda/editlegenda/editlegenda.component';
 import { ListLegendaComponent } from './home/legenda/listlegenda/listlegenda.component';
-import { LoginComponent } from './home/login/login.component';
-import { RegistrationComponent } from './home/registration/registration.component';
 import { UserDataComponent } from './home/user-data/user-data.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { LoginComponent } from './login/login.component';
 
 
 

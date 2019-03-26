@@ -4,7 +4,7 @@ import { ModalService } from '../../services/modal-popups.service';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
-import { RegistrationComponent } from '../registration/registration.component';
+import { RegistrationComponent } from 'src/app/registration/registration.component';
 
 @Component({
   selector: 'app-toolbar',
