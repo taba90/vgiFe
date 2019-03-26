@@ -31,11 +31,6 @@ h2 {
 }
 
 .form-container {
-    display: flex;
-    flex-direction: column;
-    text-align: center
-  }
-  
-  .form-container > * {
-    width: 100%;
-  }
+    text-align: center;
+    vertical-align: bottom;
+}

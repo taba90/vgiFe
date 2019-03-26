@@ -3,8 +3,8 @@ import { MatDialogConfig, MatSidenav } from '@angular/material';
 import { ModalService } from '../../services/modal-popups.service';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
-import { Router } from '@angular/router';
-import { RegistrationComponent } from 'src/app/registration/registration.component';
+import { Router} from '@angular/router';
+import { RegistrationComponent } from '../registration/registration.component';
 
 @Component({
   selector: 'app-toolbar',
@@ -17,7 +17,8 @@ export class ToolbarComponent implements OnInit {
   @Input()
   sidenav: MatSidenav;
   isLoggedIn = false;
-  constructor(private modalService: ModalService<User>, private userService: UserService, private router: Router) { }
+  constructor(private modalService: ModalService<User>,
+    private userService: UserService, private router: Router) { }
 
   ngOnInit() {
 
@@ -36,7 +37,8 @@ export class ToolbarComponent implements OnInit {
 
   showSideContent (componentRef: string) {
     this.sidenav.toggle();
-    this.router.navigate(['/home/' + componentRef]);
+    this.router.navigate([{outlets: {'side': [componentRef]}}]);
+
   }
 
   checkLogin () {
