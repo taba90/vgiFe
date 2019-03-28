@@ -52,6 +52,9 @@ export class MapComponent implements OnInit {
     defaultDataProjection: 'EPSG:3857',
     featureProjection: 'EPSG:3857'
   });
+
+  style: Style;
+
   markerStyle: Style = new Style({
     image: new OlCircle(({
       fill: new OlFill({
@@ -70,10 +73,8 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
 
-    this.beVectSource = new VectorSource(
-      {
-        format: this.geoJsonFormat
-      });
+    // definisco i layers
+    this.beVectSource = new VectorSource({format: this.geoJsonFormat});
     this.feVectorLayer = new VectorLayer({ source: this.vectSource, style: this.markerStyle, renderBuffer: 200 });
     this.beVectorLayer = new VectorLayer({ source: this.beVectSource, style: this.markerStyle });
     this.feImageLayer = new ImageLayer({
@@ -85,7 +86,35 @@ export class MapComponent implements OnInit {
         url: 'http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc',
       }),
     });
-    this.map = this.getMap();
+
+    // instanzio mappa
+    this.map = new Map({
+      interactions: defaults({ doubleClickZoom: false }),
+      target: 'map',
+      layers: [
+        new TileLayer({
+          source: this.osmSource,
+        }),
+        this.beVectorLayer,
+        this.feVectorLayer,
+      ],
+      view: new OlView({
+        zoom: 14,
+        minZoom: 8,
+        center: fromLonLat([11.1722, 43.5599]),
+      })
+    });
+    this.addEventsControlToMap();
+    this.addButtonOrotophoto();
+    this.getBePoints();
+  }
+
+
+  removeAllMarkers() {
+    this.vectSource.clear();
+  }
+
+  addEventsControlToMap() {
     this.map.on('click', (e: MapBrowserEvent) => {
       this.map.forEachFeatureAtPixel(e.pixel, (feature: Feature) => {
         console.log(feature);
@@ -126,12 +155,6 @@ export class MapComponent implements OnInit {
       }
       );
     });
-    this.getBePoints();
-  }
-
-
-  removeAllMarkers() {
-    this.vectSource.clear();
   }
 
   getBePoints() {
@@ -173,26 +196,7 @@ export class MapComponent implements OnInit {
     });
   }
 
-  getView(): OlView {
-    return new OlView({
-      zoom: 14,
-      minZoom: 8,
-      center: fromLonLat([11.1722, 43.5599]),
-    });
-  }
-
-  getLayers(): Layer[] {
-    const initialLayers: Layer[] = [
-      new TileLayer({
-        source: this.osmSource,
-      }),
-      this.beVectorLayer,
-      this.feVectorLayer,
-    ];
-    return initialLayers;
-  }
-
-  getMap(): Map {
+  addButtonOrotophoto() {
     const addOrtophoto: Element = document.createElement('button');
     addOrtophoto.innerHTML = 'O';
     addOrtophoto.addEventListener('click', () => this.getWMSLayer());
@@ -203,14 +207,7 @@ export class MapComponent implements OnInit {
     const control: OlControl = new OlControl({
       element: divEl,
     });
-    const map: Map = new Map({
-      interactions: defaults({ doubleClickZoom: false }),
-      target: 'map',
-      layers: this.getLayers(),
-      view: this.getView(),
-    });
-    map.addControl(control);
-    return map;
+    this.map.addControl(control);
   }
 
   getPointFromLonLat(lonlat: string[]): OlPoint {
@@ -222,7 +219,7 @@ export class MapComponent implements OnInit {
 
   getDialogConfig(pixels: number[], modalName: string, point: VgiPoint, isNew: boolean): MatDialogConfig {
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
+    dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.position = {
       top: '',

@@ -76,11 +76,9 @@ export class AddpointComponent implements OnInit {
         point.legenda = legenda;
         this.mapService.savePoint(point).subscribe(
           (data: Esito) => {
-            if (data.esito === true) {
-                this.pointEvent.emit();
-            } else {
+            this.pointEvent.emit();
+            if (data.esito === false) {
               this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
-              this.pointEvent.emit();
             }
           }
         );
@@ -147,6 +145,11 @@ export class AddpointComponent implements OnInit {
       nome: [nome]
     }
     );
+  }
+
+  closeModal() {
+    this.modalService.close(this.dialogRef);
+    this.pointEvent.emit();
   }
   /* esci() {
      this.mapService.getVectSource().clear();

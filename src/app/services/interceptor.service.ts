@@ -38,34 +38,36 @@ export class InterceptorService implements HttpInterceptor {
     return request;
   }
 
-  handleRequest( request: HttpRequest<any>, next: HttpHandler) {
+  handleRequest(request: HttpRequest<any>, next: HttpHandler) {
     return next.handle(request).pipe(
       retry(1),
-        catchError((error) => {
-          let message: string;
-          if (error.error instanceof ErrorEvent) {
-            message = error.error.message;
+      catchError((error) => {
+        let message: string;
+        if (error.error instanceof ErrorEvent) {
+          message = error.error.message;
+        } else {
+          const errorResponse: HttpErrorResponse = error as HttpErrorResponse;
+          if (typeof errorResponse.error.message !== 'undefined') {
+            message = errorResponse.error.message;
+          } else if (typeof errorResponse.error.descrizione !== 'undefined') {
+            message = errorResponse.error.descrizione;
+          } else if (errorResponse.status as number === 403) {
+            message = 'Credenziali di accesso non valide';
           } else {
-            const errorResponse: HttpErrorResponse = error as HttpErrorResponse;
-            if (typeof errorResponse.error.message !== 'undefined') {
-              message = errorResponse.error.message;
-            } else if (typeof errorResponse.error.descrizione !== 'undefined') {
-              message = errorResponse.error.descrizione;
-            } else if (errorResponse.status as number === 403) {
-              message = 'Credenziali di accesso non valide';
-            } else {
-              message = 'Errore durante l\'operazione. Ritentare o contattare l\'assistenza';
-            }
+            message = 'Errore durante l\'operazione. Ritentare o contattare l\'assistenza';
+          }
+          if (message !== null && message.trim() !== '') {
             this.modalService.openMessageAlert(MessageComponent, new Message(message, 'red'));
-            if (errorResponse.status as number === 403 ||
-              errorResponse.status as number === 401) {
-              if (localStorage.getItem('X-Vgi') !== null) {
-                localStorage.removeItem('X-Vgi');
-              }
+          }
+          if (errorResponse.status as number === 403 ||
+            errorResponse.status as number === 401) {
+            if (localStorage.getItem('X-Vgi') !== null) {
+              localStorage.removeItem('X-Vgi');
             }
           }
-          throw message;
-        })
+        }
+        throw message;
+      })
     );
   }
 }

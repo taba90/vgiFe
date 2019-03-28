@@ -17,8 +17,7 @@
       </span>
     <!-- This fills the remaining space of the current row -->
     <span class="fill-space"></span>
-    <span  *ngIf="userService.checkLogin() === true; else registration">
+    <span  *ngIf="userService.checkLogin() === true">
       <a (click)="logout()"><mat-icon>exit_to_app</mat-icon></a>
     </span>
-    <ng-template #registration><a (click) = "openDialog()"><mat-icon>account_circle</mat-icon></a></ng-template>
 </mat-toolbar>
