@@ -1,18 +1,31 @@
 .form-container {
+    padding: 5px;
+    margin-top: 50px;
+    display: flex;
     width: 100%;
-    height: 100%;
+    height:100%;
+    justify-content: flex-start;
+    align-content: center;
+    flex-direction: column;
+}
+
+.app-name {
     text-align: center;
     vertical-align: middle;
-    margin-left:auto;
-    margin-right:auto;
+    font-style: italic;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: x-large;
 }
 
-.login-div {
-    width: 100%;
-    height: 100%;
-    text-align: center;
+img {
+    opacity: 0.4;
+    width: 90px;
+    height: 90px;
 }
 
+.container-element {
+    margin: 5px;
+}
 .login-input {
     width: 100%;
     text-align: center

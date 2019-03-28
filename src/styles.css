@@ -3,7 +3,9 @@ a {
     cursor: pointer;
     color: green;
 }
-
+input {
+    display: block;
+}
 mat-icon {
     color: black;
 }

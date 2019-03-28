@@ -1,9 +1,9 @@
-<app-toolbar [sidenav]="sidenav"></app-toolbar>
-<mat-sidenav-container >
+<mat-sidenav-container  fullscreen>
   <mat-sidenav #sidenav mode="over" class="side-content">
     <router-outlet name="side"></router-outlet>
   </mat-sidenav>
-  <mat-sidenav-content class="main-content">
+  <mat-sidenav-content >
+    <app-toolbar [sidenav]="sidenav"></app-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

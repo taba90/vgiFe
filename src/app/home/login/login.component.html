@@ -1,5 +1,9 @@
-  <form [formGroup]="loginForm" class="form-container"> 
-    <div>
+<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Carl_Ritter_Litho_%28cropped%29.jpg"
+    height="100" width="100" class="container-element">
+<div class="form-container">
+<p [ngClass]="['coontainer-element', 'app-name']">erkundeR</p>
+ <form [formGroup]="loginForm" class="container-element"> 
+    <div >
       <mat-form-field>
         <input matInput placeholder="Username" type="text" formControlName="username" required>
       </mat-form-field>
@@ -15,3 +19,5 @@
       <button mat-raised-button color="primary" class=" white-text" (click)="login()">Login</button>
     </div>
   </form>
+  </div>
+  
