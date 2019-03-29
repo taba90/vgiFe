@@ -26,7 +26,7 @@ import { VgiPoint } from 'src/app/model/point';
 import { ModalService } from 'src/app/services/modal-popups.service';
 import { MapService } from 'src/app/services/map.service';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-import { ReadOptions } from 'src/app/model/readoptions';
+import { ReadOptions } from 'src/app/home/map/readoptions';
 
 
 @Component({
