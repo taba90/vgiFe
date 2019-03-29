@@ -7,9 +7,13 @@
   }
 mat-icon {
   cursor: pointer;
+  color: dimgray;
 }
 
 .add-icon {
   font-size: 40px;
-  color: grey
+}
+
+.list-element {
+  text-align: left;
 }

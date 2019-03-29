@@ -1,4 +1,9 @@
+button {
+    width: 150px;
+}
+
 .form-container {
+    text-align: center;
     margin-top: 10px;
     display: flex;
     width: 100%;
@@ -8,18 +13,22 @@
 }
 
 .app-name {
-    font-family: "Helvetica Neue", "Arial",  sans-serif;
     font-style: italic;
-    font-variant-ligatures: normal;
-    font-size: 2rem;
+    font-size: 2.5rem;
     letter-spacing: 1px;
-    color: darkkhaki;
+    color: burlywood;
+}
+
+.single-char {
+    color: darkred;
+    font-size: 3rem;
+    font-style: italic;
 }
 
 img {
     opacity: 0.3;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     display:block;
     margin-top: 20px;
     margin-left: auto;
@@ -27,6 +36,11 @@ img {
     margin-bottom: auto;
 
 }
+
+.form-padding {
+    padding: 10px;
+}
+
 
 .login-input {
     width: 100%;

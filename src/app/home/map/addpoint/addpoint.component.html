@@ -1,36 +1,40 @@
 <div class="point-form-container">
-<h2 mat-dialog-title color="accent">{{modalName}}</h2>
-<mat-divider></mat-divider>
-<br />
-<form mat-dialog-content [formGroup]="formPoint">
-  <div>
-    <mat-form-field class="mat-field">
-      <input matInput placeholder="Nome" type="text" formControlName="nome" required>
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field class="input-fullwidth">
-      <textarea matInput placeholder="Descrizione" formControlName="descrizione"></textarea>
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field class="mat-field">
-      <mat-select placeholder="Selezione legenda" formControlName="idLegenda" [(ngModel)]="selectedLegenda" required>
-        <mat-option *ngFor="let l of legende" [value]="l.id">
-          {{l.codice}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div>
-    <button mat-raised-button color="primary" (click)="salvaPosizione()"
-      *ngIf="isNew == true; else isUpdate">Salva</button>
-    <ng-template #isUpdate>
-      <span><button mat-raised-button color="primary" (click)="aggiornaPosizione()">Aggiorna</button></span>
-      <span class="fill-space"></span>
-      <span><button mat-raised-button color="warn" (click)="cancellaPosizione()">Cancella</button></span>
-    </ng-template>
-    <button mat-raised-button color="accent" (click)="closeModal()">Chiudi</button>
-  </div>
-</form>
+  <h2 mat-dialog-title class="modal-name">{{modalName}}</h2>
+  <mat-divider></mat-divider>
+  <br/>
+  <br/>
+  <form mat-dialog-content [formGroup]="formPoint" class="form">
+    <div>
+      <mat-form-field class="mat-field">
+        <input matInput placeholder="Nome" type="text" formControlName="nome" required>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="input-fullwidth">
+        <textarea matInput placeholder="Descrizione" formControlName="descrizione"></textarea>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="mat-field">
+        <mat-select placeholder="Selezione legenda" formControlName="idLegenda" [(ngModel)]="selectedLegenda" required>
+          <mat-option *ngFor="let l of legende" [value]="l.id">
+            {{l.codice}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <br/>
+      <div *ngIf="isNew == true; else isUpdate">
+        <button mat-raised-button color="primary" class=" white-text" (click)="salvaPosizione()">Salva</button>
+        <div class="divider"></div>
+        <button mat-raised-button color="accent" class=" white-text" (click)="closeModal()">Chiudi</button>
+      </div>
+      <ng-template #isUpdate>
+        <button mat-raised-button color="primary" class=" white-text" (click)="aggiornaPosizione()">Aggiorna</button>
+        <div class="divider"></div>
+        <button mat-raised-button color="warn" class=" white-text" (click)="cancellaPosizione()">Cancella</button>
+      </ng-template>
+    </div>
+  </form>
 </div>

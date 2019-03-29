@@ -14,11 +14,18 @@ import { ModalService } from 'src/app/services/modal-popups.service';
 export class EditLegendaComponent implements OnInit, OnChanges {
 
 
-  private legendaForm: FormGroup;
+  legendaForm: FormGroup;
+
   @Input()
-  private legenda: Legenda;
+  legenda: Legenda;
+
+  @Input()
+  templateName: string;
+
   @Output()
   submitted = new EventEmitter();
+  @Output()
+  close = new EventEmitter();
 
   constructor(private formBuilder: FormBuilder, private legendaService: LegendaService,
     private modalService: ModalService<Legenda>) {}
@@ -83,5 +90,9 @@ export class EditLegendaComponent implements OnInit, OnChanges {
       id: [idLegenda]
     }
     );
+  }
+
+  chiudi() {
+    this.close.emit();
   }
 }

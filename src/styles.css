@@ -32,7 +32,19 @@ h2 {
     flex: 1 1 auto;
 }
 
-.form-container {
-    text-align: center;
-    vertical-align: bottom;
+.inline-spacing{
+    width: 20px;
 }
+
+.divider {
+    display: inline-block;
+    height: auto;
+    width: 20px;
+}
+
+.template-name {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    color: darkRed;
+  }

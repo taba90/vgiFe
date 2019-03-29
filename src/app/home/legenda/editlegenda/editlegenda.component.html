@@ -1,21 +1,25 @@
-<div class="form-container">
-<form [formGroup]="legendaForm">
+<div class="form-container" >
+    <p class="template-name">{{templateName}}</p>
+  <form [formGroup]="legendaForm">
     <div>
-        <mat-form-field floatLabel="auto" class="modal-field">
-          <input matInput placeholder="Codice" type="text" formControlName="codice" required>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field floatLabel="auto" class="modal-field">
-          <textarea matInput placeholder="Descrizione" formControlName="descrizione" required></textarea>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field floatLabel="auto" class="modal-field">
-          <input matInput placeholder="Colore" type="color" formControlName="colore" required>
-        </mat-form-field>
-      </div>
-      <input type="hidden" formControlName="id">
-      <button mat-raised-button color="accent" type="submit" (click)="onSubmit()">Salva</button>
-</form>
+      <mat-form-field floatLabel="auto">
+        <input matInput placeholder="Codice" type="text" formControlName="codice" required>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field floatLabel="auto">
+        <textarea matInput placeholder="Descrizione" formControlName="descrizione" required></textarea>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field floatLabel="auto">
+        <input matInput placeholder="Colore" class="color-input" type="color" formControlName="colore" required>
+      </mat-form-field>
+    </div>
+    <input type="hidden" formControlName="id">
+  </form>
+  <br/>
+  <button mat-raised-button color="primary" class=" white-text" type="submit" (click)="onSubmit()">Salva</button>
+  <div class="divider"></div>
+  <button mat-raised-button color="accent" class=" white-text" (click)="chiudi()">Chiudi</button>
 </div>

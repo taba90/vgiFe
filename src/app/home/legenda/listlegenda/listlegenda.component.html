@@ -1,29 +1,30 @@
 <div>
+    <p class="template-name">Legenda</p>
   <mat-list>
-    <h2 mat-subheader>Legenda</h2>
-    <br/>
-    <mat-list-item *ngFor="let l of legende" >
-      <h3 mat-line style= 'align-content: center'>
-          {{l.codice}} <mat-icon [ngStyle]="{'color': getColor(l)}">brightness_1</mat-icon>
+    <br />
+    <mat-list-item *ngFor="let l of legende" class="list-element">
+      <h3 mat-line>
+        {{l.codice}} <mat-icon [ngStyle]="{'color': getColor(l)}">brightness_1</mat-icon>
         <!--p class="circle" [ngStyle]="{'background-color': getColor(l)}"></p-->
       </h3>
-      <br/>
+      <br />
       <p mat-line>{{l.descrizione}}</p>
-      <mat-icon matTooltip="Modifica l'elemento"
-      (click)="hideLegendaForm(false, l)" *ngIf="isAuthorized === true">create</mat-icon>
-      <mat-icon matTooltip="Cancella l'elemento" (click)="onDelete(l.id)" *ngIf="isAuthorized === true">delete</mat-icon>
+      <mat-icon matTooltip="Modifica l'elemento" (click)="hideLegendaForm(false, false, l)"
+        *ngIf="isAuthorized === true">create</mat-icon>
+      <span class="inline-spacing"></span>
+      <mat-icon matTooltip="Cancella l'elemento" (click)="onDelete(l.id)" *ngIf="isAuthorized === true">delete
+      </mat-icon>
       <mat-divider></mat-divider>
     </mat-list-item>
-    <br/>
-    <br/>
+    <br />
+    <br />
     <mat-list-item *ngIf="isAuthorized === true">
-      <mat-icon matTooltip="Aggiungi un elemento alla legenda" 
-      class="add-icon" (click)="hideLegendaForm(false)">add_circle</mat-icon>
+      <mat-icon matTooltip="Aggiungi un elemento alla legenda" class="add-icon" (click)="hideLegendaForm(false, true)">
+        add_circle</mat-icon>
     </mat-list-item>
   </mat-list>
 </div>
 <div [hidden]="hide">
-  <br/>
-  <app-editlegenda [legenda]="legendaUp" (submitted)= "hideLegendaForm(true)"></app-editlegenda>
-  <button mat-raised-button color="basic" (click)="hideLegendaForm(true)">Chiudi</button>
+  <app-editlegenda [legenda]="legendaUp" [templateName]="childTemplateName" (submitted)="hideLegendaForm(true)"
+    (close)="hideLegendaForm(true)"></app-editlegenda>
 </div>

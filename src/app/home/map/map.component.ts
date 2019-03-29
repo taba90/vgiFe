@@ -219,7 +219,9 @@ export class MapComponent implements OnInit {
 
   getDialogConfig(pixels: number[], modalName: string, point: VgiPoint, isNew: boolean): MatDialogConfig {
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
+    if (isNew) {
+      dialogConfig.disableClose = true;
+    }
     dialogConfig.autoFocus = true;
     dialogConfig.position = {
       top: '',
