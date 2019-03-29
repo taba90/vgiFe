@@ -14,3 +14,7 @@
 .side-content{
     width: '50%';
 }
+
+.ui.gradient[_ngcontent-c0] {
+    background-image: radial-gradient(ellipse closest-corner at center,#fff 0,#00a3ef 100%);
+}
