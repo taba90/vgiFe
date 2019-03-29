@@ -67,23 +67,23 @@ export class AddpointComponent implements OnInit {
       this.pointEvent.emit();
     } else {
       this.modalService.save(this.dialogRef, this.formPoint)
-      .subscribe((point: VgiPoint) => {
-        point.latitude = this.existingPoint.latitude;
-        point.longitude = this.existingPoint.longitude;
-        point.location = this.existingPoint.location;
-        const legenda: Legenda = new Legenda();
-        legenda.id = point.idLegenda;
-        point.legenda = legenda;
-        this.mapService.savePoint(point).subscribe(
-          (data: Esito) => {
-            this.pointEvent.emit();
-            if (data.esito === false) {
-              this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
+        .subscribe((point: VgiPoint) => {
+          point.latitude = this.existingPoint.latitude;
+          point.longitude = this.existingPoint.longitude;
+          point.location = this.existingPoint.location;
+          const legenda: Legenda = new Legenda();
+          legenda.id = point.idLegenda;
+          point.legenda = legenda;
+          this.mapService.savePoint(point).subscribe(
+            (data: Esito) => {
+              this.pointEvent.emit();
+              if (data.esito === false) {
+                this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
+              }
             }
-          }
+          );
+        }
         );
-      }
-      );
     }
   }
 
@@ -118,17 +118,19 @@ export class AddpointComponent implements OnInit {
 
 
   cancellaPosizione() {
-    this.mapService.deleteLocationById(this.existingPoint.id).subscribe(
-      (data: Esito) => {
-        if (data.esito === true) {
-          this.modalService.close(this.dialogRef);
-          this.pointEvent.emit();
-        } else {
-          this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
-        }
-      },
-      (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
-    );
+    if (confirm('Confermi la cancellazzione della localizzazione selezionata?')) {
+      this.mapService.deleteLocationById(this.existingPoint.id).subscribe(
+        (data: Esito) => {
+          if (data.esito === true) {
+            this.modalService.close(this.dialogRef);
+            this.pointEvent.emit();
+          } else {
+            this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
+          }
+        },
+        (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
+      );
+    }
   }
 
   bindPointToForm(point: VgiPoint) {

@@ -57,10 +57,12 @@ export class ListLegendaComponent implements OnInit, OnDestroy {
   }
 
   onDelete (idLegenda: number) {
-    this.legendaService.deleteLegenda(idLegenda).subscribe(
-      (data: Esito) => {
-        this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'green'));
-      });
+    if (confirm('L\'elemento può essere cancellato solo se non esistono punti associati ad esso. Confermi l\'operazione?')) {
+      this.legendaService.deleteLegenda(idLegenda).subscribe(
+        (data: Esito) => {
+          this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'green'));
+        });
+    }
   }
 
   getLegende() {

@@ -1,6 +1,16 @@
-<mat-list role="list" *ngIf="formReady === true;">
-  <mat-list-item role="listitem">Username: {{thisUser.username}}</mat-list-item>
-  <mat-list-item role="listitem">Email: {{thisUser.email}}</mat-list-item>
-  <mat-list-item role="listitem">Anni: {{thisUser.anni}}</mat-list-item>
-  <button mat-raised-button color="basic" (click)="deleteSelf()">Auto cancellazione</button>
-</mat-list>
+<mat-icon >account_circle</mat-icon>
+<div class="user-data-container">
+  <mat-list role="list" *ngIf="formReady === true;" class="user-data-list" >
+    <mat-list-item role="listitem"><b>Username:</b>
+      <span class="inline-spacing"></span> 
+      {{thisUser.username}}</mat-list-item>
+    <mat-list-item role="listitem"><b>Email:</b> 
+      <span class="inline-spacing"></span> 
+      {{thisUser.email}}</mat-list-item>
+    <mat-list-item role="listitem"><b>Anni:</b> 
+      <span class="inline-spacing"></span> 
+      {{thisUser.anni}}</mat-list-item>
+    <br/>
+    <button class="b-self-del" mat-raised-button color="warn" (click)="deleteSelf()">Auto cancellazione</button>
+  </mat-list>
+</div>

@@ -29,18 +29,20 @@ export class UserDataComponent implements OnInit {
   }
 
   deleteSelf() {
-    this.formReady = false;
-    this.userService.deleteSelf().subscribe(
-      (data: Esito) => {
-        if (data.esito === true) {
-          this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'green'));
-          this.userService.logout();
-        } else {
-          this.formReady = true;
-          this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
-        }
-      },
-    );
+    if (confirm('Confermi di voler procedere all\'autocancellazione del tuo account? L\'operazione è irreversibile')) {
+      this.formReady = false;
+      this.userService.deleteSelf().subscribe(
+        (data: Esito) => {
+          if (data.esito === true) {
+            this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'green'));
+            this.userService.logout();
+          } else {
+            this.formReady = true;
+            this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
+          }
+        },
+      );
+    }
   }
 
 }
