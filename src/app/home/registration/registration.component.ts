@@ -33,12 +33,14 @@ export class RegistrationComponent implements OnInit {
 
   submit() {
     if (this.regForm.invalid) {
-      this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti', 'red'));
+      this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti',
+      'red-snackbar'));
     } else {
       this.modalService.save(this.ref, this.regForm);
       this.ref.afterClosed().subscribe((user: User) => {
       this.userService.registerUser(user).subscribe(
-        (data: Esito | any) => this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'green'))
+        (data: Esito | any) => this.modalService.openMessageAlert(MessageComponent,
+          new Message(data.descrizione, 'green-snackbar'))
       );
     }
     );

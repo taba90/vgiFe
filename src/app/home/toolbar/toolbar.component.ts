@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { MatDialogConfig, MatSidenav } from '@angular/material';
+import { Component, OnInit} from '@angular/core';
+import { MatDialogConfig } from '@angular/material';
 import { ModalService } from '../../services/modal-popups.service';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
 import { Router} from '@angular/router';
 import { RegistrationComponent } from '../registration/registration.component';
+import { SidenavService } from 'src/app/services/sidenav.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -14,17 +15,18 @@ import { RegistrationComponent } from '../registration/registration.component';
 export class ToolbarComponent implements OnInit {
 
 
-  @Input()
-  sidenav: MatSidenav;
+
   isLoggedIn = false;
-  constructor(private modalService: ModalService<User>,
-    private userService: UserService, private router: Router) { }
+
+
+  constructor(// private modalService: ModalService<User>,
+    private userService: UserService, private sidenavService: SidenavService, private router: Router) { }
 
   ngOnInit() {
 
   }
 
-  openDialog() {
+  /*openDialog() {
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = false;
       dialogConfig.autoFocus = true;
@@ -33,10 +35,10 @@ export class ToolbarComponent implements OnInit {
         left : '0px' ,
       };
       this.modalService.openDialog(RegistrationComponent, dialogConfig);
-  }
+  }*/
 
   showSideContent (componentRef: string) {
-    this.sidenav.toggle();
+    this.sidenavService.openSidenav();
     this.router.navigate([{outlets: {'side': [componentRef]}}]);
 
   }

@@ -49,15 +49,14 @@ export class InterceptorService implements HttpInterceptor {
           const errorResponse: HttpErrorResponse = error as HttpErrorResponse;
           if (typeof errorResponse.error.message !== 'undefined') {
             message = errorResponse.error.message;
-          } else if (typeof errorResponse.error.descrizione !== 'undefined') {
-            message = errorResponse.error.descrizione;
-          } else if (errorResponse.status as number === 403) {
+          } else if (errorResponse.status as number === 403 ||
+            errorResponse.status as number === 401) {
             message = 'Credenziali di accesso non valide';
           } else {
             message = 'Errore durante l\'operazione. Ritentare o contattare l\'assistenza';
           }
           if (message !== null && message.trim() !== '') {
-            this.modalService.openMessageAlert(MessageComponent, new Message(message, 'red'));
+            this.modalService.openMessageAlert(MessageComponent, new Message(message, 'red-snackbar'));
           }
           if (errorResponse.status as number === 403 ||
             errorResponse.status as number === 401) {

@@ -63,7 +63,8 @@ export class AddpointComponent implements OnInit {
 
   salvaPosizione() {
     if (this.formPoint.invalid) {
-      this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti', 'red'));
+      this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti',
+      'red-snackbar'));
       this.pointEvent.emit();
     } else {
       this.modalService.save(this.dialogRef, this.formPoint)
@@ -78,7 +79,8 @@ export class AddpointComponent implements OnInit {
             (data: Esito) => {
               this.pointEvent.emit();
               if (data.esito === false) {
-                this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
+                this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione,
+                  'red-snackbar'));
               }
             }
           );
@@ -89,7 +91,8 @@ export class AddpointComponent implements OnInit {
 
   aggiornaPosizione() {
     if (this.formPoint.invalid) {
-      this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti', 'red'));
+      this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti',
+      'red-snackbar'));
       this.pointEvent.emit();
     } else {
       this.modalService.save(this.dialogRef, this.formPoint)
@@ -106,7 +109,8 @@ export class AddpointComponent implements OnInit {
               if (data.esito === true) {
                 this.pointEvent.emit();
               } else {
-                this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
+                this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione,
+                  'red-snackbar'));
               }
             },
           );
@@ -125,10 +129,10 @@ export class AddpointComponent implements OnInit {
             this.modalService.close(this.dialogRef);
             this.pointEvent.emit();
           } else {
-            this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'red'));
+            this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione,
+              'red-snackbar'));
           }
-        },
-        (response: HttpResponse<any>) => this.commonService.unWrapErrorResponse(response)
+        }
       );
     }
   }

@@ -1,14 +1,14 @@
 export class Message {
 
-    constructor(testo?: string, color?: string)  {
+    constructor(testo?: string, cssClass?: string)  {
         if (testo !== null) {
             this.testo = testo;
         }
-        if (color !== null) {
-            this.color = color;
+        if (cssClass !== null) {
+            this.cssClass = cssClass;
         }
     }
 
     testo: string;
-    color: string;
+    cssClass: string;
 }

@@ -68,7 +68,7 @@ export class ListLegendaComponent implements OnInit {
         (data: Esito) => {
           if (data.esito === true) {
             this.getLegende();
-            this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'green'));
+            this.modalService.openMessageAlert(MessageComponent, new Message(data.descrizione, 'green-snackbar'));
           }
         });
     }

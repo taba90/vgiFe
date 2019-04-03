@@ -19,9 +19,7 @@ export class MessageComponent implements OnInit {
   ngOnInit() {
   }
 
-  getColor() {
-    return this.message.color;
-  }
+
 
 
 

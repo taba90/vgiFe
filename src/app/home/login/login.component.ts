@@ -35,7 +35,8 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.loginForm.invalid) {
-       this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti', 'red'));
+       this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti',
+       'red-snackbar'));
     } else {
     const utente: User = this.bindFormToUser();
     this.userService.login(utente).subscribe(
@@ -49,7 +50,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/map']);
           }
         } else {
-          this.modalService.openMessageAlert(MessageComponent, new Message(esito.descrizione, 'red'));
+          this.modalService.openMessageAlert(MessageComponent, new Message(esito.descrizione, 'red-snackbar'));
         }
       });
     }

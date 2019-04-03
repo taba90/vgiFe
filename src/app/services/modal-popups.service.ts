@@ -22,15 +22,16 @@ export class ModalService <T> {
 
   openMessageAlert (componentRef:  ComponentType<any>, message: Message): MatSnackBarRef<MessageComponent> {
     let sText: string;
-    let sColor: string;
+    let sCssClass: string;
     sText = message.testo;
-    sColor = message.color;
+    sCssClass = message.cssClass;
     return this.snackBar.openFromComponent(componentRef, {
       duration: 2000,
       verticalPosition: 'top',
+      panelClass:  [sCssClass],
       data: {
         text: sText,
-        color: sColor
+        color: 'white'
       }
     });
   }

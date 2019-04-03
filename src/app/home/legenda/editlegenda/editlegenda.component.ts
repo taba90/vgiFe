@@ -41,14 +41,16 @@ export class EditLegendaComponent implements OnInit, OnChanges {
 
   onSubmit() {
     if (this.legendaForm.invalid) {
-        this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti', 'red'));
+        this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti',
+         'red-snackbar'));
     } else {
       const legenda: Legenda = this.bindFormToLegenda();
     if (legenda.id != null) {
       this.legendaService.updateLegenda(legenda).subscribe(
         (result: Legenda) => {
           this.submitted.emit();
-          this.modalService.openMessageAlert(MessageComponent, new Message('Operazione eseguita con successo', 'green'));
+          this.modalService.openMessageAlert(MessageComponent, new Message('Operazione eseguita con successo',
+          'green-snackbar'));
         },
       );
     } else {
@@ -56,7 +58,8 @@ export class EditLegendaComponent implements OnInit, OnChanges {
         (data: Legenda) => {
           if (data != null) {
           this.submitted.emit('submitted');
-          this.modalService.openMessageAlert(MessageComponent, new Message('Operazione eseguita con successo', 'green'));
+          this.modalService.openMessageAlert(MessageComponent, new Message('Operazione eseguita con successo',
+          'green-snackbar'));
           }
         },
       );
