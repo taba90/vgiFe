@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class UserService {
 
-  endpoint = 'http://localhost:8081/';
+  endpoint = 'http://localhost:8081/user/';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -39,11 +39,19 @@ export class UserService {
     return this.http.get<Role[]>(this.endpoint + 'roles');
   }
 
+  getUsersPagined(pagina: number): Observable<any> {
+    return this.http.get<User[]>(this.endpoint + 'all/' + pagina);
+  }
+
+  getCountUsers(): Observable<any> {
+    return this.http.get<number>(this.endpoint + 'count');
+  }
+
   isUserAdmin(): Observable<boolean> {
     this.getUserRoles().pipe(map(
       (roles) => {
         for (const role of roles as Role []) {
-          if (role.roleName === 'ROLE_ADMIN') {
+          if (role.roleName === 'ADMIN') {
             this.isAdmin = true;
           }
         }

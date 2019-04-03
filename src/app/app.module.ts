@@ -19,7 +19,7 @@ import { ListLegendaComponent } from './home/legenda/listlegenda/listlegenda.com
 import { UserDataComponent } from './home/user-data/user-data.component';
 import { RegistrationComponent } from './home/registration/registration.component';
 import { LoginComponent } from './home/login/login.component';
-
+import { UserListComponent} from './home/user-data/user-list/user.list.component';
 
 
 @NgModule({
@@ -35,6 +35,7 @@ import { LoginComponent } from './home/login/login.component';
     HomeComponent,
     MessageComponent,
     UserDataComponent,
+    UserListComponent,
   ],
   providers: [
     {

@@ -19,6 +19,7 @@ import {
   MatExpansionModule,
   MatSnackBarModule,
   MatTooltipModule,
+  MatPaginatorModule,
 } from '@angular/material';
 
 @NgModule({
@@ -43,6 +44,7 @@ import {
     MatExpansionModule,
     MatSnackBarModule,
     MatTooltipModule,
+    MatPaginatorModule,
   ],
   exports: [
 
@@ -64,6 +66,7 @@ import {
     MatExpansionModule,
     MatSnackBarModule,
     MatTooltipModule,
+    MatPaginatorModule,
   ]
 })
 export class MaterialModule { }

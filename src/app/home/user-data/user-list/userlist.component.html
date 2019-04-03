@@ -1,0 +1,8 @@
+<mat-paginator [length]="usersNumber" [pageSize]="5" (page)="getUsersPagined($event)">
+</mat-paginator>
+<mat-list>
+  <br />
+  <mat-list-item *ngFor="let u of users" class="list-element">
+    <p>{{u.username}}</p>
+  </mat-list-item>
+</mat-list>
