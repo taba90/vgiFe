@@ -28,19 +28,21 @@ export class UserService {
   constructor(private http: HttpClient, private router: Router) { }
 
   registerUser(user: User): Observable<User> {
-    return this.http.post<User>(this.endpoint + 'register', user, this.httpOptions);
+    return this.http.post<User>('http://localhost:8081/' + 'register', user, this.httpOptions);
   }
 
   login(user: User): Observable<HttpResponse<Esito>> {
-    return this.http.post<HttpResponse<Esito>>(this.endpoint + 'login', user, {observe: 'response' as 'body'});
+    return this.http.post<HttpResponse<Esito>>('http://localhost:8081/' + 'login', user, {observe: 'response' as 'body'});
   }
 
   getUserRoles(): Observable<any> {
     return this.http.get<Role[]>(this.endpoint + 'roles');
   }
 
-  getUsersPagined(pagina: number): Observable<any> {
-    return this.http.get<User[]>(this.endpoint + 'all/' + pagina);
+  getUsersPagined(pagina: number, resultPerPage: number): Observable<any> {
+    const pageParam = 'page=' + pagina;
+    const resultParam = 'resultPerPage=' + resultPerPage;
+    return this.http.get<User[]>(this.endpoint + 'all/?' + pageParam + '&' + resultParam);
   }
 
   getCountUsers(): Observable<any> {
@@ -67,6 +69,10 @@ export class UserService {
 
   deleteSelf(): Observable<Esito> {
     return this.http.delete<Esito>(this.endpoint + 'self');
+  }
+
+  delete(idUser: number): Observable<Esito> {
+    return this.http.delete<Esito>(this.endpoint + idUser);
   }
 
   logout() {

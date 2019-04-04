@@ -1,8 +1,13 @@
-<mat-paginator [length]="usersNumber" [pageSize]="5" (page)="getUsersPagined($event)">
+<mat-paginator [length]="usersNumber" [pageSize]="5" [pageSizeOptions]="[5, 10]"
+ (page)="getUsersPagined($event)">
 </mat-paginator>
 <mat-list>
   <br />
   <mat-list-item *ngFor="let u of users" class="list-element">
     <p>{{u.username}}</p>
+    <span class="inline-spacing"></span>
+    <mat-icon matTooltip="Cancella l'elemento" (click)="onDelete(u.id)">
+      delete
+    </mat-icon>
   </mat-list-item>
 </mat-list>
