@@ -21,19 +21,10 @@ export class UserService {
     })
   };
 
-  isLoggedIn = false;
 
-  isAdmin = false;
+  isAdmin: boolean;
 
-  constructor(private http: HttpClient, private router: Router) { }
-
-  registerUser(user: User): Observable<User> {
-    return this.http.post<User>('http://localhost:8081/' + 'register', user, this.httpOptions);
-  }
-
-  login(user: User): Observable<HttpResponse<Esito>> {
-    return this.http.post<HttpResponse<Esito>>('http://localhost:8081/' + 'login', user, {observe: 'response' as 'body'});
-  }
+  constructor(private http: HttpClient) { }
 
   getUserRoles(): Observable<any> {
     return this.http.get<Role[]>(this.endpoint + 'roles');
@@ -42,26 +33,13 @@ export class UserService {
   getUsersPagined(pagina: number, resultPerPage: number): Observable<any> {
     const pageParam = 'page=' + pagina;
     const resultParam = 'resultPerPage=' + resultPerPage;
-    return this.http.get<User[]>(this.endpoint + 'all/?' + pageParam + '&' + resultParam);
+    return this.http.get<User[]>(this.endpoint + 'all?' + pageParam + '&' + resultParam);
   }
 
   getCountUsers(): Observable<any> {
     return this.http.get<number>(this.endpoint + 'count');
   }
 
-  isUserAdmin(): Observable<boolean> {
-    this.getUserRoles().pipe(map(
-      (roles) => {
-        for (const role of roles as Role []) {
-          if (role.roleName === 'ADMIN') {
-            this.isAdmin = true;
-          }
-        }
-      }
-    )
-    );
-    return Observable.create(this.isAdmin);
-  }
 
   getSelf(): Observable<User> {
     return this.http.get<User>(this.endpoint + 'self');
@@ -75,32 +53,4 @@ export class UserService {
     return this.http.delete<Esito>(this.endpoint + idUser);
   }
 
-  logout() {
-    localStorage.removeItem('X-Vgi');
-    this.isLoggedIn = false;
-    this.router.navigate(['/login']);
-  }
-    /*this.getUserRoles().pipe(map(
-      (roles: Role []) => {
-        for (const r of roles) {
-          if (r.roleName === 'ROLE_ADMIN') {
-            this.isAdmin = true;
-          }
-        }
-        return this.isAdmin;
-      }
-    )
-    );
-    return Observable.of(this.isAdmin);
-  }*/
-
-  checkLogin () {
-    if (localStorage.getItem('X-Vgi') !== null) {
-      this.isLoggedIn = true;
-      return true;
-    } else {
-      this.isLoggedIn = false;
-      return false;
-    }
-  }
 }

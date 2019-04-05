@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
-import { UserService } from './user.service';
+import { AuthService } from './auth.service';
 
 
 @Injectable({
@@ -8,10 +8,10 @@ import { UserService } from './user.service';
 })
 export class AuthGuardService implements CanActivate {
 
-  constructor(private userService: UserService) { }
+  constructor(private authService: AuthService) { }
 
   canActivate (next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot) {
-      return this.userService.checkLogin();
+      return this.authService.checkLogin();
   }
 }

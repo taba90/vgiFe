@@ -1,11 +1,8 @@
 import { Component, OnInit} from '@angular/core';
-import { MatDialogConfig } from '@angular/material';
-import { ModalService } from '../../services/modal-popups.service';
-import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
 import { Router} from '@angular/router';
-import { RegistrationComponent } from '../registration/registration.component';
 import { SidenavService } from 'src/app/services/sidenav.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -20,22 +17,12 @@ export class ToolbarComponent implements OnInit {
 
 
   constructor(// private modalService: ModalService<User>,
-    private userService: UserService, private sidenavService: SidenavService, private router: Router) { }
+    private userService: UserService, private sidenavService: SidenavService,
+    private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
 
   }
-
-  /*openDialog() {
-    const dialogConfig: MatDialogConfig = new MatDialogConfig();
-      dialogConfig.disableClose = false;
-      dialogConfig.autoFocus = true;
-      dialogConfig.position = {
-        top : '0px',
-        left : '0px' ,
-      };
-      this.modalService.openDialog(RegistrationComponent, dialogConfig);
-  }*/
 
   showSideContent (componentRef: string) {
     this.sidenavService.openSidenav();
@@ -44,10 +31,10 @@ export class ToolbarComponent implements OnInit {
   }
 
   checkLogin () {
-    return this.userService.isLoggedIn;
+    return this.authService.isLoggedIn;
   }
   logout () {
-    this.userService.logout();
+    this.authService.logout();
   }
 
 

@@ -40,14 +40,13 @@ export class InterceptorService implements HttpInterceptor {
 
   handleRequest(request: HttpRequest<any>, next: HttpHandler) {
     return next.handle(request).pipe(
-      retry(1),
       catchError((error) => {
         let message: string;
         if (error.error instanceof ErrorEvent) {
           message = error.error.message;
         } else {
           const errorResponse: HttpErrorResponse = error as HttpErrorResponse;
-          if (typeof errorResponse.error.message !== 'undefined') {
+          if (errorResponse.error !== null && typeof errorResponse.error.message !== 'undefined') {
             message = errorResponse.error.message;
           } else if (errorResponse.status as number === 403 ||
             errorResponse.status as number === 401) {
@@ -58,8 +57,7 @@ export class InterceptorService implements HttpInterceptor {
           if (message !== null && message.trim() !== '') {
             this.modalService.openMessageAlert(MessageComponent, new Message(message, 'red-snackbar'));
           }
-          if (errorResponse.status as number === 403 ||
-            errorResponse.status as number === 401) {
+          if (errorResponse.url.endsWith('login')) {
             if (localStorage.getItem('X-Vgi') !== null) {
               localStorage.removeItem('X-Vgi');
             }

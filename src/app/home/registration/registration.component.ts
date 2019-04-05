@@ -7,7 +7,7 @@ import { ModalService } from 'src/app/services/modal-popups.service';
 import { Message } from 'src/app/model/message';
 import { MessageComponent } from 'src/app/message/message.component';
 import { Esito } from 'src/app/model/esito';
-import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-registration',
@@ -19,7 +19,7 @@ export class RegistrationComponent implements OnInit {
   regForm: FormGroup;
   constructor(private fb: FormBuilder,
     private ref: MatDialogRef<RegistrationComponent>,
-    private userService: UserService,
+    private authService: AuthService,
     private modalService: ModalService<User>) { }
 
   ngOnInit() {
@@ -38,7 +38,7 @@ export class RegistrationComponent implements OnInit {
     } else {
       this.modalService.save(this.ref, this.regForm);
       this.ref.afterClosed().subscribe((user: User) => {
-      this.userService.registerUser(user).subscribe(
+      this.authService.registerUser(user).subscribe(
         (data: Esito | any) => this.modalService.openMessageAlert(MessageComponent,
           new Message(data.descrizione, 'green-snackbar'))
       );

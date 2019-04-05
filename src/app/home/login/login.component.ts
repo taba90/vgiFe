@@ -10,6 +10,7 @@ import { MessageComponent } from 'src/app/message/message.component';
 import { HttpResponse} from '@angular/common/http';
 import { Esito } from 'src/app/model/esito';
 import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -21,9 +22,9 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
    constructor(private fb: FormBuilder,
-    private userService: UserService,
     private modalService: ModalService<Message>,
     private router: Router,
+    private authService: AuthService,
     ) { }
 
   ngOnInit() {
@@ -39,14 +40,14 @@ export class LoginComponent implements OnInit {
        'red-snackbar'));
     } else {
     const utente: User = this.bindFormToUser();
-    this.userService.login(utente).subscribe(
+    this.authService.login(utente).subscribe(
       (response: HttpResponse<Esito>) => {
         const esito: Esito = response.body as Esito;
         if (esito.esito === true) {
           const token: string = response.headers.get('X-Vgi');
           if (token !== null) {
             localStorage.setItem('X-Vgi', token);
-            this.userService.isLoggedIn = true;
+            this.authService.isLoggedIn = true;
             this.router.navigate(['/map']);
           }
         } else {

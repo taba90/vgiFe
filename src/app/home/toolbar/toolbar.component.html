@@ -2,7 +2,7 @@
   <span>
     <a [matMenuTriggerFor]="menu">
     <mat-icon matTooltip="Menu"
-      *ngIf="userService.checkLogin() === true">menu</mat-icon>
+      *ngIf="authService.checkLogin() === true">menu</mat-icon>
     </a>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="showSideContent('user')">
@@ -18,7 +18,7 @@
   </span>
   <!-- This fills the remaining space of the current row -->
   <span class="fill-space"></span>
-  <span *ngIf="userService.checkLogin() === true">
+  <span *ngIf="authService.checkLogin() === true">
     <a (click)="logout()" matTooltip="Logout">
       <mat-icon>exit_to_app</mat-icon>
     </a>

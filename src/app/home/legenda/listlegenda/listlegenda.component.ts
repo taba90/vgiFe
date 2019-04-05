@@ -16,7 +16,7 @@ import { Esito } from 'src/app/model/esito';
 })
 export class ListLegendaComponent implements OnInit {
 
-  isAuthorized = false;
+  isAuthorized: boolean;
   hide = true;
   legende: Legenda[];
   legendaUp: Legenda;
@@ -35,6 +35,8 @@ export class ListLegendaComponent implements OnInit {
         for (const r of roles) {
           if (r.roleName === 'ROLE_ADMIN') {
             this.isAuthorized = true;
+          } else {
+            this.isAuthorized = false;
           }
         }
       }
