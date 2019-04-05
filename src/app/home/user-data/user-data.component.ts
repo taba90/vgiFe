@@ -24,23 +24,10 @@ export class UserDataComponent implements OnInit {
     private modalService: ModalService<User>, private authService: AuthService) { }
 
   ngOnInit() {
-    this.userService.getSelf().subscribe(
-      (user: User) => {
-        this.thisUser = user;
-        this.formReady = true;
-      }
-    );
-    this.userService.getUserRoles().subscribe(
-      (roles: Role[]) => {
-        for (const r of roles) {
-          if (r.roleName === 'ROLE_ADMIN') {
-            this.isAuthorized = true;
-          } else {
-            this.isAuthorized = false;
-          }
-        }
-      }
-    );
+    if (this.authService.isLoggedIn) {
+      this.getSelf();
+      this.isAdmin();
+    }
   }
 
   deleteSelf() {
@@ -61,6 +48,29 @@ export class UserDataComponent implements OnInit {
         },
       );
     }
+  }
+
+  isAdmin() {
+    this.userService.getUserRoles().subscribe(
+      (roles: Role[]) => {
+        for (const r of roles) {
+          if (r.roleName === 'ROLE_ADMIN') {
+            this.isAuthorized = true;
+          } else {
+            this.isAuthorized = false;
+          }
+        }
+      }
+    );
+  }
+
+  getSelf() {
+    this.userService.getSelf().subscribe(
+      (user: User) => {
+        this.thisUser = user;
+        this.formReady = true;
+      }
+    );
   }
 
 }

@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Role } from 'src/app/model/role';
 import { ModalService } from 'src/app/services/modal-popups.service';
 import { Esito } from 'src/app/model/esito';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-listlegenda',
@@ -25,22 +26,14 @@ export class ListLegendaComponent implements OnInit {
 
   constructor(private legendaService: LegendaService,
     private modalService: ModalService<MessageComponent>, private userService: UserService,
-    private route: ActivatedRoute) {
+    private authService: AuthService) {
   }
 
   ngOnInit() {
-    this.getLegende();
-    this.userService.getUserRoles().subscribe(
-      (roles: Role[]) => {
-        for (const r of roles) {
-          if (r.roleName === 'ROLE_ADMIN') {
-            this.isAuthorized = true;
-          } else {
-            this.isAuthorized = false;
-          }
-        }
-      }
-    );
+    if (this.authService.isLoggedIn) {
+      this.getLegende();
+      this.isAdmin();
+    }
   }
 
 
@@ -81,6 +74,20 @@ export class ListLegendaComponent implements OnInit {
       (data: Legenda[]) => {
         this.legende = data;
       },
+    );
+  }
+
+  isAdmin() {
+    this.userService.getUserRoles().subscribe(
+      (roles: Role[]) => {
+        for (const r of roles) {
+          if (r.roleName === 'ROLE_ADMIN') {
+            this.isAuthorized = true;
+          } else {
+            this.isAuthorized = false;
+          }
+        }
+      }
     );
   }
 
