@@ -4,8 +4,6 @@ import { Observable} from 'rxjs';
 import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Esito } from '../model/esito';
 import { Role } from '../model/role';
-import { map } from 'rxjs/operators';
-import { Router } from '@angular/router';
 
 
 @Injectable({

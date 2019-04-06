@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Legenda } from 'src/app/model/legenda';
-import { LegendaService } from '../../../services/legenda.service';
 import { Message } from 'src/app/model/message';
 import { MessageComponent } from 'src/app/message/message.component';
 import { ModalService } from 'src/app/services/modal-popups.service';
+import { LegendaService } from 'src/app/services/legenda.service';
 
 @Component({
   selector: 'app-editlegenda',

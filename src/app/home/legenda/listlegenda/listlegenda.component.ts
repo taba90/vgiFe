@@ -1,14 +1,13 @@
 import { Component, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { Legenda } from 'src/app/model/legenda';
-import { LegendaService } from '../../../services/legenda.service';
 import { MessageComponent } from 'src/app/message/message.component';
 import { Message } from 'src/app/model/message';
 import { UserService } from 'src/app/services/user.service';
-import { ActivatedRoute } from '@angular/router';
 import { Role } from 'src/app/model/role';
 import { ModalService } from 'src/app/services/modal-popups.service';
 import { Esito } from 'src/app/model/esito';
 import { AuthService } from 'src/app/services/auth.service';
+import { LegendaService } from 'src/app/services/legenda.service';
 
 @Component({
   selector: 'app-listlegenda',

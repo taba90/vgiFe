@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserDataComponent } from './user-data.component';
+import { UserDataComponent } from './userdata.component';
 
 describe('UserDataComponent', () => {
   let component: UserDataComponent;
