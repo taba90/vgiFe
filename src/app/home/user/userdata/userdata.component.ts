@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { User } from 'src/app/model/user';
 import { Message } from 'src/app/model/message';
 import { ModalService } from 'src/app/services/modal-popups.service';

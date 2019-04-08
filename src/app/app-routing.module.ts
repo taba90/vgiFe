@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'map', component: MapComponent, canActivate: [AuthGuardService]},
   { path: 'legenda', component: ListLegendaComponent, canActivate: [AuthGuardService], outlet: 'side'},
-  { path: 'user', loadChildren: './home/user/user.module#UserModule', canLoad: [AuthGuardService], outlet: 'side'},
+  { path: 'user', component: UserDataComponent, canActivate: [AuthGuardService], outlet: 'side'},
 ];
 
 @NgModule({

@@ -15,13 +15,14 @@ export class InterceptorService implements HttpInterceptor {
   constructor(private modalService: ModalService<Message>) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
     const token: string = localStorage.getItem('X-Vgi');
     if (token != null) {
+      request.headers.delete('X-Vgi');
+      const headersConfig = {
+        'X-Vgi': token,
+      };
       const req: HttpRequest<any> = request.clone({
-        setHeaders: {
-          'X-Vgi': token,
-        }
+        setHeaders: headersConfig
       }
       );
       return this.handleRequest(req, next);

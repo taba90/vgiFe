@@ -17,6 +17,7 @@ import { ModalService } from './services/modal-popups.service';
 import { UserService } from './services/user.service';
 import { MapModule } from './home/map/map.module';
 import { AuthModule } from './home/auth/auth.module';
+import { AuthService } from './services/auth.service';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { AuthModule } from './home/auth/auth.module';
       multi: true
   },
   AuthGuardService,
+  AuthService,
   ModalService,
   UserService,
   MapService,
