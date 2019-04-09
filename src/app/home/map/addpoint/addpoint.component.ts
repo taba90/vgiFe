@@ -5,8 +5,6 @@ import { VgiPoint } from 'src/app/model/point';
 import { Legenda } from 'src/app/model/legenda';
 import { Esito } from 'src/app/model/esito';
 import { ModalService } from 'src/app/services/modal-popups.service';
-import { CommonService } from 'src/app/services/common.service';
-import { HttpResponse } from '@angular/common/http';
 import { Message } from 'src/app/model/message';
 import { MessageComponent } from 'src/app/message/message.component';
 import { MapService } from 'src/app/services/map.service';
@@ -39,7 +37,6 @@ export class AddpointComponent implements OnInit {
     private dialogRef: MatDialogRef<AddpointComponent>,
     private modalService: ModalService<VgiPoint>,
     private legendaService: LegendaService,
-    private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data) {
     this.existingPoint = data.point;
     this.modalName = data.modalName;

@@ -1,6 +1,7 @@
-<mat-icon>account_circle</mat-icon>
+<mat-icon class="user-icon">account_circle</mat-icon>
 <div class="user-data-container">
-  <mat-list role="list" *ngIf="formReady === true;" class="user-data-list">
+  <mat-list role="list" *ngIf="formReady === true;" class="user-data-list" 
+  [ngStyle]="{'margin-bottom': isAuthorized === true ? '':'auto'}">
     <mat-list-item role="listitem"><b>Username:</b>
       <span class="inline-spacing"></span>
       {{thisUser.username}}</mat-list-item>
@@ -14,7 +15,8 @@
     <button class="b-self-del" class=" white-text" mat-raised-button color="warn" (click)="deleteSelf()">Auto
       cancellazione</button>
   </mat-list>
-  <div *ngIf="isAuthorized === true">
+  <div *ngIf="isAuthorized === true" class="users-list">
+    <mat-divider></mat-divider>
     <app-userlist></app-userlist>
   </div>
 </div>
