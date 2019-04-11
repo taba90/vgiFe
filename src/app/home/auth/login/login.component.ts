@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-    this.route.params.subscribe(
+    this.route.queryParams.subscribe(
       (params: Params) => {
         console.log(params);
         const token = params['t'];
@@ -94,7 +94,7 @@ export class LoginComponent implements OnInit {
       right: '',
     };
     dialogConfig.data = {
-      token: t
+      t: t
     };
     this.modalService.openDialog(PasswordResetComponent, dialogConfig);
   }
