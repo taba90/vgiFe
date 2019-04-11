@@ -4,6 +4,7 @@ import { User } from '../model/user';
 import { Observable } from 'rxjs';
 import { HttpResponse, HttpClient } from '@angular/common/http';
 import { Esito } from '../model/esito';
+import {AppCostants} from '../app-costants';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +16,21 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
 
   registerUser(user: User): Observable<User> {
-    return this.http.post<User>('http://localhost:8081/register', user);
+    return this.http.post<User>(AppCostants.beEndPoint + '/register', user);
   }
 
 
 
   login(user: User): Observable<HttpResponse<Esito>> {
-    return this.http.post<HttpResponse<Esito>>('http://localhost:8081/' + 'login', user, { observe: 'response' as 'body' });
+    return this.http.post<HttpResponse<Esito>>(AppCostants.beEndPoint + '/login', user, { observe: 'response' as 'body' });
+  }
+
+  resetPassword(token: string, user: User): Observable<any> {
+    return this.http.patch(AppCostants.beEndPoint + '/resetPassword?t=' + token, user);
+  }
+
+  sendMailResetPassword(email: string): Observable<any> {
+    return this.http.get(AppCostants.beEndPoint + '/sendResetMail?email=' + email);
   }
 
   logout() {

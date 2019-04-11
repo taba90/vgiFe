@@ -6,6 +6,7 @@ import { retry, catchError } from 'rxjs/operators';
 import { ModalService } from './modal-popups.service';
 import { MessageComponent } from '../message/message.component';
 import { Message } from '../model/message';
+import { AppCostants } from '../app-costants';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,13 @@ export class InterceptorService implements HttpInterceptor {
   constructor(private modalService: ModalService<Message>) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token: string = localStorage.getItem('X-Vgi');
+    const token: string = localStorage.getItem(AppCostants.tokenName);
     if (token != null) {
-      request.headers.delete('X-Vgi');
-      const headersConfig = {
-        'X-Vgi': token,
-      };
+      request.headers.delete(AppCostants.tokenName);
+      const headers: HttpHeaders = new HttpHeaders();
+      headers.append(AppCostants.tokenName, token);
       const req: HttpRequest<any> = request.clone({
-        setHeaders: headersConfig
+        headers: headers
       }
       );
       return this.handleRequest(req, next);
@@ -59,8 +59,8 @@ export class InterceptorService implements HttpInterceptor {
             this.modalService.openMessageAlert(MessageComponent, new Message(message, 'red-snackbar'));
           }
           if (errorResponse.url.endsWith('login')) {
-            if (localStorage.getItem('X-Vgi') !== null) {
-              localStorage.removeItem('X-Vgi');
+            if (localStorage.getItem(AppCostants.tokenName) !== null) {
+              localStorage.removeItem(AppCostants.tokenName);
             }
           }
         }
