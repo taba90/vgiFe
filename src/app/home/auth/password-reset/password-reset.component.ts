@@ -19,8 +19,8 @@ export class PasswordResetComponent implements OnInit {
   token: string;
   inputMail: boolean;
   pwdResetForm: FormGroup;
-
   buttonName = 'Reset';
+  templateName: string;
 
   constructor(private route: ActivatedRoute, private authService: AuthService,
     private fb: FormBuilder,
@@ -33,12 +33,14 @@ export class PasswordResetComponent implements OnInit {
   ngOnInit() {
     if (this.token === null || typeof this.token === 'undefined') {
       this.inputMail = true;
+      this.templateName = 'Inserisci la tua email';
       this.pwdResetForm = this.fb.group({
         'email': ['', Validators.email],
       });
     } else {
       this.inputMail = false;
       this.buttonName = 'Aggiorna Password';
+      this.templateName = 'Inserisci la tua nuova password';
       this.pwdResetForm = this.fb.group({
         'password': ['', Validators.required],
         'ripetiPassword' : ['', Validators.required]
@@ -69,11 +71,13 @@ export class PasswordResetComponent implements OnInit {
         this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti',
           'red-snackbar'));
       } else if (this.pwdResetForm.get('password').value  !== this.pwdResetForm.get('ripetiPassword').value) {
-        this.modalService.openMessageAlert(MessageComponent, new Message('Le password inserite non sono uguali. Inseriscile di nuovo'));
+        this.modalService.openMessageAlert(MessageComponent,
+          new Message('Le password inserite non sono uguali. Inseriscile di nuovo', 'red-snackbar'));
       } else {
         this.modalService.save(this.ref, this.pwdResetForm).subscribe(
           (user: User) => this.authService.resetPassword(this.token, user).subscribe(
-            (esito: Esito) => this.modalService.openMessageAlert(MessageComponent, new Message(esito.descrizione))
+            (esito: Esito) => this.modalService.openMessageAlert(MessageComponent,
+              new Message(esito.descrizione, 'green-snackbar'))
           )
         );
       }

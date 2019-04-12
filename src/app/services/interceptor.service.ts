@@ -18,9 +18,10 @@ export class InterceptorService implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token: string = localStorage.getItem(AppCostants.tokenName);
     if (token != null) {
-      request.headers.delete(AppCostants.tokenName);
-      const headers: HttpHeaders = new HttpHeaders();
-      headers.append(AppCostants.tokenName, token);
+      // request.headers.delete(AppCostants.tokenName);
+      const fakeHeaders: HttpHeaders = new HttpHeaders();
+      const headers: HttpHeaders = fakeHeaders.append(AppCostants.tokenName, token);
+      console.log(headers);
       const req: HttpRequest<any> = request.clone({
         headers: headers
       }
