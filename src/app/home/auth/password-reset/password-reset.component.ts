@@ -46,15 +46,26 @@ export class PasswordResetComponent implements OnInit {
 
   submit() {
     if (this.token === null || typeof this.token === 'undefined') {
-      const email = this.pwdResetForm.get('email').value;
-      this.authService.sendMailResetPassword(email).subscribe(
-        (esito: Esito) => {
-          if (esito.esito === true) {
-            this.modalService.openMessageAlert(MessageComponent, new Message(esito.descrizione, 'green-snackbar'));
+      if (this.pwdResetForm.invalid) {
+        this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti',
+          'red-snackbar'));
+      } else {
+        const email = this.pwdResetForm.get('email').value;
+        this.authService.sendMailResetPassword(email).subscribe(
+          (esito: Esito) => {
+            if (esito.esito === true) {
+              this.modalService.openMessageAlert(MessageComponent, new Message(esito.descrizione, 'green-snackbar'));
+            }
           }
-        }
-      );
+        );
+      }
     } else {
+      if (this.pwdResetForm.invalid) {
+        this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti',
+          'red-snackbar'));
+      } else if (this.pwdResetForm.get('password') !== this.pwdResetForm.get('ripetiPassword')) {
+        this.modalService.openMessageAlert(MessageComponent, new Message('Le password inserite non sono uguali. Inseriscile di nuovo'));
+      }
       const password = this.pwdResetForm.get('password').value;
       const user: User = new User();
       user.password = password;

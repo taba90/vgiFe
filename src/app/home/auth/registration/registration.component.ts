@@ -26,6 +26,7 @@ export class RegistrationComponent implements OnInit {
     this.regForm = this.fb.group({
       'username': ['', Validators.required],
       'password': ['', Validators.required],
+      'ripetiPassword': ['', Validators.required],
       'email': ['', Validators.email],
       'anni': ['', Validators.required],
     });
@@ -35,6 +36,8 @@ export class RegistrationComponent implements OnInit {
     if (this.regForm.invalid) {
       this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti',
       'red-snackbar'));
+    } else if (this.regForm.get('password') !== this.regForm.get('ripetiPassword')) {
+      this.modalService.openMessageAlert(MessageComponent, new Message('Le password inserite non sono uguali. Inseriscile di nuovo'));
     } else {
       this.modalService.save(this.ref, this.regForm);
       this.ref.afterClosed().subscribe((user: User) => {
