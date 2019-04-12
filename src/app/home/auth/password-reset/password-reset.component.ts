@@ -25,6 +25,7 @@ export class PasswordResetComponent implements OnInit {
   constructor(private route: ActivatedRoute, private authService: AuthService,
     private fb: FormBuilder,
     private modalService: ModalService<User>,
+    private ref: MatDialogRef<PasswordResetComponent>,
     @Inject(MAT_DIALOG_DATA) public data) {
     this.token = this.data.t;
   }
@@ -40,6 +41,7 @@ export class PasswordResetComponent implements OnInit {
       this.buttonName = 'Aggiorna Password';
       this.pwdResetForm = this.fb.group({
         'password': ['', Validators.required],
+        'ripetiPassword' : ['', Validators.required]
       });
     }
   }
@@ -50,26 +52,31 @@ export class PasswordResetComponent implements OnInit {
         this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti',
           'red-snackbar'));
       } else {
-        const email = this.pwdResetForm.get('email').value;
-        this.authService.sendMailResetPassword(email).subscribe(
-          (esito: Esito) => {
-            if (esito.esito === true) {
-              this.modalService.openMessageAlert(MessageComponent, new Message(esito.descrizione, 'green-snackbar'));
+        // const email = this.pwdResetForm.get('email').value;
+        this.modalService.save(this.ref, this.pwdResetForm);
+        this.ref.afterClosed().subscribe(
+          (user: User) => this.authService.sendMailResetPassword(user.email).subscribe(
+            (esito: Esito) => {
+              if (esito.esito === true) {
+                this.modalService.openMessageAlert(MessageComponent, new Message(esito.descrizione, 'green-snackbar'));
+              }
             }
-          }
+          )
         );
       }
     } else {
       if (this.pwdResetForm.invalid) {
         this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti',
           'red-snackbar'));
-      } else if (this.pwdResetForm.get('password') !== this.pwdResetForm.get('ripetiPassword')) {
+      } else if (this.pwdResetForm.get('password').value  !== this.pwdResetForm.get('ripetiPassword').value) {
         this.modalService.openMessageAlert(MessageComponent, new Message('Le password inserite non sono uguali. Inseriscile di nuovo'));
+      } else {
+        this.modalService.save(this.ref, this.pwdResetForm).subscribe(
+          (user: User) => this.authService.resetPassword(this.token, user).subscribe(
+            (esito: Esito) => this.modalService.openMessageAlert(MessageComponent, new Message(esito.descrizione))
+          )
+        );
       }
-      const password = this.pwdResetForm.get('password').value;
-      const user: User = new User();
-      user.password = password;
-      this.authService.resetPassword(this.token, user);
     }
   }
 

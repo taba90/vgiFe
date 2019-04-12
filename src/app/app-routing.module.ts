@@ -8,7 +8,7 @@ import { UserDataComponent } from './home/user/userdata/userdata.component';
 import { PasswordResetComponent } from './home/auth/password-reset/password-reset.component';
 
 const routes: Routes = [
-  // { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'resetPassword', component: PasswordResetComponent },
   { path: 'map', component: MapComponent, canActivate: [AuthGuardService]},

@@ -36,7 +36,7 @@ export class RegistrationComponent implements OnInit {
     if (this.regForm.invalid) {
       this.modalService.openMessageAlert(MessageComponent, new Message('Uno o più campi obbligatorio non sono stati riempiti',
       'red-snackbar'));
-    } else if (this.regForm.get('password') !== this.regForm.get('ripetiPassword')) {
+    } else if (this.regForm.get('password').value !== this.regForm.get('ripetiPassword').value) {
       this.modalService.openMessageAlert(MessageComponent, new Message('Le password inserite non sono uguali. Inseriscile di nuovo'));
     } else {
       this.modalService.save(this.ref, this.regForm);
