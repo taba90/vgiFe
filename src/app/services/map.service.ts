@@ -16,6 +16,7 @@ import { Esito } from '../model/esito';
 import { Observable } from 'rxjs';
 import Style from 'ol/style/style';
 import { LegendaService } from './legenda.service';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -38,7 +39,7 @@ private selectInteraction: Select;
 
 private selectedFeature: any;
 
-endpoint = 'http://localhost:8081/';
+endpoint =  environment.endpoint;
 
 httpOptions = {
   headers: new HttpHeaders({
@@ -51,27 +52,27 @@ httpOptions = {
 
 
 savePoint (point: VgiPoint): Observable<Esito> {
-  return this.http.post<Esito>(this.endpoint + 'location', point, this.httpOptions);
+  return this.http.post<Esito>(this.endpoint + '/location', point, this.httpOptions);
 }
 
 updatePoint (point: VgiPoint): Observable<Esito> {
-  return this.http.patch<Esito>(this.endpoint + 'location', point, this.httpOptions);
+  return this.http.patch<Esito>(this.endpoint + '/location', point, this.httpOptions);
 }
 
 getUserLocations(): Observable<any> {
-  return this.http.get<VgiPoint[]>(this.endpoint + 'location' + '/user');
+  return this.http.get<VgiPoint[]>(this.endpoint + '/location' + '/user');
 }
 
 getLocationById(idLocation: number): Observable<VgiPoint> {
-  return this.http.get<VgiPoint>(this.endpoint + 'location/' + idLocation);
+  return this.http.get<VgiPoint>(this.endpoint + '/location/' + idLocation);
 }
 
 getUserLocationsByLegenda(idLegenda: number): Observable<any> {
-  return this.http.get<VgiPoint[]>(this.endpoint + 'location/' + idLegenda + '/user');
+  return this.http.get<VgiPoint[]>(this.endpoint + '/location/' + idLegenda + '/user');
 }
 
 deleteLocationById(idLocation: number): Observable<Esito> {
-  return this.http.delete<Esito>(this.endpoint + 'location/' + idLocation);
+  return this.http.delete<Esito>(this.endpoint + '/location/' + idLocation);
 }
 
 

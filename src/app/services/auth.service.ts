@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { HttpResponse, HttpClient } from '@angular/common/http';
 import { Esito } from '../model/esito';
 import {AppCostants} from '../app-costants';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -12,25 +13,25 @@ import {AppCostants} from '../app-costants';
 export class AuthService {
 
   isLoggedIn = false;
-
+  endpoint = environment.endpoint;
   constructor(private http: HttpClient, private router: Router) { }
 
   registerUser(user: User): Observable<User> {
-    return this.http.post<User>(AppCostants.beEndPoint + '/register', user);
+    return this.http.post<User>( this.endpoint + '/register', user);
   }
 
 
 
   login(user: User): Observable<HttpResponse<Esito>> {
-    return this.http.post<HttpResponse<Esito>>(AppCostants.beEndPoint + '/login', user, { observe: 'response' as 'body' });
+    return this.http.post<HttpResponse<Esito>>(this.endpoint  + '/login', user, { observe: 'response' as 'body' });
   }
 
   resetPassword(token: string, user: User): Observable<any> {
-    return this.http.patch(AppCostants.beEndPoint + '/resetPassword?t=' + token, user);
+    return this.http.patch(this.endpoint  + '/resetPassword?t=' + token, user);
   }
 
   sendMailResetPassword(email: string): Observable<any> {
-    return this.http.get(AppCostants.beEndPoint + '/sendResetMail?email=' + email);
+    return this.http.get(this.endpoint  + '/sendResetMail?email=' + email);
   }
 
   logout() {

@@ -4,6 +4,7 @@ import { Observable} from 'rxjs';
 import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Esito } from '../model/esito';
 import { Role } from '../model/role';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -11,7 +12,7 @@ import { Role } from '../model/role';
 })
 export class UserService {
 
-  endpoint = 'http://localhost:8081/user/';
+  endpoint = environment.endpoint + '/user/';
 
   httpOptions = {
     headers: new HttpHeaders({

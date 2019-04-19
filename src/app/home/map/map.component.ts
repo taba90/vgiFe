@@ -27,6 +27,7 @@ import { ModalService } from 'src/app/services/modal-popups.service';
 import { MapService } from 'src/app/services/map.service';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { ReadOptions } from 'src/app/home/map/readoptions';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -79,11 +80,11 @@ export class MapComponent implements OnInit {
     this.beVectorLayer = new VectorLayer({ source: this.beVectSource, style: this.markerStyle });
     this.feImageLayer = new ImageLayer({
       source: this.wmsSource = new WMSSource({
-        projection: '4326',
+        projection: '3857',
         params: {
-          layers: ['rt_ofc.10k13']
+          layers: [environment.paramWMS]
         },
-        url: 'http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc',
+        url: environment.urlWMS,
       }),
     });
 
@@ -100,7 +101,7 @@ export class MapComponent implements OnInit {
       ],
       view: new OlView({
         zoom: 14,
-        minZoom: 8,
+        // minZoom: 8,
         center: fromLonLat([11.1722, 43.5599]),
       })
     });
