@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Map from 'ol/map';
 import OSM from 'ol/source/osm';
-import Layer from 'ol/layer';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import ImageLayer from 'ol/layer/Image';
@@ -61,7 +60,7 @@ export class MapComponent implements OnInit {
       fill: new OlFill({
         color: 'red',
       }),
-      radius: 5,
+      radius: 3,
       stroke: new OlStroke({
         color: 'red',
         width: 3,
@@ -102,7 +101,7 @@ export class MapComponent implements OnInit {
       view: new OlView({
         zoom: 14,
         // minZoom: 8,
-        center: fromLonLat([11.1722, 43.5599]),
+        center: fromLonLat([environment.initialLon, environment.initialLat]),
       })
     });
     this.addEventsControlToMap();

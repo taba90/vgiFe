@@ -3,7 +3,7 @@ import { Legenda } from '../model/legenda';
 import { HttpClient } from '@angular/common/http';
 import { Esito } from '../model/esito';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'

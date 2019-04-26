@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
+  initialLon: 11.1722,
+  initialLat: 43.5599,
   endpoint: 'http://localhost:8081',
-  urlWMS: 'http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc',
+  urlWMS:  'http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc',
   paramWMS: 'rt_ofc.10k13'
 };
 

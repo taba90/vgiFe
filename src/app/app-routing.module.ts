@@ -6,6 +6,7 @@ import { MapComponent } from './home/map/map.component';
 import { LoginComponent } from './home/auth/login/login.component';
 import { UserDataComponent } from './home/user/userdata/userdata.component';
 import { PasswordResetComponent } from './home/auth/password-reset/password-reset.component';
+import { IstruzioniComponent } from './home/istruzioni/istruzioni.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'map', component: MapComponent, canActivate: [AuthGuardService]},
   { path: 'legenda', component: ListLegendaComponent, canActivate: [AuthGuardService], outlet: 'side'},
   { path: 'user', component: UserDataComponent, canActivate: [AuthGuardService], outlet: 'side'},
+  { path: 'istruzioni', component: IstruzioniComponent, canActivate: [AuthGuardService], outlet: 'side'},
 ];
 
 @NgModule({
