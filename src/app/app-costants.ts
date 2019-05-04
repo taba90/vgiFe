@@ -7,6 +7,8 @@ export class AppCostants {
     public static readonly ripetiPasswordFormField = 'ripetiPassword';
     public static readonly usernameFormField = 'username';
 
+    public static readonly unselectablePointId = 'unselectable';
+
     constructor () {
     }
 

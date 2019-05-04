@@ -1,20 +1,8 @@
 import { Injectable} from '@angular/core';
-import Map from 'ol/map';
-import OSM from 'ol/source/osm';
-import TileLayer from 'ol/layer/Tile';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import OlView from 'ol/View';
-import OlCircle from 'ol/style/Circle';
-import OlFill from 'ol/style/Fill';
-import OlStroke from 'ol/style/Stroke';
-import Feature from 'ol/Feature';
-import Select from 'ol/interaction/select';
 import { VgiPoint } from '../model/point';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Esito } from '../model/esito';
 import { Observable } from 'rxjs';
-import Style from 'ol/style/style';
 import { LegendaService } from './legenda.service';
 import { environment } from 'src/environments/environment';
 
@@ -24,22 +12,11 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class MapService {
-private map: Map;
-private osmSource: OSM;
-private beVectSource: VectorSource;
-private vectSource: VectorSource;
-private view: OlView;
-private layers: [TileLayer, VectorLayer, VectorLayer];
-private marker: Feature;
-private markers: [];
-private beVectorLayer: VectorLayer;
-private feVectorLayer: VectorLayer;
 
-private selectInteraction: Select;
-
-private selectedFeature: any;
 
 endpoint =  environment.endpoint;
+
+points: VgiPoint [];
 
 httpOptions = {
   headers: new HttpHeaders({
@@ -63,6 +40,15 @@ getUserLocations(): Observable<any> {
   return this.http.get<VgiPoint[]>(this.endpoint + '/location' + '/user');
 }
 
+searchLocations(annoDa: number, annoA: number, idLegenda: number): Observable<any> {
+  const params = {
+    'annoDa': annoDa !== null && typeof annoDa !== 'undefined' ? annoDa.toString() : '',
+    'annoA': annoA !== null && typeof annoA !== 'undefined' ? annoA.toString() : '',
+    'idLegenda': idLegenda !== null && typeof idLegenda !== 'undefined' ? idLegenda.toString() : ''
+  };
+  return this.http.get<VgiPoint[]>(this.endpoint + '/location' + '/search', {params});
+}
+
 getLocationById(idLocation: number): Observable<VgiPoint> {
   return this.http.get<VgiPoint>(this.endpoint + '/location/' + idLocation);
 }
@@ -73,25 +59,6 @@ getUserLocationsByLegenda(idLegenda: number): Observable<any> {
 
 deleteLocationById(idLocation: number): Observable<Esito> {
   return this.http.delete<Esito>(this.endpoint + '/location/' + idLocation);
-}
-
-
-
-
-
-getMarkerStyle(color: string): Style {
-  return new Style({
-    image : new OlCircle(({
-          fill: new OlFill({
-            color: color,
-          }),
-          radius: 5,
-          stroke: new OlStroke({
-          color: color,
-          width: 3,
-        }),
-    }))
-  });
 }
 
 }

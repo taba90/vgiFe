@@ -5,11 +5,13 @@ import { MapComponent } from './map.component';
 import { MaterialModule } from 'src/app/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MessageSharedModule } from 'src/app/message/message-shared.module';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
     MapComponent,
-    AddpointComponent
+    AddpointComponent,
+    SearchComponent
   ],
   imports: [
     CommonModule,
@@ -19,6 +21,7 @@ import { MessageSharedModule } from 'src/app/message/message-shared.module';
   ],
   entryComponents: [
     AddpointComponent,
+    SearchComponent
   ],
 })
 export class MapModule { }

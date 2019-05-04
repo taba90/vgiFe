@@ -27,6 +27,8 @@ import { MapService } from 'src/app/services/map.service';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { ReadOptions } from 'src/app/home/map/readoptions';
 import { environment } from 'src/environments/environment';
+import { SearchComponent } from './search/search.component';
+import { AppCostants } from 'src/app/app-costants';
 
 
 @Component({
@@ -74,7 +76,7 @@ export class MapComponent implements OnInit {
   ngOnInit() {
 
     // definisco i layers
-    this.beVectSource = new VectorSource({format: this.geoJsonFormat});
+    this.beVectSource = new VectorSource({ format: this.geoJsonFormat });
     this.feVectorLayer = new VectorLayer({ source: this.vectSource, style: this.markerStyle, renderBuffer: 200 });
     this.beVectorLayer = new VectorLayer({ source: this.beVectSource, style: this.markerStyle });
     this.feImageLayer = new ImageLayer({
@@ -106,7 +108,9 @@ export class MapComponent implements OnInit {
     });
     this.addEventsControlToMap();
     this.addButtonOrotophoto();
-    this.getBePoints();
+    this.addButtonRicerca();
+    this.addButtonExitSearch();
+    this.getBeUserPoints();
   }
 
 
@@ -118,19 +122,21 @@ export class MapComponent implements OnInit {
     this.map.on('click', (e: MapBrowserEvent) => {
       this.map.forEachFeatureAtPixel(e.pixel, (feature: Feature) => {
         console.log(feature);
-        this.mapService.getLocationById(feature.getId() as number).subscribe(
-          (data: VgiPoint) => {
-            if (!(data instanceof Message)) {
-              const dialogConf: MatDialogConfig = this.getDialogConfig(e.pixel, 'Modifica posizione', data, false);
-              const dialogRef: MatDialogRef<AddpointComponent> = this.dialogService.openDialog(AddpointComponent, dialogConf);
-              const pointSubscription = dialogRef.componentInstance.pointEvent.subscribe(
-                () => {
-                  this.getBePoints();
-                  pointSubscription.unsubscribe();
-                });
-            }
-          },
-        );
+        if (! feature.getId().toString().startsWith(AppCostants.unselectablePointId)) {
+          this.mapService.getLocationById(feature.getId() as number).subscribe(
+            (data: VgiPoint) => {
+              if (!(data instanceof Message)) {
+                const dialogConf: MatDialogConfig = this.getDialogConfig(e.pixel, 'Modifica posizione', data, false);
+                const dialogRef: MatDialogRef<AddpointComponent> = this.dialogService.openDialog(AddpointComponent, dialogConf);
+                const pointSubscription = dialogRef.componentInstance.pointEvent.subscribe(
+                  () => {
+                    this.getBeUserPoints();
+                    pointSubscription.unsubscribe();
+                  });
+              }
+            },
+          );
+        }
       }
       );
     }
@@ -150,28 +156,47 @@ export class MapComponent implements OnInit {
       const dialogConfig: MatDialogConfig = this.getDialogConfig(pixels, 'Salva posizione', pointVgi, true);
       const dialogRef: MatDialogRef<AddpointComponent> = this.dialogService.openDialog(AddpointComponent, dialogConfig);
       const pointSubscription = dialogRef.componentInstance.pointEvent.subscribe(() => {
-        this.getBePoints();
+        this.getBeUserPoints();
         pointSubscription.unsubscribe();
       }
       );
     });
   }
 
-  getBePoints() {
+  getBeUserPoints() {
     this.removeAllMarkers();
     this.beVectSource.clear();
     this.mapService.getUserLocations().subscribe(
       (data: VgiPoint[]) => {
         if (data instanceof Array) {
+          const features: Feature [] = [];
           for (const point of data as VgiPoint[]) {
             const feature: Feature = this.geoJsonFormat.readFeature(point.location, new ReadOptions(this.map));
             feature.setStyle(this.getStyle(point.legenda.colore));
             feature.setId(point.id);
-            this.beVectSource.addFeature(feature);
+            features.push(feature);
           }
+          this.beVectSource.addFeatures(features);
         }
       },
     );
+  }
+
+  getSearchedPoints() {
+    this.removeAllMarkers();
+    this.beVectSource.clear();
+    const points: VgiPoint [] = this.mapService.points;
+    const features: Feature [] = [];
+    for (const point of points as VgiPoint []) {
+      const feature: Feature = this.geoJsonFormat.readFeature(point.location, new ReadOptions(this.map));
+      feature.setStyle(this.getStyle(point.legenda.colore));
+      feature.setId(AppCostants.unselectablePointId + point.id);
+      features.push(feature);
+    }
+    console.log(features);
+    console.log(this.beVectSource.getFeatures());
+    this.beVectSource.addFeatures(features);
+    console.log(this.beVectSource.getFeatures());
   }
 
   getPointById(id: number | string): VgiPoint | void {
@@ -187,10 +212,10 @@ export class MapComponent implements OnInit {
         fill: new OlFill({
           color: color,
         }),
-        radius: 5,
+        radius: 3.5,
         stroke: new OlStroke({
           color: color,
-          width: 3,
+          width: 3.5,
         }),
       }))
     });
@@ -208,6 +233,54 @@ export class MapComponent implements OnInit {
       element: divEl,
     });
     this.map.addControl(control);
+  }
+
+
+  addButtonRicerca() {
+    const search: Element = document.createElement('button');
+    search.innerHTML = 'R';
+    // search.setAttribute('style', 'top: 60px; left: .5em;');
+    search.addEventListener('click', () => this.openSearchModal());
+    const divEl: Element = document.createElement('div');
+    divEl.setAttribute('style', 'top: 97px; left: .5em;');
+    divEl.className = 'ol-control ol-unselectable';
+    divEl.appendChild(search);
+    const control: OlControl = new OlControl({
+      element: divEl,
+    });
+    this.map.addControl(control);
+  }
+
+  addButtonExitSearch() {
+    const exit: Element = document.createElement('button');
+    exit.innerHTML = 'E';
+    // search.setAttribute('style', 'top: 60px; left: .5em;');
+    exit.addEventListener('click', () => this.getBeUserPoints());
+    const divEl: Element = document.createElement('div');
+    divEl.setAttribute('style', 'top: 129px; left: .5em;');
+    divEl.className = 'ol-control ol-unselectable';
+    divEl.appendChild(exit);
+    const control: OlControl = new OlControl({
+      element: divEl,
+    });
+    this.map.addControl(control);
+  }
+
+  openSearchModal() {
+    const dialogConfig: MatDialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.position = {
+      top: '',
+      bottom: '',
+      left: '',
+      right: '',
+    };
+    const dialogRef: MatDialogRef<SearchComponent> = this.dialogService.openDialog(SearchComponent, dialogConfig);
+    const searchSubscription = dialogRef.componentInstance.searchCompleted.subscribe(() => {
+      this.getSearchedPoints();
+      searchSubscription.unsubscribe();
+    }
+    );
   }
 
   getPointFromLonLat(lonlat: string[]): OlPoint {
